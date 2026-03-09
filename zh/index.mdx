@@ -1,0 +1,60 @@
+---
+title: "介绍"
+description: "AnyFast 是统一的 AI 模型 API 平台，支持多家提供商。"
+icon: "house"
+---
+
+AnyFast 是一个统一的 AI API 平台，让开发者通过单一、一致的接口访问全球顶尖模型——涵盖对话、图片生成和视频生成。
+
+无需为每家提供商单独管理 API Key、SDK 和认证流程，AnyFast 将一切抽象为统一端点。只需修改一个参数，即可在 Anthropic、ByteDance、OpenAI、Google 等提供商的模型之间自由切换。
+
+## 开始使用
+
+<Card
+  title="快速入门"
+  icon="circle-play"
+  href="/zh/quickstart"
+  horizontal
+>
+  几分钟内完成第一次 API 调用。
+</Card>
+
+## AnyFast 提供什么
+
+**统一访问 100+ 模型**
+对话补全、图片生成、视频生成——全部通过一个 API Key 访问，无需逐一集成各家提供商。
+
+**OpenAI 兼容接口**
+对话模型完全遵循 OpenAI API 规范。如果你已在使用 OpenAI SDK，切换到 AnyFast 只需修改 Base URL，其余代码无需改动。
+
+**多模态支持**
+除对话外，AnyFast 还支持图片和视频生成模型，各提供商的专属参数均以清晰、有文档的方式暴露。
+
+**一致的错误处理**
+无论底层调用哪家提供商，每个接口都返回统一的错误码和消息格式，让你的异常处理逻辑保持简洁。
+
+**透明定价**
+无平台费用，无隐藏加价。对话模型按 Token 计费，媒体模型按次计费，仅收取实际使用量。
+
+## 探索 API
+
+<Columns cols={2}>
+  <Card
+    title="API 参考"
+    icon="code"
+    href="/zh/api-reference/introduction"
+  >
+    认证方式、Base URL 及错误码。
+  </Card>
+  <Card
+    title="模型 API"
+    icon="microchip-ai"
+    href="/zh/api-reference/introduction"
+  >
+    按提供商浏览所有可用模型。
+  </Card>
+</Columns>
+
+## 需要帮助？
+
+发送邮件至 [layfz@anyfast.ai](mailto:layfz@anyfast.ai) 或加入我们的 [Discord](https://discord.gg/anyfast) 社区。

@@ -1,33 +1,50 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: 'API Reference'
+description: 'Integrate powerful AI models into your applications with the AnyFast API'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Base URL
 
-## Welcome
+All API requests should be made to:
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+```
+https://www.anyfast.ai
+```
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+The AnyFast API uses Bearer tokens for authentication. Include your API key in the `Authorization` header of every request.
+
+```bash
+Authorization: Bearer YOUR_API_KEY
+```
+
+You can create and manage API keys in the [Dashboard](https://dashboard.anyfast.ai).
+
+## Request Format
+
+All request bodies must be JSON. Set the `Content-Type` header accordingly:
+
+```
+Content-Type: application/json
+```
+
+## Error Codes
+
+| HTTP Status | Code | Description |
+|---|---|---|
+| 400 | `invalid_request` | Missing or invalid parameters |
+| 401 | `unauthorized` | Invalid or missing API key |
+| 429 | `rate_limit_exceeded` | Too many requests |
+| 500 | `internal_error` | Server error |
+
+All errors follow this format:
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
+{
+  "error": {
+    "code": "invalid_request",
+    "message": "Field 'prompt' is required"
   }
-]
+}
 ```

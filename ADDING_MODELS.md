@@ -1,0 +1,208 @@
+# 添加新模型文档
+
+## 目录结构约定
+
+```
+# 指南（含提供商路径）
+guides/model-api/{provider}/{model-name}.mdx
+zh/guides/model-api/{provider}/{model-name}.mdx
+
+# API 参考（不含提供商路径，URL 更简洁）
+api-reference/model-api/{model-name}.mdx        ← 单端点模型（对话）
+api-reference/model-api/{model-name}/
+  └── openapi.yaml                               ← 英文 spec
+
+zh/api-reference/model-api/{model-name}.mdx     ← 中文版 MDX
+zh/api-reference/model-api/{model-name}/
+  └── openapi.yaml                               ← 中文 spec（描述翻译为中文）
+
+# 多端点模型（视频/图片生成）
+api-reference/model-api/{model-name}/
+  ├── openapi.yaml
+  ├── create.mdx
+  └── status.mdx
+```
+
+**URL 对应关系：**
+- 指南：`/guides/model-api/{provider}/{model-name}`
+- API 参考（对话）：`/api-reference/model-api/{model-name}`
+- API 参考（视频）：`/api-reference/model-api/{model-name}/create`
+
+---
+
+## 步骤
+
+### 1. 创建 openapi.yaml
+
+在 `api-reference/model-api/{model-name}/` 下新建 `openapi.yaml`。
+
+**对话模型模板**（参考 `api-reference/model-api/claude-3-5-sonnet-20241022/openapi.yaml`）：
+
+```yaml
+openapi: 3.1.0
+info:
+  title: {Model Display Name}
+  description: {Provider} {Model} via AnyFast OpenAI-compatible API
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai   # 注意：带 www
+security:
+  - bearerAuth: []
+paths:
+  /v1/chat/completions:
+    post:
+      operationId: createChatCompletion{ModelId}
+      summary: Chat Completion
+      ...
+      properties:
+        model:
+          type: string
+          enum:
+            - {model-id}          # 实际调用时传入的模型名
+```
+
+**视频生成模型模板**（参考 `api-reference/model-api/bytedance/seedance-2-0/openapi.yaml`）。
+
+同理，在 `zh/api-reference/model-api/{model-name}/` 下创建中文版 `openapi.yaml`，将 `summary` 和 `description` 等字段翻译为中文。
+
+### 2. 创建 API 参考 MDX
+
+**英文**（`api-reference/model-api/{model-name}.mdx`）：
+
+```yaml
+---
+title: '{model-id}'
+openapi: 'api-reference/model-api/{model-name}/openapi.yaml POST /v1/chat/completions'
+---
+```
+
+**中文**（`zh/api-reference/model-api/{model-name}.mdx`）：
+
+```yaml
+---
+title: '{model-id}'
+openapi: 'zh/api-reference/model-api/{model-name}/openapi.yaml POST /v1/chat/completions'
+---
+```
+
+> 中文版 MDX 引用 `zh/` 下的中文 openapi.yaml，不复用英文版。
+
+多端点模型（视频）MDX 放在文件夹内：`{model-name}/create.mdx`、`{model-name}/status.mdx`。
+
+### 3. 创建指南页
+
+**英文**（`guides/model-api/{provider}/{model-name}.mdx`）：
+
+```yaml
+---
+title: "{Model Name}"
+description: "..."
+icon: "message"
+---
+```
+
+内容参考 `guides/model-api/anthropic/claude-3-5-sonnet.mdx`，包含：核心能力、快速示例（cURL / Python / Node.js）、参数说明、底部 API Reference Card。
+
+**中文**（`zh/guides/model-api/{provider}/{model-name}.mdx`）同理，内容翻译为中文。
+
+### 4. 添加提供商图标（新提供商）
+
+从 Simple Icons 下载 SVG 并将 `fill` 改为 `currentColor`：
+
+```bash
+curl -sL "https://cdn.simpleicons.org/{provider}" \
+  -o images/providers/{provider}.svg
+sed -i '' 's/fill="[^"]*"/fill="currentColor"/g' images/providers/{provider}.svg
+```
+
+> 若 CDN 无法下载，手动编写 SVG 并确保 `fill="currentColor"`。
+
+### 5. 更新 docs.json
+
+需要在英文和中文两处各更新。
+
+**Guides tab — 现有提供商新增模型：**
+
+```json
+{
+  "group": "Anthropic",
+  "icon": "/images/providers/anthropic.svg",
+  "pages": [
+    "guides/model-api/anthropic/claude-3-5-sonnet",
+    "guides/model-api/anthropic/{new-model}"   // 新增
+  ]
+}
+```
+
+**Guides tab — 新提供商：**
+
+```json
+{
+  "group": "{Provider}",
+  "icon": "/images/providers/{provider}.svg",
+  "pages": [
+    "guides/model-api/{provider}/{model-name}"
+  ]
+}
+```
+
+**API Reference tab — 新增模型（无提供商路径）：**
+
+```json
+{
+  "group": "{Provider}",
+  "icon": "/images/providers/{provider}.svg",
+  "pages": [
+    "api-reference/model-api/{model-name}"
+  ]
+}
+```
+
+---
+
+## 快速示例：添加 GPT-4o
+
+```bash
+# 1. 创建目录
+mkdir -p api-reference/model-api/gpt-4o
+mkdir -p zh/api-reference/model-api/gpt-4o
+
+# 2. 复制并修改 spec
+cp api-reference/model-api/gpt-4/openapi.yaml api-reference/model-api/gpt-4o/openapi.yaml
+cp zh/api-reference/model-api/gpt-4/openapi.yaml zh/api-reference/model-api/gpt-4o/openapi.yaml
+# 修改 model.enum: ["gpt-4o"]、title、operationId
+```
+
+修改 `openapi.yaml` 中：
+- `info.title` → `GPT-4o`
+- `operationId` → `createChatCompletionGPT4o`
+- `model.enum` → `["gpt-4o"]`
+- `model.example` → `gpt-4o`
+
+创建 MDX：
+
+```yaml
+# api-reference/model-api/gpt-4o.mdx
+---
+title: 'gpt-4o'
+openapi: 'api-reference/model-api/gpt-4o/openapi.yaml POST /v1/chat/completions'
+---
+```
+
+在 `docs.json` 的 OpenAI group 追加（英文和中文各一处）：
+
+```json
+"pages": [
+  "api-reference/model-api/gpt-4",
+  "api-reference/model-api/gpt-4o"
+]
+```
+
+---
+
+## 注意事项
+
+- **base URL 统一用** `https://www.anyfast.ai`（`anyfast.ai` 会 301 重定向导致 Authorization header 丢失）
+- **MDX 文件名与同级文件夹同名不会冲突**（文件夹只含数据文件 `openapi.yaml`，不是页面）
+- **中文 spec 单独维护**，`summary`、`description`、`example` 中的自然语言翻译为中文，参数名（`model`、`messages` 等）保持英文
+- **上线前**确认对应渠道已在控制台开通，否则 API 调用返回 403

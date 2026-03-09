@@ -1,0 +1,101 @@
+---
+title: "Seedance 2.0"
+description: "字节跳动的视频生成模型，通过文本提示生成高质量视频。"
+icon: "video"
+---
+
+Seedance 2.0 是字节跳动的视频生成模型，能够从文本描述生成高质量视频。支持多种分辨率和时长，适用于内容创作、原型设计和创意工作流。
+
+## 核心能力
+
+- **文本生成视频** — 直接从自然语言提示生成视频
+- **分辨率** — 支持 `720p` 和 `1080p` 输出
+- **时长** — 可选 5 秒或 10 秒
+- **异步生成** — 提交任务后轮询结果
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+# 第一步：提交生成任务
+curl https://www.anyfast.ai/v1/videos/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "seedance-2.0",
+    "prompt": "日出时分的宁静山间湖泊，电影级画质",
+    "duration": 5,
+    "resolution": "1080p"
+  }'
+
+# 第二步：轮询结果
+curl https://www.anyfast.ai/v1/videos/generations/task_abc123 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```python Python
+import time
+import requests
+
+headers = {
+    "Authorization": "Bearer YOUR_API_KEY",
+    "Content-Type": "application/json"
+}
+
+# 第一步：提交任务
+response = requests.post(
+    "https://www.anyfast.ai/v1/videos/generations",
+    headers=headers,
+    json={
+        "model": "seedance-2.0",
+        "prompt": "日出时分的宁静山间湖泊，电影级画质",
+        "duration": 5,
+        "resolution": "1080p"
+    }
+)
+task_id = response.json()["id"]
+
+# 第二步：轮询直到完成
+while True:
+    result = requests.get(
+        f"https://www.anyfast.ai/v1/videos/generations/{task_id}",
+        headers=headers
+    ).json()
+
+    if result["status"] == "completed":
+        print(result["video_url"])
+        break
+    elif result["status"] == "failed":
+        raise Exception(result["error"])
+
+    time.sleep(3)
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | 固定为 `seedance-2.0` |
+| `prompt` | string | 是 | 视频内容的文本描述 |
+| `duration` | integer | 否 | `5` 或 `10` 秒，默认 `5` |
+| `resolution` | string | 否 | `720p` 或 `1080p`，默认 `720p` |
+| `seed` | integer | 否 | 固定随机种子以复现结果 |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/bytedance/seedance-2-0/create"
+>
+  查看 Seedance 2.0 的完整参数定义与交互式 API Playground。
+</Card>
+
+<Card
+  title="查询任务状态"
+  icon="clock"
+  href="/zh/api-reference/model-api/bytedance/seedance-2-0/status"
+>
+  视频生成完成后，通过此接口获取结果链接。
+</Card>

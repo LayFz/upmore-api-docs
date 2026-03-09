@@ -1,0 +1,101 @@
+---
+title: "快速入门"
+description: "几分钟内完成第一次 AnyFast API 调用。"
+icon: "rocket"
+---
+
+AnyFast 提供统一的 API，支持调用多家提供商的 AI 模型，包括对话、图片生成和视频生成。本指南帮助你快速完成第一次 API 调用。
+
+## 三步开始使用
+
+### 第一步：创建账号
+
+访问 [anyfast.ai](https://www.anyfast.ai) 注册你的账号。
+
+### 第二步：获取 API Key
+
+前往 [控制台](https://www.anyfast.ai/console/token) 生成你的 API Key，妥善保管——每次请求都需要用它进行认证。
+
+### 第三步：发起第一次 API 调用
+
+使用你的 API Key 调用对话模型。以下示例通过 OpenAI 兼容接口调用 Claude 3.5 Sonnet：
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-3-5-sonnet",
+    "messages": [
+      {
+        "role": "user",
+        "content": "你好！"
+      }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+response = client.chat.completions.create(
+    model="claude-3-5-sonnet",
+    messages=[
+        {"role": "user", "content": "你好！"}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+```javascript Node.js
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: "YOUR_API_KEY",
+  baseURL: "https://www.anyfast.ai/v1",
+});
+
+const response = await client.chat.completions.create({
+  model: "claude-3-5-sonnet",
+  messages: [{ role: "user", content: "你好！" }],
+});
+
+console.log(response.choices[0].message.content);
+```
+
+</CodeGroup>
+
+<Warning>
+  **请先配置渠道。** 不同模型对应不同的渠道，只有在控制台中开通了对应渠道，才能成功调用该模型。前往 [控制台](https://www.anyfast.ai/console) 确认渠道已启用。
+</Warning>
+
+## 下一步
+
+<Columns cols={2}>
+  <Card
+    title="API 参考"
+    icon="code"
+    href="/zh/api-reference/introduction"
+  >
+    认证方式、Base URL 及错误码。
+  </Card>
+  <Card
+    title="模型 API"
+    icon="microchip-ai"
+    href="/zh/api-reference/introduction"
+  >
+    按提供商浏览所有可用模型。
+  </Card>
+</Columns>
+
+<Note>
+  **需要帮助？** 发送邮件至 [layfz@anyfast.ai](mailto:layfz@anyfast.ai) 或加入我们的 [Discord](https://discord.gg/anyfast) 社区。
+</Note>

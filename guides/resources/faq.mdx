@@ -1,0 +1,39 @@
+---
+title: "FAQ"
+description: "Frequently asked questions about AnyFast."
+icon: "circle-question"
+---
+
+<AccordionGroup>
+  <Accordion title="What is AnyFast?">
+    AnyFast is a unified AI API platform that gives developers access to models from multiple providers — including chat, image generation, and video generation — through a single API key and consistent interface.
+  </Accordion>
+
+  <Accordion title="How do I get an API key?">
+    Sign up at [anyfast.ai](https://www.anyfast.ai), then go to the [Console](https://www.anyfast.ai/console/token) to create your API key.
+  </Accordion>
+
+  <Accordion title="Is AnyFast compatible with the OpenAI SDK?">
+    Yes. For chat models, AnyFast follows the OpenAI API specification. You only need to change the `base_url` to `https://www.anyfast.ai/v1` — no other code changes required.
+  </Accordion>
+
+  <Accordion title="How does billing work?">
+    AnyFast uses a prepaid credit system. Credits are deducted in real time as you make API calls. Chat models are billed per token, image and video models are billed per generation. Visit the [Top Up page](https://www.anyfast.ai/console/topup) to add credits.
+  </Accordion>
+
+  <Accordion title="What happens if I run out of credits?">
+    API calls will return a `402 Payment Required` error. Top up your account at the [Console](https://www.anyfast.ai/console/topup) to resume.
+  </Accordion>
+
+  <Accordion title="Which models are supported?">
+    AnyFast supports models from multiple providers including Anthropic, ByteDance, and more. Browse the full list in the [Model APIs](/guides/model-api/bytedance/seedance-2-0) section.
+  </Accordion>
+
+  <Accordion title="How do I generate a video with Seedance 2.0?">
+    Video generation is asynchronous. Submit a request to `POST /v1/videos/generations` and poll `GET /v1/videos/generations/{task_id}` until the status is `completed`. See the [Seedance 2.0 guide](/guides/model-api/bytedance/seedance-2-0) for a full example.
+  </Accordion>
+
+  <Accordion title="How do I get support?">
+    Email us at [layfz@anyfast.ai](mailto:layfz@anyfast.ai) or join our [Discord](https://discord.gg/anyfast) community.
+  </Accordion>
+</AccordionGroup>

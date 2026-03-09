@@ -1,0 +1,159 @@
+openapi: 3.1.0
+info:
+  title: Claude 3.5 Sonnet
+  description: Anthropic's Claude 3.5 Sonnet via OpenAI-compatible API
+  version: "1.0"
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/chat/completions:
+    post:
+      operationId: createChatCompletion
+      summary: Create Chat Completion
+      description: Generate a model response for the given conversation. Compatible with the OpenAI Chat Completions API.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - messages
+              properties:
+                model:
+                  type: string
+                  description: Model identifier
+                  enum:
+                    - claude-3-5-sonnet
+                  example: claude-3-5-sonnet
+                messages:
+                  type: array
+                  description: A list of messages in the conversation
+                  items:
+                    type: object
+                    required:
+                      - role
+                      - content
+                    properties:
+                      role:
+                        type: string
+                        enum: [system, user, assistant]
+                      content:
+                        type: string
+                  example:
+                    - role: user
+                      content: Hello, how are you?
+                max_tokens:
+                  type: integer
+                  description: Maximum number of tokens to generate
+                  example: 1024
+                temperature:
+                  type: number
+                  description: Sampling temperature between 0 and 2. Higher values make output more random.
+                  minimum: 0
+                  maximum: 2
+                  default: 1
+                  example: 0.7
+                stream:
+                  type: boolean
+                  description: If true, stream partial message deltas using SSE
+                  default: false
+                top_p:
+                  type: number
+                  description: Nucleus sampling threshold
+                  minimum: 0
+                  maximum: 1
+                  default: 1
+                stop:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: Sequences where the model will stop generating
+      responses:
+        "200":
+          description: Completion generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatCompletion"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    ChatCompletion:
+      type: object
+      properties:
+        id:
+          type: string
+          example: chatcmpl-abc123
+        object:
+          type: string
+          example: chat.completion
+        created:
+          type: integer
+          description: Unix timestamp
+        model:
+          type: string
+          example: claude-3-5-sonnet
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    example: assistant
+                  content:
+                    type: string
+                    example: Hello! I'm doing well, thank you for asking.
+              finish_reason:
+                type: string
+                enum: [stop, length, content_filter]
+        usage:
+          type: object
+          properties:
+            prompt_tokens:
+              type: integer
+            completion_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: invalid_request
+            message:
+              type: string
+              example: "Field 'messages' is required"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

@@ -1,7 +1,20 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "AnyFast",
+  "description": "AnyFast API documentation — unified access to AI models from Anthropic, ByteDance, OpenAI, and more.",
+  "seo": {
+    "indexHiddenPages": false
+  },
+  "metadata": {
+    "og:site_name": "AnyFast Docs",
+    "og:description": "Unified API platform for AI models — chat, image, and video generation across multiple providers.",
+    "og:image": "https://docs.anyfast.ai/images/layfz/social-media-cover.png",
+    "og:url": "https://docs.anyfast.ai",
+    "twitter:card": "summary_large_image",
+    "twitter:site": "@anyfast_ai",
+    "twitter:image": "https://docs.anyfast.ai/images/layfz/social-media-cover.png"
+  },
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -9,60 +22,160 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
+    "languages": [
       {
-        "tab": "Guides",
-        "groups": [
+        "language": "en",
+        "default": true,
+        "tabs": [
           {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
+            "tab": "Guides",
+            "groups": [
+              {
+                "group": "Getting started",
+                "pages": [
+                  "index",
+                  "quickstart"
+                ]
+              },
+              {
+                "group": "Model APIs",
+                "pages": [
+                  {
+                    "group": "Anthropic",
+                    "icon": "/images/providers/anthropic.svg",
+                    "pages": [
+                      "guides/model-api/anthropic/claude-3-5-sonnet"
+                    ]
+                  },
+                  {
+                    "group": "OpenAI",
+                    "icon": "/images/providers/openai.svg",
+                    "pages": [
+                      "guides/model-api/openai/gpt-4"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Resources",
+                "pages": [
+                  "guides/resources/payment",
+                  "guides/resources/faq"
+                ]
+              }
             ]
           },
           {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+            "tab": "API Reference",
+            "groups": [
+              {
+                "group": "Model APIs",
+                "pages": [
+                  {
+                    "group": "Anthropic",
+                    "icon": "/images/providers/anthropic.svg",
+                    "pages": [
+                      "api-reference/model-api/claude-3-5-sonnet-20241022"
+                    ]
+                  },
+                  {
+                    "group": "OpenAI",
+                    "icon": "/images/providers/openai.svg",
+                    "pages": [
+                      "api-reference/model-api/gpt-4"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+            "tab": "Changelog",
+            "groups": [
+              {
+                "group": "2026",
+                "pages": [
+                  "changelog/invite"
+                ]
+              }
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
-        "groups": [
+        "language": "zh",
+        "tabs": [
           {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
+            "tab": "指南",
+            "groups": [
+              {
+                "group": "快速开始",
+                "pages": [
+                  "zh/index",
+                  "zh/quickstart"
+                ]
+              },
+              {
+                "group": "模型 API",
+                "pages": [
+                  {
+                    "group": "Anthropic",
+                    "icon": "/images/providers/anthropic.svg",
+                    "pages": [
+                      "zh/guides/model-api/anthropic/claude-3-5-sonnet"
+                    ]
+                  },
+                  {
+                    "group": "OpenAI",
+                    "icon": "/images/providers/openai.svg",
+                    "pages": [
+                      "zh/guides/model-api/openai/gpt-4"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "资源",
+                "pages": [
+                  "zh/guides/resources/payment",
+                  "zh/guides/resources/faq"
+                ]
+              }
             ]
           },
           {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+            "tab": "API 参考",
+            "groups": [
+              {
+                "group": "模型 API",
+                "pages": [
+                  {
+                    "group": "Anthropic",
+                    "icon": "/images/providers/anthropic.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/claude-3-5-sonnet-20241022"
+                    ]
+                  },
+                  {
+                    "group": "OpenAI",
+                    "icon": "/images/providers/openai.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/gpt-4"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "更新日志",
+            "groups": [
+              {
+                "group": "2026",
+                "pages": [
+                  "zh/changelog/invite"
+                ]
+              }
             ]
           }
         ]
@@ -72,13 +185,13 @@
       "anchors": [
         {
           "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
+          "href": "https://docs.anyfast.ai",
           "icon": "book-open-cover"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Developer Support",
+          "href": "mailto:layfz@anyfast.ai",
+          "icon": "envelope"
         }
       ]
     }
@@ -91,13 +204,13 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:layfz@anyfast.ai"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://www.anyfast.ai/console/token"
     }
   },
   "contextual": {
@@ -113,10 +226,6 @@
    ]
   },
   "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+    "socials": {}
   }
 }

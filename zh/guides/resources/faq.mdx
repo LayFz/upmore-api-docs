@@ -1,0 +1,39 @@
+---
+title: "常见问题"
+description: "关于 AnyFast 的常见问题解答。"
+icon: "circle-question"
+---
+
+<AccordionGroup>
+  <Accordion title="AnyFast 是什么？">
+    AnyFast 是统一的 AI API 平台，通过单一 API Key 和一致的接口，让开发者访问多家提供商的模型，包括对话、图片生成和视频生成。
+  </Accordion>
+
+  <Accordion title="如何获取 API Key？">
+    在 [anyfast.ai](https://www.anyfast.ai) 注册账号后，前往[控制台](https://www.anyfast.ai/console/token)创建你的 API Key。
+  </Accordion>
+
+  <Accordion title="AnyFast 兼容 OpenAI SDK 吗？">
+    兼容。对话模型完全遵循 OpenAI API 规范，只需将 `base_url` 改为 `https://www.anyfast.ai/v1`，其他代码无需修改。
+  </Accordion>
+
+  <Accordion title="如何计费？">
+    AnyFast 采用预付费积分制，API 调用时实时扣除积分。对话模型按 Token 计费，图片和视频生成按次计费。前往[充值页面](https://www.anyfast.ai/console/topup)添加积分。
+  </Accordion>
+
+  <Accordion title="积分用完了怎么办？">
+    API 调用会返回 `402 Payment Required` 错误。前往[控制台](https://www.anyfast.ai/console/topup)充值后即可恢复使用。
+  </Accordion>
+
+  <Accordion title="支持哪些模型？">
+    AnyFast 支持来自 Anthropic、ByteDance 等多家提供商的模型。在[模型 API](/zh/guides/model-api/bytedance/seedance-2-0) 栏目中浏览完整列表。
+  </Accordion>
+
+  <Accordion title="如何用 Seedance 2.0 生成视频？">
+    视频生成是异步流程。向 `POST /v1/videos/generations` 提交请求，然后轮询 `GET /v1/videos/generations/{task_id}` 直到状态变为 `completed`。查看 [Seedance 2.0 指南](/zh/guides/model-api/bytedance/seedance-2-0) 获取完整示例。
+  </Accordion>
+
+  <Accordion title="如何获取支持？">
+    发送邮件至 [layfz@anyfast.ai](mailto:layfz@anyfast.ai) 或加入我们的 [Discord](https://discord.gg/anyfast) 社区。
+  </Accordion>
+</AccordionGroup>
