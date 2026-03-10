@@ -54,7 +54,50 @@
                       "guides/model-api/anthropic/claude-opus-4",
                       "guides/model-api/anthropic/claude-opus-4-thinking",
                       "guides/model-api/anthropic/claude-opus-4-5",
-                      "guides/model-api/anthropic/claude-opus-4-5-thinking"
+                      "guides/model-api/anthropic/claude-opus-4-5-thinking",
+                      "guides/model-api/anthropic/claude-opus-4-6",
+                      "guides/model-api/anthropic/claude-opus-4-6-thinking",
+                      "guides/model-api/anthropic/claude-sonnet-4",
+                      "guides/model-api/anthropic/claude-sonnet-4-thinking",
+                      "guides/model-api/anthropic/claude-sonnet-4-5",
+                      "guides/model-api/anthropic/claude-sonnet-4-5-thinking",
+                      "guides/model-api/anthropic/claude-sonnet-4-6",
+                      "guides/model-api/anthropic/claude-sonnet-4-6-thinking"
+                    ]
+                  },
+                  {
+                    "group": "Alibaba",
+                    "icon": "/images/providers/alibaba.svg",
+                    "pages": []
+                  },
+                  {
+                    "group": "Google",
+                    "icon": "/images/providers/google.svg",
+                    "pages": []
+                  },
+                  {
+                    "group": "Kuaishou",
+                    "icon": "/images/providers/kuaishou.svg",
+                    "pages": [
+                      "guides/model-api/kuaishou/kling-v3-omni",
+                      "guides/model-api/kuaishou/kling-v1-i2v",
+                      "guides/model-api/kuaishou/kling-v1-5-i2v",
+                      "guides/model-api/kuaishou/kling-v1-6-i2v",
+                      "guides/model-api/kuaishou/kling-v2-master-i2v",
+                      "guides/model-api/kuaishou/kling-v2-1-i2v",
+                      "guides/model-api/kuaishou/kling-v2-1-master-i2v",
+                      "guides/model-api/kuaishou/kling-v2-5-turbo-i2v",
+                      "guides/model-api/kuaishou/kling-v2-6-i2v",
+                      "guides/model-api/kuaishou/kling-v3-i2v",
+                      "guides/model-api/kuaishou/kling-v1-t2v",
+                      "guides/model-api/kuaishou/kling-v1-6-t2v",
+                      "guides/model-api/kuaishou/kling-v2-master-t2v",
+                      "guides/model-api/kuaishou/kling-v2-1-master-t2v",
+                      "guides/model-api/kuaishou/kling-v2-5-turbo-t2v",
+                      "guides/model-api/kuaishou/kling-v2-6-t2v",
+                      "guides/model-api/kuaishou/kling-v3-t2v",
+                      "guides/model-api/kuaishou/kling-v1-6-mi2v",
+                      "guides/model-api/kuaishou/kling-task-query"
                     ]
                   },
                   {
@@ -116,7 +159,51 @@
                       "api-reference/model-api/anthropic/claude-opus-4-20250514",
                       "api-reference/model-api/anthropic/claude-opus-4-20250514-thinking",
                       "api-reference/model-api/anthropic/claude-opus-4-5-20251101",
-                      "api-reference/model-api/anthropic/claude-opus-4-5-20251101-thinking"
+                      "api-reference/model-api/anthropic/claude-opus-4-5-20251101-thinking",
+                      "api-reference/model-api/anthropic/claude-opus-4-6",
+                      "api-reference/model-api/anthropic/claude-opus-4-6-thinking",
+                      "api-reference/model-api/anthropic/claude-sonnet-4-20250514",
+                      "api-reference/model-api/anthropic/claude-sonnet-4-20250514-thinking",
+                      "api-reference/model-api/anthropic/claude-sonnet-4-5",
+                      "api-reference/model-api/anthropic/claude-sonnet-4-5-20250929",
+                      "api-reference/model-api/anthropic/claude-sonnet-4-5-20250929-thinking",
+                      "api-reference/model-api/anthropic/claude-sonnet-4-6",
+                      "api-reference/model-api/anthropic/claude-sonnet-4-6-thinking"
+                    ]
+                  },
+                  {
+                    "group": "Alibaba",
+                    "icon": "/images/providers/alibaba.svg",
+                    "pages": []
+                  },
+                  {
+                    "group": "Google",
+                    "icon": "/images/providers/google.svg",
+                    "pages": []
+                  },
+                  {
+                    "group": "Kuaishou",
+                    "icon": "/images/providers/kuaishou.svg",
+                    "pages": [
+                      "api-reference/model-api/kuaishou/kling-v3-omni",
+                      "api-reference/model-api/kuaishou/kling-v1-i2v",
+                      "api-reference/model-api/kuaishou/kling-v1-5-i2v",
+                      "api-reference/model-api/kuaishou/kling-v1-6-i2v",
+                      "api-reference/model-api/kuaishou/kling-v2-master-i2v",
+                      "api-reference/model-api/kuaishou/kling-v2-1-i2v",
+                      "api-reference/model-api/kuaishou/kling-v2-1-master-i2v",
+                      "api-reference/model-api/kuaishou/kling-v2-5-turbo-i2v",
+                      "api-reference/model-api/kuaishou/kling-v2-6-i2v",
+                      "api-reference/model-api/kuaishou/kling-v3-i2v",
+                      "api-reference/model-api/kuaishou/kling-v1-t2v",
+                      "api-reference/model-api/kuaishou/kling-v1-6-t2v",
+                      "api-reference/model-api/kuaishou/kling-v2-master-t2v",
+                      "api-reference/model-api/kuaishou/kling-v2-1-master-t2v",
+                      "api-reference/model-api/kuaishou/kling-v2-5-turbo-t2v",
+                      "api-reference/model-api/kuaishou/kling-v2-6-t2v",
+                      "api-reference/model-api/kuaishou/kling-v3-t2v",
+                      "api-reference/model-api/kuaishou/kling-v1-6-mi2v",
+                      "api-reference/model-api/kuaishou/kling-task-query"
                     ]
                   },
                   {
@@ -194,7 +281,50 @@
                       "zh/guides/model-api/anthropic/claude-opus-4",
                       "zh/guides/model-api/anthropic/claude-opus-4-thinking",
                       "zh/guides/model-api/anthropic/claude-opus-4-5",
-                      "zh/guides/model-api/anthropic/claude-opus-4-5-thinking"
+                      "zh/guides/model-api/anthropic/claude-opus-4-5-thinking",
+                      "zh/guides/model-api/anthropic/claude-opus-4-6",
+                      "zh/guides/model-api/anthropic/claude-opus-4-6-thinking",
+                      "zh/guides/model-api/anthropic/claude-sonnet-4",
+                      "zh/guides/model-api/anthropic/claude-sonnet-4-thinking",
+                      "zh/guides/model-api/anthropic/claude-sonnet-4-5",
+                      "zh/guides/model-api/anthropic/claude-sonnet-4-5-thinking",
+                      "zh/guides/model-api/anthropic/claude-sonnet-4-6",
+                      "zh/guides/model-api/anthropic/claude-sonnet-4-6-thinking"
+                    ]
+                  },
+                  {
+                    "group": "Alibaba",
+                    "icon": "/images/providers/alibaba.svg",
+                    "pages": []
+                  },
+                  {
+                    "group": "Google",
+                    "icon": "/images/providers/google.svg",
+                    "pages": []
+                  },
+                  {
+                    "group": "Kuaishou",
+                    "icon": "/images/providers/kuaishou.svg",
+                    "pages": [
+                      "zh/guides/model-api/kuaishou/kling-v3-omni",
+                      "zh/guides/model-api/kuaishou/kling-v1-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v1-5-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v1-6-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-master-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-1-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-1-master-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-5-turbo-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-6-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v3-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v1-t2v",
+                      "zh/guides/model-api/kuaishou/kling-v1-6-t2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-master-t2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-1-master-t2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-5-turbo-t2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-6-t2v",
+                      "zh/guides/model-api/kuaishou/kling-v3-t2v",
+                      "zh/guides/model-api/kuaishou/kling-v1-6-mi2v",
+                      "zh/guides/model-api/kuaishou/kling-task-query"
                     ]
                   },
                   {
@@ -256,7 +386,51 @@
                       "zh/api-reference/model-api/anthropic/claude-opus-4-20250514",
                       "zh/api-reference/model-api/anthropic/claude-opus-4-20250514-thinking",
                       "zh/api-reference/model-api/anthropic/claude-opus-4-5-20251101",
-                      "zh/api-reference/model-api/anthropic/claude-opus-4-5-20251101-thinking"
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-5-20251101-thinking",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-6",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-6-thinking",
+                      "zh/api-reference/model-api/anthropic/claude-sonnet-4-20250514",
+                      "zh/api-reference/model-api/anthropic/claude-sonnet-4-20250514-thinking",
+                      "zh/api-reference/model-api/anthropic/claude-sonnet-4-5",
+                      "zh/api-reference/model-api/anthropic/claude-sonnet-4-5-20250929",
+                      "zh/api-reference/model-api/anthropic/claude-sonnet-4-5-20250929-thinking",
+                      "zh/api-reference/model-api/anthropic/claude-sonnet-4-6",
+                      "zh/api-reference/model-api/anthropic/claude-sonnet-4-6-thinking"
+                    ]
+                  },
+                  {
+                    "group": "Alibaba",
+                    "icon": "/images/providers/alibaba.svg",
+                    "pages": []
+                  },
+                  {
+                    "group": "Google",
+                    "icon": "/images/providers/google.svg",
+                    "pages": []
+                  },
+                  {
+                    "group": "Kuaishou",
+                    "icon": "/images/providers/kuaishou.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/kuaishou/kling-v3-omni",
+                      "zh/api-reference/model-api/kuaishou/kling-v1-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v1-5-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v1-6-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-master-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-1-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-1-master-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-5-turbo-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-6-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v3-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v1-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v1-6-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-master-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-1-master-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-5-turbo-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-6-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v3-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v1-6-mi2v",
+                      "zh/api-reference/model-api/kuaishou/kling-task-query"
                     ]
                   },
                   {
