@@ -1,16 +1,17 @@
 ---
-title: "Claude 3.5 Sonnet"
-description: "Anthropic's Claude 3.5 Sonnet via OpenAI-compatible API. Fast, capable, and easy to integrate."
+title: "Claude 3.7 Sonnet Thinking"
+description: "Anthropic's Claude 3.7 Sonnet with extended thinking enabled. Deep reasoning for math, coding, and complex analysis."
 ---
 
-Claude 3.5 Sonnet is Anthropic's high-performance chat model, available through AnyFast via an OpenAI-compatible interface. It excels at reasoning, coding, writing, and analysis tasks.
+Claude 3.7 Sonnet Thinking is the extended thinking variant of Claude 3.7 Sonnet, available through AnyFast via an OpenAI-compatible interface. With extended thinking enabled by default, the model performs step-by-step internal reasoning before generating a response, delivering significantly improved accuracy on complex tasks.
 
 ## Key capabilities
 
 - **OpenAI-compatible** — Works as a drop-in replacement with the OpenAI SDK
+- **Extended thinking** — Step-by-step internal reasoning enabled by default
+- **Deep reasoning** — Excels at math, logic, and multi-step problem solving
 - **Long context** — Handles large documents and multi-turn conversations
 - **Streaming** — Supports real-time token streaming via SSE
-- **Strong reasoning** — Designed for complex, multi-step tasks
 
 ## Quick example
 
@@ -21,9 +22,9 @@ curl https://www.anyfast.ai/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "claude-3-5-sonnet",
+    "model": "claude-3-7-sonnet-20250219-thinking",
     "messages": [
-      { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+      { "role": "user", "content": "Solve step by step: If a train travels 120 km in 2 hours, then slows down and travels 80 km in 3 hours, what is the average speed for the entire trip?" }
     ]
   }'
 ```
@@ -37,9 +38,9 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="claude-3-5-sonnet",
+    model="claude-3-7-sonnet-20250219-thinking",
     messages=[
-        {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+        {"role": "user", "content": "Solve step by step: If a train travels 120 km in 2 hours, then slows down and travels 80 km in 3 hours, what is the average speed for the entire trip?"}
     ]
 )
 
@@ -55,9 +56,9 @@ client = OpenAI(
 )
 
 stream = client.chat.completions.create(
-    model="claude-3-5-sonnet",
+    model="claude-3-7-sonnet-20250219-thinking",
     messages=[
-        {"role": "user", "content": "Write a short poem about the sea."}
+        {"role": "user", "content": "Write a proof that there are infinitely many prime numbers."}
     ],
     stream=True
 )
@@ -72,7 +73,7 @@ for chunk in stream:
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `model` | string | Yes | Must be `claude-3-5-sonnet` |
+| `model` | string | Yes | Must be `claude-3-7-sonnet-20250219-thinking` |
 | `messages` | array | Yes | List of `{ role, content }` objects |
 | `max_tokens` | integer | No | Maximum tokens to generate |
 | `temperature` | float | No | `0`–`2`. Controls randomness. Default: `1` |
@@ -83,7 +84,7 @@ for chunk in stream:
 <Card
   title="API Reference"
   icon="code"
-  href="/api-reference/model-api/anthropic/claude-3-5-sonnet-20241022"
+  href="/api-reference/model-api/anthropic/claude-3-7-sonnet-20250219-thinking"
 >
-  View the interactive API playground for Claude 3.5 Sonnet.
+  View the interactive API playground for Claude 3.7 Sonnet Thinking.
 </Card>
