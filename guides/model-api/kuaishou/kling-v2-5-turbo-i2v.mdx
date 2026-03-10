@@ -1,0 +1,79 @@
+---
+title: "Kling 2.5 Turbo i2v"
+description: "Kuaishou's Kling 2.5 Turbo i2v model. Generate videos from reference images with camera control, motion brush, and multi-shot storyboarding."
+---
+
+Kling 2.5 Turbo i2v is an image-to-video generation model from Kuaishou's Kling series, available through AnyFast API. Transform static images into dynamic videos with customizable camera movements, motion brushes, and multi-shot storyboarding.
+
+## Key capabilities
+
+- **Image-to-Video** — Generate videos from first frame and/or end frame reference images
+- **Camera Control** — Preset and custom camera movements (pan, tilt, zoom, roll)
+- **Motion Brush** — Static and dynamic brush masks for precise motion control
+- **Multi-Shot** — Create up to 6 storyboard shots with custom prompts and durations
+- **Standard & Pro Modes** — Choose between cost-effective standard or high-quality professional output
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/kling/v1/videos/image2video \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model_name": "kling-v2-5-turbo",
+    "image": "https://example.com/photo.jpg",
+    "prompt": "The person smiles and waves to the camera",
+    "duration": "5",
+    "mode": "std"
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/kling/v1/videos/image2video",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={
+        "model_name": "kling-v2-5-turbo",
+        "image": "https://example.com/photo.jpg",
+        "prompt": "The person smiles and waves to the camera",
+        "duration": "5",
+        "mode": "std"
+    }
+)
+
+task = response.json()
+print(f"Task ID: {task['task_id']}")
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `model_name` | string | No | Must be `kling-v2-5-turbo` |
+| `image` | string | Conditional | First frame image (Base64 or URL) |
+| `image_tail` | string | Conditional | End frame image (Base64 or URL) |
+| `prompt` | string | Conditional | Text prompt (max 2500 chars) |
+| `negative_prompt` | string | No | Negative prompt (max 2500 chars) |
+| `mode` | string | No | `std` or `pro`. Default: `std` |
+| `duration` | string | No | `3`–`15` seconds. Default: `5` |
+| `cfg_scale` | float | No | Prompt relevance `0`–`1`. Default: `0.5` |
+| `camera_control` | object | No | Camera movement control |
+| `sound` | string | No | `on` or `off`. Default: `off` (V2.6+ only) |
+| `callback_url` | string | No | Webhook URL for notifications |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/kuaishou/kling-v2-5-turbo-i2v"
+>
+  View the interactive API playground for Kling 2.5 Turbo i2v.
+</Card>

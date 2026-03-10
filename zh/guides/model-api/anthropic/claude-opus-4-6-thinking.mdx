@@ -1,0 +1,91 @@
+---
+title: "Claude Opus 4.6 Thinking"
+description: "Anthropic 的 Claude Opus 4.6 扩展思维版，最新最强大的推理模型。"
+---
+
+Claude Opus 4.6 Thinking 是 Claude Opus 4.6 的扩展思维版本，通过 AnyFast 以 OpenAI 兼容接口提供服务。默认启用逐步内部推理，在最高难度任务上提供最高准确率，包括高等数学、科学研究、复杂编程和架构决策。
+
+## 核心能力
+
+- **OpenAI 兼容** — 可直接替换 OpenAI SDK，无需修改其他代码
+- **扩展思维** — 默认启用逐步内部推理
+- **最强智能** — 最新最强大的推理模型
+- **深度分析** — 擅长高等数学、科学和复杂问题求解
+- **长上下文** — 支持大文档处理和多轮对话
+- **流式输出** — 通过 SSE 实现实时 Token 流式传输
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-4-6-thinking",
+    "messages": [
+      { "role": "user", "content": "逐步求解：一列火车用 2 小时行驶 120 公里，然后减速用 3 小时行驶 80 公里，整个行程的平均速度是多少？" }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+response = client.chat.completions.create(
+    model="claude-opus-4-6-thinking",
+    messages=[
+        {"role": "user", "content": "逐步求解：一列火车用 2 小时行驶 120 公里，然后减速用 3 小时行驶 80 公里，整个行程的平均速度是多少？"}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+```python 流式输出
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+stream = client.chat.completions.create(
+    model="claude-opus-4-6-thinking",
+    messages=[
+        {"role": "user", "content": "证明素数有无穷多个。"}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    print(chunk.choices[0].delta.content or "", end="")
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | 固定为 `claude-opus-4-6-thinking` |
+| `messages` | array | 是 | `{ role, content }` 对象数组 |
+| `max_tokens` | integer | 否 | 最大生成 Token 数 |
+| `temperature` | float | 否 | `0`–`2`，控制随机性，默认 `1` |
+| `stream` | boolean | 否 | 开启 SSE 流式传输，默认 `false` |
+| `top_p` | float | 否 | 核采样阈值，默认 `1` |
+| `stop` | string / array | 否 | 触发停止生成的序列 |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/anthropic/claude-opus-4-6-thinking"
+>
+  查看 Claude Opus 4.6 Thinking 的交互式 API Playground。
+</Card>

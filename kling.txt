@@ -1,0 +1,76 @@
+Request Header
+Content-Type
+string
+Required
+Default to application/json
+Data Exchange Format
+
+Authorization
+string
+Required
+Authentication information, refer to API authentication
+
+Request Body
+model_name
+string
+Optional
+Default to kolors-virtual-try-on-v1
+Model Name
+
+Enum values：
+kolors-virtual-try-on-v1
+kolors-virtual-try-on-v1-5
+human_image
+string
+Required
+Reference human Image
+
+Supports inputting image Base64 encoding or image URL (ensure accessibility)
+Important: When using Base64, do NOT add any prefix like data:image/png;base64,. Submit only the raw Base64 string.
+Correct Base64 format:
+iVBORw0KGgoAAAANSUhEUgAAAAUA...
+Incorrect Base64 format (with data: prefix):
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA...
+Supported image formats: .jpg / .jpeg / .png
+The image file size cannot exceed 10MB, and the width and height dimensions of the image shall not be less than 300px
+cloth_image
+string
+Required
+Reference clothing image
+
+Support uploading clothing product images or clothing image with white background; Supports single clothing (upper, lower, and dress) try-on
+Supports inputting image Base64 encoding or image URL (ensure accessibility)
+Base64 Encoding Note:
+Please note, if you use the Base64 method, make sure all image data parameters you pass are in Base64 encoding format. When using Base64, do NOT add any prefix like data:image/png;base64,. Only provide the Base64-encoded string.
+
+Correct:
+
+iVBORw0KGgoAAAANSUhEUgAAAAUA...
+Incorrect:
+
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA...
+Supported image formats: .jpg / .jpeg / .png
+File size: ≤10MB, dimensions: min 300px
+The kolors-virtual-try-on-v1-5 model not only supports single clothing input, but also supports "upper + lower" combination input:
+Input a single clothing image (upper, lower, or dress) → Generate a try-on image of the single item
+Input a combination clothing image (merge multiple items into one image with white background):
+"upper + lower" → Success
+"upper + upper" → Fails
+"lower + lower" → Fails
+"dress + dress" → Fails
+"upper + dress" → Fails
+"lower + dress" → Fails
+
+callback_url
+string
+Optional
+The callback notification address for the result of this task. If configured, the server will actively notify when the task status changes.
+
+For the specific message schema, see Callback Protocol
+external_task_id
+string
+Optional
+Customized Task ID
+
+Will not overwrite system-generated task ID, but supports querying task by this ID
+Please note that the customized task ID must be unique within a single user account.

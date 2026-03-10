@@ -1,0 +1,180 @@
+openapi: 3.1.0
+info:
+  title: "Kling 3.0 图生视频"
+  description: "通过 AnyFast API 调用快手 Kling 3.0 图生视频 模型"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /kling/v1/videos/image2video:
+    post:
+      operationId: createKlingV3I2v
+      summary: 创建图生视频任务
+      description: 使用 kling-v3 模型从参考图片生成视频。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model_name:
+                  type: string
+                  enum:
+                    - kling-v3
+                  description: 模型名称
+                  example: kling-v3
+                image:
+                  type: string
+                  description: "参考图片（首帧）。Base64 或 URL。格式：.jpg/.jpeg/.png，≤10MB，最小 300px。"
+                image_tail:
+                  type: string
+                  description: "参考图片（尾帧）。image 和 image_tail 至少填一个。"
+                prompt:
+                  type: string
+                  maxLength: 2500
+                  description: "正向提示词。multi_shot 为 false 时必填。"
+                negative_prompt:
+                  type: string
+                  maxLength: 2500
+                  description: 负向提示词。
+                mode:
+                  type: string
+                  enum: [std, pro]
+                  default: std
+                  description: "std：标准模式。pro：专业模式（画质更好）。"
+                duration:
+                  type: string
+                  enum: ["3","4","5","6","7","8","9","10","11","12","13","14","15"]
+                  default: "5"
+                  description: 视频时长（秒），3-15。
+                cfg_scale:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.5
+                  description: 提示词相关性（0-1），值越高越贴合。
+                multi_shot:
+                  type: boolean
+                  default: false
+                  description: 是否启用多镜头分镜。
+                shot_type:
+                  type: string
+                  enum: [customize, intelligence]
+                  description: 分镜方式。
+                multi_prompt:
+                  type: array
+                  description: 分镜信息（1-6 个镜头）。
+                  items:
+                    type: object
+                    properties:
+                      index:
+                        type: integer
+                      prompt:
+                        type: string
+                      duration:
+                        type: string
+                element_list:
+                  type: array
+                  description: 参考元素（最多 3 个）。
+                  items:
+                    type: object
+                    properties:
+                      element_id:
+                        type: integer
+                        format: int64
+                sound:
+                  type: string
+                  enum: ["on","off"]
+                  default: "off"
+                  description: 是否生成音效。仅 V2.6+。
+                camera_control:
+                  type: object
+                  description: 运镜控制。
+                  properties:
+                    type:
+                      type: string
+                      enum: [simple, down_back, forward_up, right_turn_forward, left_turn_forward]
+                    config:
+                      type: object
+                      properties:
+                        horizontal:
+                          type: number
+                        vertical:
+                          type: number
+                        pan:
+                          type: number
+                        tilt:
+                          type: number
+                        roll:
+                          type: number
+                        zoom:
+                          type: number
+                static_mask:
+                  type: string
+                  description: 静态笔刷蒙版（Base64 或 URL）。
+                dynamic_masks:
+                  type: array
+                  description: 动态笔刷配置（最多 6 组）。
+                  items:
+                    type: object
+                    properties:
+                      mask:
+                        type: string
+                      trajectories:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            x:
+                              type: integer
+                            y:
+                              type: integer
+                watermark_info:
+                  type: object
+                  properties:
+                    enabled:
+                      type: boolean
+                callback_url:
+                  type: string
+                external_task_id:
+                  type: string
+      responses:
+        "200":
+          description: 任务创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "860260753860210752"
+                  task_id:
+                    type: string
+                    example: "860260753860210752"
+                  object:
+                    type: string
+                    example: video
+                  model:
+                    type: string
+                    example: kling-v3
+                  status:
+                    type: string
+                  progress:
+                    type: integer
+                    example: 0
+                  created_at:
+                    type: integer
+                    example: 1773130665
+        "401":
+          description: 未授权
+        "429":
+          description: 请求频率超限
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
