@@ -1,0 +1,84 @@
+---
+title: "Kling 1.6 多图生视频"
+description: "快手 Kling 1.6 多图生视频模型，支持从最多 4 张参考图片生成视频。"
+---
+
+Kling 1.6 多图生视频 是快手可灵系列的多图生视频模型，通过 AnyFast API 提供服务。上传最多 4 张参考图片，结合文本提示词，生成包含所有参考主体的连贯视频。
+
+## 核心能力
+
+- **多图输入** — 使用最多 4 张参考图片作为角色/场景来源
+- **文本引导** — 结合图片和文本提示词控制视频叙事
+- **灵活时长** — 生成 5 秒或 10 秒视频
+- **画面比例** — 支持 16:9、9:16 和 1:1 输出格式
+- **标准与专业模式** — 可选标准模式或高画质专业模式
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/kling/v1/videos/multi-image2video \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model_name": "kling-v1-6",
+    "image_list": [
+      {"image": "https://example.com/person1.jpg"},
+      {"image": "https://example.com/person2.jpg"}
+    ],
+    "prompt": "两人握手并微笑对视",
+    "duration": "5",
+    "mode": "std",
+    "aspect_ratio": "16:9"
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/kling/v1/videos/multi-image2video",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={
+        "model_name": "kling-v1-6",
+        "image_list": [
+            {"image": "https://example.com/person1.jpg"},
+            {"image": "https://example.com/person2.jpg"}
+        ],
+        "prompt": "两人握手并微笑对视",
+        "duration": "5",
+        "mode": "std",
+        "aspect_ratio": "16:9"
+    }
+)
+
+task = response.json()
+print(f"任务 ID: {task['task_id']}")
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model_name` | string | 否 | 固定为 `kling-v1-6` |
+| `image_list` | array | 是 | 参考图片（1–4 张），每项格式：`{"image": "url或base64"}` |
+| `prompt` | string | 是 | 文本提示词（最长 2500 字符） |
+| `negative_prompt` | string | 否 | 负向提示词（最长 2500 字符） |
+| `mode` | string | 否 | `std` 或 `pro`，默认 `std` |
+| `duration` | string | 否 | `5` 或 `10` 秒，默认 `5` |
+| `aspect_ratio` | string | 否 | `16:9`、`9:16` 或 `1:1`，默认 `16:9` |
+| `callback_url` | string | 否 | 任务状态回调 URL |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/kuaishou/kling-v1-6-mi2v"
+>
+  查看 Kling 1.6 多图生视频 的交互式 API Playground。
+</Card>

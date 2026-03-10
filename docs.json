@@ -61,7 +61,28 @@
                     "group": "OpenAI",
                     "icon": "/images/providers/openai.svg",
                     "pages": [
-                      "guides/model-api/openai/gpt-4"
+                      "guides/model-api/openai/gpt-4",
+                      "guides/model-api/openai/gpt-4-1",
+                      "guides/model-api/openai/gpt-4o",
+                      "guides/model-api/openai/gpt-4o-mini",
+                      "guides/model-api/openai/gpt-5",
+                      "guides/model-api/openai/gpt-5-chat-latest",
+                      "guides/model-api/openai/gpt-5-codex",
+                      "guides/model-api/openai/gpt-5-codex-high",
+                      "guides/model-api/openai/gpt-5-codex-low",
+                      "guides/model-api/openai/gpt-5-mini",
+                      "guides/model-api/openai/gpt-5-nano",
+                      "guides/model-api/openai/gpt-5-pro",
+                      "guides/model-api/openai/gpt-5-1",
+                      "guides/model-api/openai/gpt-5-1-chat",
+                      "guides/model-api/openai/gpt-5-1-chat-latest",
+                      "guides/model-api/openai/gpt-5-1-codex-mini",
+                      "guides/model-api/openai/gpt-5-2",
+                      "guides/model-api/openai/gpt-5-2-chat",
+                      "guides/model-api/openai/gpt-5-2-chat-latest",
+                      "guides/model-api/openai/gpt-5-2-codex",
+                      "guides/model-api/openai/gpt-5-3-codex",
+                      "guides/model-api/openai/gpt-5-4"
                     ]
                   }
                 ]
@@ -102,7 +123,28 @@
                     "group": "OpenAI",
                     "icon": "/images/providers/openai.svg",
                     "pages": [
-                      "api-reference/model-api/openai/gpt-4"
+                      "api-reference/model-api/openai/gpt-4",
+                      "api-reference/model-api/openai/gpt-4-1",
+                      "api-reference/model-api/openai/gpt-4o",
+                      "api-reference/model-api/openai/gpt-4o-mini",
+                      "api-reference/model-api/openai/gpt-5",
+                      "api-reference/model-api/openai/gpt-5-chat-latest",
+                      "api-reference/model-api/openai/gpt-5-codex",
+                      "api-reference/model-api/openai/gpt-5-codex-high",
+                      "api-reference/model-api/openai/gpt-5-codex-low",
+                      "api-reference/model-api/openai/gpt-5-mini",
+                      "api-reference/model-api/openai/gpt-5-nano",
+                      "api-reference/model-api/openai/gpt-5-pro",
+                      "api-reference/model-api/openai/gpt-5-1",
+                      "api-reference/model-api/openai/gpt-5-1-chat",
+                      "api-reference/model-api/openai/gpt-5-1-chat-latest",
+                      "api-reference/model-api/openai/gpt-5-1-codex-mini",
+                      "api-reference/model-api/openai/gpt-5-2",
+                      "api-reference/model-api/openai/gpt-5-2-chat",
+                      "api-reference/model-api/openai/gpt-5-2-chat-latest",
+                      "api-reference/model-api/openai/gpt-5-2-codex",
+                      "api-reference/model-api/openai/gpt-5-3-codex",
+                      "api-reference/model-api/openai/gpt-5-4"
                     ]
                   }
                 ]
@@ -159,7 +201,28 @@
                     "group": "OpenAI",
                     "icon": "/images/providers/openai.svg",
                     "pages": [
-                      "zh/guides/model-api/openai/gpt-4"
+                      "zh/guides/model-api/openai/gpt-4",
+                      "zh/guides/model-api/openai/gpt-4-1",
+                      "zh/guides/model-api/openai/gpt-4o",
+                      "zh/guides/model-api/openai/gpt-4o-mini",
+                      "zh/guides/model-api/openai/gpt-5",
+                      "zh/guides/model-api/openai/gpt-5-chat-latest",
+                      "zh/guides/model-api/openai/gpt-5-codex",
+                      "zh/guides/model-api/openai/gpt-5-codex-high",
+                      "zh/guides/model-api/openai/gpt-5-codex-low",
+                      "zh/guides/model-api/openai/gpt-5-mini",
+                      "zh/guides/model-api/openai/gpt-5-nano",
+                      "zh/guides/model-api/openai/gpt-5-pro",
+                      "zh/guides/model-api/openai/gpt-5-1",
+                      "zh/guides/model-api/openai/gpt-5-1-chat",
+                      "zh/guides/model-api/openai/gpt-5-1-chat-latest",
+                      "zh/guides/model-api/openai/gpt-5-1-codex-mini",
+                      "zh/guides/model-api/openai/gpt-5-2",
+                      "zh/guides/model-api/openai/gpt-5-2-chat",
+                      "zh/guides/model-api/openai/gpt-5-2-chat-latest",
+                      "zh/guides/model-api/openai/gpt-5-2-codex",
+                      "zh/guides/model-api/openai/gpt-5-3-codex",
+                      "zh/guides/model-api/openai/gpt-5-4"
                     ]
                   }
                 ]
@@ -200,7 +263,28 @@
                     "group": "OpenAI",
                     "icon": "/images/providers/openai.svg",
                     "pages": [
-                      "zh/api-reference/model-api/openai/gpt-4"
+                      "zh/api-reference/model-api/openai/gpt-4",
+                      "zh/api-reference/model-api/openai/gpt-4-1",
+                      "zh/api-reference/model-api/openai/gpt-4o",
+                      "zh/api-reference/model-api/openai/gpt-4o-mini",
+                      "zh/api-reference/model-api/openai/gpt-5",
+                      "zh/api-reference/model-api/openai/gpt-5-chat-latest",
+                      "zh/api-reference/model-api/openai/gpt-5-codex",
+                      "zh/api-reference/model-api/openai/gpt-5-codex-high",
+                      "zh/api-reference/model-api/openai/gpt-5-codex-low",
+                      "zh/api-reference/model-api/openai/gpt-5-mini",
+                      "zh/api-reference/model-api/openai/gpt-5-nano",
+                      "zh/api-reference/model-api/openai/gpt-5-pro",
+                      "zh/api-reference/model-api/openai/gpt-5-1",
+                      "zh/api-reference/model-api/openai/gpt-5-1-chat",
+                      "zh/api-reference/model-api/openai/gpt-5-1-chat-latest",
+                      "zh/api-reference/model-api/openai/gpt-5-1-codex-mini",
+                      "zh/api-reference/model-api/openai/gpt-5-2",
+                      "zh/api-reference/model-api/openai/gpt-5-2-chat",
+                      "zh/api-reference/model-api/openai/gpt-5-2-chat-latest",
+                      "zh/api-reference/model-api/openai/gpt-5-2-codex",
+                      "zh/api-reference/model-api/openai/gpt-5-3-codex",
+                      "zh/api-reference/model-api/openai/gpt-5-4"
                     ]
                   }
                 ]
@@ -255,15 +339,15 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {}

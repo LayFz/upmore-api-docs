@@ -1,0 +1,91 @@
+---
+title: "Claude Sonnet 4"
+description: "Anthropic's Claude Sonnet 4 via OpenAI-compatible API. The best balance of intelligence and speed for everyday coding and complex tasks."
+---
+
+Claude Sonnet 4 is Anthropic's best coding model, available through AnyFast via an OpenAI-compatible interface. It delivers an ideal balance of intelligence, speed, and cost — excelling at software engineering, complex reasoning, and day-to-day development tasks.
+
+## Key capabilities
+
+- **OpenAI-compatible** — Works as a drop-in replacement with the OpenAI SDK
+- **Best coding model** — Top performance on code generation, debugging, and refactoring
+- **Fast and efficient** — Lower latency and cost compared to Opus models
+- **Strong reasoning** — Excellent at multi-step problem solving and analysis
+- **Long context** — Handles large documents and multi-turn conversations
+- **Streaming** — Supports real-time token streaming via SSE
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-20250514",
+    "messages": [
+      { "role": "user", "content": "Write a Python function to merge two sorted arrays." }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+response = client.chat.completions.create(
+    model="claude-sonnet-4-20250514",
+    messages=[
+        {"role": "user", "content": "Write a Python function to merge two sorted arrays."}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+```python Streaming
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+stream = client.chat.completions.create(
+    model="claude-sonnet-4-20250514",
+    messages=[
+        {"role": "user", "content": "Explain the difference between async and sync programming."}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    print(chunk.choices[0].delta.content or "", end="")
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `model` | string | Yes | Must be `claude-sonnet-4-20250514` |
+| `messages` | array | Yes | List of `{ role, content }` objects |
+| `max_tokens` | integer | No | Maximum tokens to generate |
+| `temperature` | float | No | `0`–`2`. Controls randomness. Default: `1` |
+| `stream` | boolean | No | Enable SSE streaming. Default: `false` |
+| `top_p` | float | No | Nucleus sampling threshold. Default: `1` |
+| `stop` | string / array | No | Sequences that stop generation |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/anthropic/claude-sonnet-4-20250514"
+>
+  View the interactive API playground for Claude Sonnet 4.
+</Card>

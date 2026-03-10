@@ -1,0 +1,116 @@
+---
+title: "Kling V3 Omni"
+description: "快手可灵 V3 Omni 视频生成模型，支持文生视频、图生视频、视频编辑、多镜头分镜和同步音效生成。"
+---
+
+Kling V3 Omni 是快手最新的视频生成模型，通过 AnyFast API 提供服务。Omni 模型可通过 Prompt 结合元素、图片、视频等内容实现多种能力 — 支持文生视频、图生视频、视频编辑、多镜头分镜和同步音效生成。
+
+## 核心能力
+
+- **文生视频** — 通过文本提示词生成最长 15 秒的视频
+- **图生视频** — 使用参考图片作为首帧/尾帧引导视频生成
+- **视频编辑** — 编辑现有视频：添加/删除元素、更改风格、颜色、天气等
+- **多镜头分镜** — 创建最多 6 个分镜，自定义每个镜头的提示词和时长
+- **音效生成** — 可选同步生成视频音效
+- **灵活画面比例** — 支持 16:9、9:16 和 1:1 输出格式
+- **标准与专业模式** — 可选性价比高的标准模式或高画质的专业模式
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL — 文生视频
+curl https://www.anyfast.ai/kling/v1/videos/omni-video \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model_name": "kling-v3-omni",
+    "prompt": "一只猫优雅地走过阳光洒满的花园，电影级光影效果",
+    "duration": "5",
+    "mode": "pro",
+    "aspect_ratio": "16:9"
+  }'
+```
+
+```python Python — 文生视频
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/kling/v1/videos/omni-video",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={
+        "model_name": "kling-v3-omni",
+        "prompt": "一只猫优雅地走过阳光洒满的花园，电影级光影效果",
+        "duration": "5",
+        "mode": "pro",
+        "aspect_ratio": "16:9"
+    }
+)
+
+task = response.json()
+print(f"任务 ID: {task['task_id']}")
+```
+
+```python Python — 图生视频
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/kling/v1/videos/omni-video",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={
+        "model_name": "kling-v3-omni",
+        "prompt": "让 <<<image_1>>> 中的人物向镜头挥手",
+        "image_list": [
+            {"image_url": "https://example.com/photo.jpg"}
+        ],
+        "duration": "5",
+        "mode": "pro",
+        "aspect_ratio": "16:9"
+    }
+)
+
+task = response.json()
+print(f"任务 ID: {task['task_id']}")
+```
+
+</CodeGroup>
+
+## 查询任务结果
+
+创建任务后，使用任务 ID 查询状态：
+
+```bash cURL
+curl https://www.anyfast.ai/kling/v1/videos/text2video/{task_id} \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model_name` | string | 否 | 模型名称，默认 `kling-v3-omni` |
+| `prompt` | string | 条件必填 | 文本提示词（最长 2500 字符），`multi_shot` 为 false 时必填 |
+| `mode` | string | 否 | `std`（标准）或 `pro`（专业），默认 `pro` |
+| `aspect_ratio` | string | 条件必填 | `16:9`、`9:16` 或 `1:1`，未使用首帧参考或视频编辑时必填 |
+| `duration` | string | 否 | 视频时长 `3`–`15` 秒，默认 `5` |
+| `image_list` | array | 否 | 参考图片（首帧/尾帧、场景、风格参考） |
+| `video_list` | array | 否 | 参考视频（编辑或风格参考） |
+| `element_list` | array | 否 | 可灵元素库中的参考元素 |
+| `multi_shot` | boolean | 否 | 是否启用多镜头分镜，默认 `false` |
+| `multi_prompt` | array | 条件必填 | 分镜信息（1–6 个镜头），`multi_shot` 为 true 时必填 |
+| `sound` | string | 否 | `on` 或 `off`，是否同步生成音效，默认 `off` |
+| `callback_url` | string | 否 | 任务状态变更的回调通知 URL |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/kuaishou/kling-v3-omni"
+>
+  查看 Kling V3 Omni 的交互式 API Playground。
+</Card>

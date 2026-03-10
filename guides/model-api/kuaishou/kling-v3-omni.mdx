@@ -1,0 +1,116 @@
+---
+title: "Kling V3 Omni"
+description: "Kuaishou's Kling V3 Omni video generation model. Create videos from text, images, and video references with multi-shot storyboarding."
+---
+
+Kling V3 Omni is Kuaishou's latest video generation model, available through AnyFast API. The Omni model can achieve various capabilities through prompts combined with elements, images, videos, and other content — supporting text-to-video, image-to-video, video editing, multi-shot storyboarding, and synchronized sound generation.
+
+## Key capabilities
+
+- **Text-to-Video** — Generate videos from text prompts up to 15 seconds
+- **Image-to-Video** — Use reference images as first/end frames to guide video generation
+- **Video Editing** — Edit existing videos: add/remove elements, change styles, colors, weather, etc.
+- **Multi-Shot Storyboarding** — Create up to 6 storyboard shots with custom prompts and durations
+- **Sound Generation** — Optionally generate synchronized sound effects with the video
+- **Flexible Aspect Ratios** — Support for 16:9, 9:16, and 1:1 output formats
+- **Standard & Pro Modes** — Choose between cost-effective standard or high-quality professional output
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL — Text to Video
+curl https://www.anyfast.ai/kling/v1/videos/omni-video \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model_name": "kling-v3-omni",
+    "prompt": "A cat walking gracefully across a sunlit garden, cinematic lighting",
+    "duration": "5",
+    "mode": "pro",
+    "aspect_ratio": "16:9"
+  }'
+```
+
+```python Python — Text to Video
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/kling/v1/videos/omni-video",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={
+        "model_name": "kling-v3-omni",
+        "prompt": "A cat walking gracefully across a sunlit garden, cinematic lighting",
+        "duration": "5",
+        "mode": "pro",
+        "aspect_ratio": "16:9"
+    }
+)
+
+task = response.json()
+print(f"Task ID: {task['task_id']}")
+```
+
+```python Python — Image to Video
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/kling/v1/videos/omni-video",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={
+        "model_name": "kling-v3-omni",
+        "prompt": "Make the person in <<<image_1>>> wave to the camera",
+        "image_list": [
+            {"image_url": "https://example.com/photo.jpg"}
+        ],
+        "duration": "5",
+        "mode": "pro",
+        "aspect_ratio": "16:9"
+    }
+)
+
+task = response.json()
+print(f"Task ID: {task['task_id']}")
+```
+
+</CodeGroup>
+
+## Query task result
+
+After creating a task, query its status using the task ID:
+
+```bash cURL
+curl https://www.anyfast.ai/kling/v1/videos/text2video/{task_id} \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `model_name` | string | No | Model name. Default: `kling-v3-omni` |
+| `prompt` | string | Conditional | Text prompt (max 2500 chars). Required when `multi_shot` is false |
+| `mode` | string | No | `std` (standard) or `pro` (professional). Default: `pro` |
+| `aspect_ratio` | string | Conditional | `16:9`, `9:16`, or `1:1`. Required without first-frame or video editing |
+| `duration` | string | No | Video duration `3`–`15` seconds. Default: `5` |
+| `image_list` | array | No | Reference images (first/end frame, scene, style) |
+| `video_list` | array | No | Reference videos (editing or style reference) |
+| `element_list` | array | No | Reference elements from Kling element library |
+| `multi_shot` | boolean | No | Enable multi-shot storyboarding. Default: `false` |
+| `multi_prompt` | array | Conditional | Storyboard shot info (1–6 shots). Required when `multi_shot` is true |
+| `sound` | string | No | `on` or `off`. Generate sound with video. Default: `off` |
+| `callback_url` | string | No | Webhook URL for task status notifications |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/kuaishou/kling-v3-omni"
+>
+  View the interactive API playground for Kling V3 Omni.
+</Card>

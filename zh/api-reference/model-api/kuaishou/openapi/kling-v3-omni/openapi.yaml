@@ -1,0 +1,242 @@
+openapi: 3.1.0
+info:
+  title: Kling V3 Omni
+  description: 通过 AnyFast API 调用快手可灵 V3 Omni 视频生成模型
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /kling/v1/videos/omni-video:
+    post:
+      operationId: createKlingV3OmniVideo
+      summary: 创建视频任务
+      description: 创建 Omni 视频生成任务。Omni 模型可通过 Prompt 结合元素、图片、视频等内容实现多种能力。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model_name:
+                  type: string
+                  enum:
+                    - kling-v3-omni
+                  description: 模型名称
+                  example: kling-v3-omni
+                prompt:
+                  type: string
+                  maxLength: 2500
+                  description: 文本提示词，支持正向和负向描述。使用 <<<element_1>>>、<<<image_1>>>、<<<video_1>>> 引用元素/图片/视频。multi_shot 为 false 时必填。
+                  example: "一只猫优雅地走过阳光洒满的花园"
+                mode:
+                  type: string
+                  enum:
+                    - std
+                    - pro
+                  default: pro
+                  description: "视频生成模式。std：标准模式（性价比高）。pro：专业模式（画质更好）。"
+                  example: pro
+                aspect_ratio:
+                  type: string
+                  enum:
+                    - "16:9"
+                    - "9:16"
+                    - "1:1"
+                  description: 生成视频的画面比例（宽:高）。未使用首帧参考或视频编辑时必填。
+                  example: "16:9"
+                duration:
+                  type: string
+                  enum:
+                    - "3"
+                    - "4"
+                    - "5"
+                    - "6"
+                    - "7"
+                    - "8"
+                    - "9"
+                    - "10"
+                    - "11"
+                    - "12"
+                    - "13"
+                    - "14"
+                    - "15"
+                  default: "5"
+                  description: 视频时长（秒），3–15 秒。
+                  example: "5"
+                multi_shot:
+                  type: boolean
+                  default: false
+                  description: 是否生成多镜头视频。为 true 时 prompt 参数无效，需使用 multi_prompt。
+                shot_type:
+                  type: string
+                  enum:
+                    - customize
+                  description: 分镜方式。multi_shot 为 true 时必填。
+                multi_prompt:
+                  type: array
+                  description: 各分镜信息（1–6 个分镜）。multi_shot 为 true 且 shot_type 为 customize 时必填。
+                  items:
+                    type: object
+                    required:
+                      - index
+                      - prompt
+                      - duration
+                    properties:
+                      index:
+                        type: integer
+                        description: 分镜序号
+                      prompt:
+                        type: string
+                        maxLength: 512
+                        description: 该分镜的提示词
+                      duration:
+                        type: string
+                        description: 该分镜时长（≥1，所有分镜时长之和等于总时长）
+                image_list:
+                  type: array
+                  description: 参考图片列表，支持首帧/尾帧、场景、风格参考。格式 .jpg/.jpeg/.png，≤10MB，最小 300px，宽高比 1:2.5–2.5:1。
+                  items:
+                    type: object
+                    required:
+                      - image_url
+                    properties:
+                      image_url:
+                        type: string
+                        description: 图片 URL 或 Base64 编码
+                      type:
+                        type: string
+                        enum:
+                          - first_frame
+                          - end_frame
+                        description: "帧类型：first_frame 首帧，end_frame 尾帧。使用尾帧时必须同时设置首帧。"
+                element_list:
+                  type: array
+                  description: 参考元素列表，基于可灵元素库中的元素 ID。
+                  items:
+                    type: object
+                    required:
+                      - element_id
+                    properties:
+                      element_id:
+                        type: integer
+                        format: int64
+                        description: 元素库中的元素 ID
+                video_list:
+                  type: array
+                  description: 参考视频列表。仅支持 MP4/MOV，≥3 秒，720px–2160px，24–60fps，≤200MB。
+                  items:
+                    type: object
+                    required:
+                      - video_url
+                    properties:
+                      video_url:
+                        type: string
+                        description: 视频 URL
+                      refer_type:
+                        type: string
+                        enum:
+                          - feature
+                          - base
+                        default: base
+                        description: "引用类型。base：视频编辑。feature：视频风格/运镜参考。"
+                      keep_original_sound:
+                        type: string
+                        enum:
+                          - "yes"
+                          - "no"
+                        description: 是否保留参考视频的原声
+                sound:
+                  type: string
+                  enum:
+                    - "on"
+                    - "off"
+                  default: "off"
+                  description: 是否在生成视频时同步生成音效。有参考视频时只能为 off。
+                watermark_info:
+                  type: object
+                  description: 水印配置
+                  properties:
+                    enabled:
+                      type: boolean
+                      description: 是否生成带水印的结果
+                callback_url:
+                  type: string
+                  description: 任务状态变更的回调通知 URL
+                external_task_id:
+                  type: string
+                  description: 自定义任务 ID，同一账号下需唯一。
+      responses:
+        "200":
+          description: 任务创建成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoTask"
+        "400":
+          description: 请求参数有误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: 请求频率超限
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    VideoTask:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 任务 ID
+          example: "860260753860210752"
+        task_id:
+          type: string
+          description: 任务 ID
+          example: "860260753860210752"
+        object:
+          type: string
+          example: video
+        model:
+          type: string
+          example: kling-v3-omni
+        status:
+          type: string
+          description: 任务状态
+        progress:
+          type: integer
+          description: 进度百分比
+          example: 0
+        created_at:
+          type: integer
+          description: Unix 时间戳
+          example: 1773130665
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
