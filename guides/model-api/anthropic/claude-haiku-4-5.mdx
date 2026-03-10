@@ -1,16 +1,17 @@
 ---
-title: "Claude 3.5 Sonnet"
-description: "Anthropic's Claude 3.5 Sonnet via OpenAI-compatible API. Fast, capable, and easy to integrate."
+title: "Claude Haiku 4.5"
+description: "Anthropic's Claude Haiku 4.5 via OpenAI-compatible API. Fast, lightweight, and cost-effective."
 ---
 
-Claude 3.5 Sonnet is Anthropic's high-performance chat model, available through AnyFast via an OpenAI-compatible interface. It excels at reasoning, coding, writing, and analysis tasks.
+Claude Haiku 4.5 is Anthropic's fastest and most cost-effective model, available through AnyFast via an OpenAI-compatible interface. It delivers near-instant responses with strong performance across everyday tasks, making it ideal for high-throughput and latency-sensitive applications.
 
 ## Key capabilities
 
 - **OpenAI-compatible** — Works as a drop-in replacement with the OpenAI SDK
-- **Long context** — Handles large documents and multi-turn conversations
+- **Ultra-fast** — Optimized for low-latency responses
+- **Cost-effective** — Significantly lower cost per token compared to larger models
 - **Streaming** — Supports real-time token streaming via SSE
-- **Strong reasoning** — Designed for complex, multi-step tasks
+- **Capable** — Strong performance on coding, writing, and analysis tasks
 
 ## Quick example
 
@@ -21,7 +22,7 @@ curl https://www.anyfast.ai/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "claude-3-5-sonnet",
+    "model": "claude-haiku-4-5",
     "messages": [
       { "role": "user", "content": "Explain quantum entanglement in simple terms." }
     ]
@@ -37,7 +38,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="claude-3-5-sonnet",
+    model="claude-haiku-4-5",
     messages=[
         {"role": "user", "content": "Explain quantum entanglement in simple terms."}
     ]
@@ -55,7 +56,7 @@ client = OpenAI(
 )
 
 stream = client.chat.completions.create(
-    model="claude-3-5-sonnet",
+    model="claude-haiku-4-5",
     messages=[
         {"role": "user", "content": "Write a short poem about the sea."}
     ],
@@ -72,7 +73,7 @@ for chunk in stream:
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `model` | string | Yes | Must be `claude-3-5-sonnet` |
+| `model` | string | Yes | Must be `claude-haiku-4-5` |
 | `messages` | array | Yes | List of `{ role, content }` objects |
 | `max_tokens` | integer | No | Maximum tokens to generate |
 | `temperature` | float | No | `0`–`2`. Controls randomness. Default: `1` |
@@ -83,7 +84,7 @@ for chunk in stream:
 <Card
   title="API Reference"
   icon="code"
-  href="/api-reference/model-api/anthropic/claude-3-5-sonnet-20241022"
+  href="/api-reference/model-api/anthropic/claude-haiku-4-5-20251001"
 >
-  View the interactive API playground for Claude 3.5 Sonnet.
+  View the interactive API playground for Claude Haiku 4.5.
 </Card>

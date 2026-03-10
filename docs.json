@@ -44,7 +44,17 @@
                     "group": "Anthropic",
                     "icon": "/images/providers/anthropic.svg",
                     "pages": [
-                      "guides/model-api/anthropic/claude-3-5-sonnet"
+                      "guides/model-api/anthropic/claude-3-5-sonnet",
+                      "guides/model-api/anthropic/claude-3-7-sonnet",
+                      "guides/model-api/anthropic/claude-3-7-sonnet-thinking",
+                      "guides/model-api/anthropic/claude-haiku-4-5",
+                      "guides/model-api/anthropic/claude-haiku-4-5-thinking",
+                      "guides/model-api/anthropic/claude-opus-4-1",
+                      "guides/model-api/anthropic/claude-opus-4-1-thinking",
+                      "guides/model-api/anthropic/claude-opus-4",
+                      "guides/model-api/anthropic/claude-opus-4-thinking",
+                      "guides/model-api/anthropic/claude-opus-4-5",
+                      "guides/model-api/anthropic/claude-opus-4-5-thinking"
                     ]
                   },
                   {
@@ -75,14 +85,24 @@
                     "group": "Anthropic",
                     "icon": "/images/providers/anthropic.svg",
                     "pages": [
-                      "api-reference/model-api/claude-3-5-sonnet-20241022"
+                      "api-reference/model-api/anthropic/claude-3-5-sonnet-20241022",
+                      "api-reference/model-api/anthropic/claude-3-7-sonnet-20250219",
+                      "api-reference/model-api/anthropic/claude-3-7-sonnet-20250219-thinking",
+                      "api-reference/model-api/anthropic/claude-haiku-4-5-20251001",
+                      "api-reference/model-api/anthropic/claude-haiku-4-5-20251001-thinking",
+                      "api-reference/model-api/anthropic/claude-opus-4-1-20250805",
+                      "api-reference/model-api/anthropic/claude-opus-4-1-20250805-thinking",
+                      "api-reference/model-api/anthropic/claude-opus-4-20250514",
+                      "api-reference/model-api/anthropic/claude-opus-4-20250514-thinking",
+                      "api-reference/model-api/anthropic/claude-opus-4-5-20251101",
+                      "api-reference/model-api/anthropic/claude-opus-4-5-20251101-thinking"
                     ]
                   },
                   {
                     "group": "OpenAI",
                     "icon": "/images/providers/openai.svg",
                     "pages": [
-                      "api-reference/model-api/gpt-4"
+                      "api-reference/model-api/openai/gpt-4"
                     ]
                   }
                 ]
@@ -122,7 +142,17 @@
                     "group": "Anthropic",
                     "icon": "/images/providers/anthropic.svg",
                     "pages": [
-                      "zh/guides/model-api/anthropic/claude-3-5-sonnet"
+                      "zh/guides/model-api/anthropic/claude-3-5-sonnet",
+                      "zh/guides/model-api/anthropic/claude-3-7-sonnet",
+                      "zh/guides/model-api/anthropic/claude-3-7-sonnet-thinking",
+                      "zh/guides/model-api/anthropic/claude-haiku-4-5",
+                      "zh/guides/model-api/anthropic/claude-haiku-4-5-thinking",
+                      "zh/guides/model-api/anthropic/claude-opus-4-1",
+                      "zh/guides/model-api/anthropic/claude-opus-4-1-thinking",
+                      "zh/guides/model-api/anthropic/claude-opus-4",
+                      "zh/guides/model-api/anthropic/claude-opus-4-thinking",
+                      "zh/guides/model-api/anthropic/claude-opus-4-5",
+                      "zh/guides/model-api/anthropic/claude-opus-4-5-thinking"
                     ]
                   },
                   {
@@ -153,14 +183,24 @@
                     "group": "Anthropic",
                     "icon": "/images/providers/anthropic.svg",
                     "pages": [
-                      "zh/api-reference/model-api/claude-3-5-sonnet-20241022"
+                      "zh/api-reference/model-api/anthropic/claude-3-5-sonnet-20241022",
+                      "zh/api-reference/model-api/anthropic/claude-3-7-sonnet-20250219",
+                      "zh/api-reference/model-api/anthropic/claude-3-7-sonnet-20250219-thinking",
+                      "zh/api-reference/model-api/anthropic/claude-haiku-4-5-20251001",
+                      "zh/api-reference/model-api/anthropic/claude-haiku-4-5-20251001-thinking",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-1-20250805",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-1-20250805-thinking",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-20250514",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-20250514-thinking",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-5-20251101",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-5-20251101-thinking"
                     ]
                   },
                   {
                     "group": "OpenAI",
                     "icon": "/images/providers/openai.svg",
                     "pages": [
-                      "zh/api-reference/model-api/gpt-4"
+                      "zh/api-reference/model-api/openai/gpt-4"
                     ]
                   }
                 ]

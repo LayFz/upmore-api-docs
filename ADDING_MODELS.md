@@ -3,30 +3,34 @@
 ## 目录结构约定
 
 ```
-# 指南（含提供商路径）
+# 指南
 guides/model-api/{provider}/{model-name}.mdx
 zh/guides/model-api/{provider}/{model-name}.mdx
 
-# API 参考（不含提供商路径，URL 更简洁）
-api-reference/model-api/{model-name}.mdx        ← 单端点模型（对话）
-api-reference/model-api/{model-name}/
-  └── openapi.yaml                               ← 英文 spec
+# API 参考 — 单端点模型（对话）
+api-reference/model-api/{provider}/{model-name}.mdx
+api-reference/model-api/{provider}/openapi/{model-name}/
+  └── openapi.yaml
 
-zh/api-reference/model-api/{model-name}.mdx     ← 中文版 MDX
-zh/api-reference/model-api/{model-name}/
-  └── openapi.yaml                               ← 中文 spec（描述翻译为中文）
+zh/api-reference/model-api/{provider}/{model-name}.mdx
+zh/api-reference/model-api/{provider}/openapi/{model-name}/
+  └── openapi.yaml
 
-# 多端点模型（视频/图片生成）
-api-reference/model-api/{model-name}/
+# API 参考 — 多端点模型（视频/图片生成）
+api-reference/model-api/{provider}/{model-name}/
   ├── openapi.yaml
   ├── create.mdx
   └── status.mdx
 ```
 
+> **为什么 openapi.yaml 要放在 `openapi/` 子目录？**
+> Mintlify 规则：同级下不能同时存在 `foo.mdx` 和 `foo/` 目录，否则生产环境 Playground 不渲染。
+> 所以 `claude-opus-4-20250514.mdx` 和 `openapi/claude-opus-4-20250514/openapi.yaml` 不会冲突。
+
 **URL 对应关系：**
 - 指南：`/guides/model-api/{provider}/{model-name}`
-- API 参考（对话）：`/api-reference/model-api/{model-name}`
-- API 参考（视频）：`/api-reference/model-api/{model-name}/create`
+- API 参考（对话）：`/api-reference/model-api/{provider}/{model-name}`
+- API 参考（视频）：`/api-reference/model-api/{provider}/{model-name}/create`
 
 ---
 
@@ -34,9 +38,9 @@ api-reference/model-api/{model-name}/
 
 ### 1. 创建 openapi.yaml
 
-在 `api-reference/model-api/{model-name}/` 下新建 `openapi.yaml`。
+在 `api-reference/model-api/{provider}/openapi/{model-name}/` 下新建 `openapi.yaml`。
 
-**对话模型模板**（参考 `api-reference/model-api/claude-3-5-sonnet-20241022/openapi.yaml`）：
+**对话模型模板**（参考 `api-reference/model-api/anthropic/openapi/claude-3-5-sonnet-20241022/openapi.yaml`）：
 
 ```yaml
 openapi: 3.1.0
@@ -63,25 +67,25 @@ paths:
 
 **视频生成模型模板**（参考 `api-reference/model-api/bytedance/seedance-2-0/openapi.yaml`）。
 
-同理，在 `zh/api-reference/model-api/{model-name}/` 下创建中文版 `openapi.yaml`，将 `summary` 和 `description` 等字段翻译为中文。
+同理，在 `zh/api-reference/model-api/{provider}/openapi/{model-name}/` 下创建中文版 `openapi.yaml`，将 `summary` 和 `description` 等字段翻译为中文。
 
 ### 2. 创建 API 参考 MDX
 
-**英文**（`api-reference/model-api/{model-name}.mdx`）：
+**英文**（`api-reference/model-api/{provider}/{model-name}.mdx`）：
 
 ```yaml
 ---
 title: '{model-id}'
-openapi: 'api-reference/model-api/{model-name}/openapi.yaml POST /v1/chat/completions'
+openapi: '/api-reference/model-api/{provider}/openapi/{model-name}/openapi.yaml POST /v1/chat/completions'
 ---
 ```
 
-**中文**（`zh/api-reference/model-api/{model-name}.mdx`）：
+**中文**（`zh/api-reference/model-api/{provider}/{model-name}.mdx`）：
 
 ```yaml
 ---
 title: '{model-id}'
-openapi: 'zh/api-reference/model-api/{model-name}/openapi.yaml POST /v1/chat/completions'
+openapi: '/zh/api-reference/model-api/{provider}/openapi/{model-name}/openapi.yaml POST /v1/chat/completions'
 ---
 ```
 
@@ -97,13 +101,24 @@ openapi: 'zh/api-reference/model-api/{model-name}/openapi.yaml POST /v1/chat/com
 ---
 title: "{Model Name}"
 description: "..."
-icon: "message"
 ---
 ```
 
-内容参考 `guides/model-api/anthropic/claude-3-5-sonnet.mdx`，包含：核心能力、快速示例（cURL / Python / Node.js）、参数说明、底部 API Reference Card。
+内容参考 `guides/model-api/anthropic/claude-3-5-sonnet.mdx`，包含：核心能力、快速示例（cURL / Python / Streaming）、参数说明、底部 API Reference Card。
 
-**中文**（`zh/guides/model-api/{provider}/{model-name}.mdx`）同理，内容翻译为中文。
+Card 的 href 指向 API 参考页：
+
+```jsx
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/{provider}/{model-name}"
+>
+  View the interactive API playground.
+</Card>
+```
+
+**中文**（`zh/guides/model-api/{provider}/{model-name}.mdx`）同理，内容翻译为中文，Card href 加 `/zh` 前缀。
 
 ### 4. 添加提供商图标（新提供商）
 
@@ -129,7 +144,7 @@ sed -i '' 's/fill="[^"]*"/fill="currentColor"/g' images/providers/{provider}.svg
   "icon": "/images/providers/anthropic.svg",
   "pages": [
     "guides/model-api/anthropic/claude-3-5-sonnet",
-    "guides/model-api/anthropic/{new-model}"   // 新增
+    "guides/model-api/anthropic/{new-model}"
   ]
 }
 ```
@@ -146,14 +161,14 @@ sed -i '' 's/fill="[^"]*"/fill="currentColor"/g' images/providers/{provider}.svg
 }
 ```
 
-**API Reference tab — 新增模型（无提供商路径）：**
+**API Reference tab — 新增模型：**
 
 ```json
 {
   "group": "{Provider}",
   "icon": "/images/providers/{provider}.svg",
   "pages": [
-    "api-reference/model-api/{model-name}"
+    "api-reference/model-api/{provider}/{model-name}"
   ]
 }
 ```
@@ -164,12 +179,14 @@ sed -i '' 's/fill="[^"]*"/fill="currentColor"/g' images/providers/{provider}.svg
 
 ```bash
 # 1. 创建目录
-mkdir -p api-reference/model-api/gpt-4o
-mkdir -p zh/api-reference/model-api/gpt-4o
+mkdir -p api-reference/model-api/openai/openapi/gpt-4o
+mkdir -p zh/api-reference/model-api/openai/openapi/gpt-4o
 
 # 2. 复制并修改 spec
-cp api-reference/model-api/gpt-4/openapi.yaml api-reference/model-api/gpt-4o/openapi.yaml
-cp zh/api-reference/model-api/gpt-4/openapi.yaml zh/api-reference/model-api/gpt-4o/openapi.yaml
+cp api-reference/model-api/openai/openapi/gpt-4/openapi.yaml \
+   api-reference/model-api/openai/openapi/gpt-4o/openapi.yaml
+cp zh/api-reference/model-api/openai/openapi/gpt-4/openapi.yaml \
+   zh/api-reference/model-api/openai/openapi/gpt-4o/openapi.yaml
 # 修改 model.enum: ["gpt-4o"]、title、operationId
 ```
 
@@ -182,10 +199,10 @@ cp zh/api-reference/model-api/gpt-4/openapi.yaml zh/api-reference/model-api/gpt-
 创建 MDX：
 
 ```yaml
-# api-reference/model-api/gpt-4o.mdx
+# api-reference/model-api/openai/gpt-4o.mdx
 ---
 title: 'gpt-4o'
-openapi: 'api-reference/model-api/gpt-4o/openapi.yaml POST /v1/chat/completions'
+openapi: '/api-reference/model-api/openai/openapi/gpt-4o/openapi.yaml POST /v1/chat/completions'
 ---
 ```
 
@@ -193,8 +210,8 @@ openapi: 'api-reference/model-api/gpt-4o/openapi.yaml POST /v1/chat/completions'
 
 ```json
 "pages": [
-  "api-reference/model-api/gpt-4",
-  "api-reference/model-api/gpt-4o"
+  "api-reference/model-api/openai/gpt-4",
+  "api-reference/model-api/openai/gpt-4o"
 ]
 ```
 
@@ -203,6 +220,7 @@ openapi: 'api-reference/model-api/gpt-4o/openapi.yaml POST /v1/chat/completions'
 ## 注意事项
 
 - **base URL 统一用** `https://www.anyfast.ai`（`anyfast.ai` 会 301 重定向导致 Authorization header 丢失）
-- **MDX 文件名与同级文件夹同名不会冲突**（文件夹只含数据文件 `openapi.yaml`，不是页面）
+- **openapi.yaml 放在 `openapi/` 子目录**，避免与同名 MDX 文件产生 Mintlify 命名冲突（`foo.mdx` + `foo/` 同级会导致生产环境 playground 不渲染）
+- **MDX 里 `openapi` 路径必须以 `/` 开头**（如 `/api-reference/model-api/openai/openapi/gpt-4/openapi.yaml POST /v1/chat/completions`），否则生产环境无法解析路径，playground 空白
 - **中文 spec 单独维护**，`summary`、`description`、`example` 中的自然语言翻译为中文，参数名（`model`、`messages` 等）保持英文
 - **上线前**确认对应渠道已在控制台开通，否则 API 调用返回 403

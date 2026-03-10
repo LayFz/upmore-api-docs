@@ -1,16 +1,17 @@
 ---
-title: "GPT-4"
-description: "通过 OpenAI 兼容接口调用 OpenAI GPT-4，强大、可靠，适合复杂任务。"
+title: "Claude Haiku 4.5"
+description: "通过 OpenAI 兼容接口调用 Anthropic 的 Claude Haiku 4.5，快速、轻量且高性价比。"
 ---
 
-GPT-4 是 OpenAI 的大型多模态模型，通过 AnyFast 以 OpenAI 兼容接口提供服务。擅长复杂推理、编程、写作和分析任务。
+Claude Haiku 4.5 是 Anthropic 最快速、最具性价比的模型，通过 AnyFast 以 OpenAI 兼容接口提供服务。以极低延迟响应日常任务，非常适合高吞吐量和对延迟敏感的应用场景。
 
 ## 核心能力
 
 - **OpenAI 兼容** — 可直接替换 OpenAI SDK，无需修改其他代码
-- **长上下文** — 支持大文档处理和多轮对话
+- **极速响应** — 针对低延迟优化
+- **高性价比** — 每 Token 成本远低于大型模型
 - **流式输出** — 通过 SSE 实现实时 Token 流式传输
-- **强推理能力** — 适合复杂的多步骤任务
+- **能力出众** — 在编程、写作和分析任务上表现优秀
 
 ## 快速示例
 
@@ -21,7 +22,7 @@ curl https://www.anyfast.ai/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-4",
+    "model": "claude-haiku-4-5",
     "messages": [
       { "role": "user", "content": "用简单的语言解释量子纠缠。" }
     ]
@@ -37,7 +38,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="gpt-4",
+    model="claude-haiku-4-5",
     messages=[
         {"role": "user", "content": "用简单的语言解释量子纠缠。"}
     ]
@@ -55,7 +56,7 @@ client = OpenAI(
 )
 
 stream = client.chat.completions.create(
-    model="gpt-4",
+    model="claude-haiku-4-5",
     messages=[
         {"role": "user", "content": "写一首关于大海的短诗。"}
     ],
@@ -72,7 +73,7 @@ for chunk in stream:
 
 | 参数 | 类型 | 必填 | 说明 |
 |---|---|---|---|
-| `model` | string | 是 | 固定为 `gpt-4` |
+| `model` | string | 是 | 固定为 `claude-haiku-4-5` |
 | `messages` | array | 是 | `{ role, content }` 对象数组 |
 | `max_tokens` | integer | 否 | 最大生成 Token 数 |
 | `temperature` | float | 否 | `0`–`2`，控制随机性，默认 `1` |
@@ -83,7 +84,7 @@ for chunk in stream:
 <Card
   title="API 参考"
   icon="code"
-  href="/zh/api-reference/model-api/openai/gpt-4"
+  href="/zh/api-reference/model-api/anthropic/claude-haiku-4-5-20251001"
 >
-  查看 GPT-4 的交互式 API Playground。
+  查看 Claude Haiku 4.5 的交互式 API Playground。
 </Card>

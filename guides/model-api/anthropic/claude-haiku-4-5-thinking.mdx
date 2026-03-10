@@ -1,0 +1,90 @@
+---
+title: "Claude Haiku 4.5 Thinking"
+description: "Anthropic's Claude Haiku 4.5 with extended thinking enabled. Fast reasoning for math, coding, and analysis at low cost."
+---
+
+Claude Haiku 4.5 Thinking is the extended thinking variant of Claude Haiku 4.5, available through AnyFast via an OpenAI-compatible interface. It combines Haiku's speed and cost-efficiency with step-by-step internal reasoning, delivering improved accuracy on complex tasks while remaining significantly faster and cheaper than larger thinking models.
+
+## Key capabilities
+
+- **OpenAI-compatible** — Works as a drop-in replacement with the OpenAI SDK
+- **Extended thinking** — Step-by-step internal reasoning enabled by default
+- **Fast + affordable** — Thinking capability at Haiku-level speed and cost
+- **Streaming** — Supports real-time token streaming via SSE
+- **Strong reasoning** — Improved accuracy on math, logic, and multi-step problems
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-haiku-4-5-20251001-thinking",
+    "messages": [
+      { "role": "user", "content": "Solve step by step: If a train travels 120 km in 2 hours, then slows down and travels 80 km in 3 hours, what is the average speed for the entire trip?" }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+response = client.chat.completions.create(
+    model="claude-haiku-4-5-20251001-thinking",
+    messages=[
+        {"role": "user", "content": "Solve step by step: If a train travels 120 km in 2 hours, then slows down and travels 80 km in 3 hours, what is the average speed for the entire trip?"}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+```python Streaming
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+stream = client.chat.completions.create(
+    model="claude-haiku-4-5-20251001-thinking",
+    messages=[
+        {"role": "user", "content": "Write a proof that there are infinitely many prime numbers."}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    print(chunk.choices[0].delta.content or "", end="")
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `model` | string | Yes | Must be `claude-haiku-4-5-20251001-thinking` |
+| `messages` | array | Yes | List of `{ role, content }` objects |
+| `max_tokens` | integer | No | Maximum tokens to generate |
+| `temperature` | float | No | `0`–`2`. Controls randomness. Default: `1` |
+| `stream` | boolean | No | Enable SSE streaming. Default: `false` |
+| `top_p` | float | No | Nucleus sampling threshold. Default: `1` |
+| `stop` | string / array | No | Sequences that stop generation |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/anthropic/claude-haiku-4-5-20251001-thinking"
+>
+  View the interactive API playground for Claude Haiku 4.5 Thinking.
+</Card>
