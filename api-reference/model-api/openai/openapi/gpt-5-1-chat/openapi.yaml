@@ -1,0 +1,211 @@
+openapi: 3.1.0
+info:
+  title: GPT-5.1 Chat
+  description: OpenAI GPT-5.1 Chat via AnyFast OpenAI-compatible API
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/chat/completions:
+    post:
+      operationId: createChatCompletionGPT51Chat
+      summary: Chat Completion
+      description: Creates a model response for the given chat conversation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - messages
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - gpt-5.1-chat
+                  description: Model ID
+                  example: gpt-5.1-chat
+                messages:
+                  type: array
+                  minItems: 1
+                  description: A list of messages comprising the conversation so far.
+                  items:
+                    type: object
+                    required:
+                      - role
+                      - content
+                    properties:
+                      role:
+                        type: string
+                        enum: [system, user, assistant]
+                      content:
+                        oneOf:
+                          - type: string
+                          - type: array
+                            items:
+                              type: object
+                  example:
+                    - role: user
+                      content: Hello!
+                max_tokens:
+                  type: integer
+                  minimum: 1
+                  description: The maximum number of tokens to generate.
+                temperature:
+                  type: number
+                  minimum: 0
+                  maximum: 2
+                  default: 1
+                  description: Sampling temperature. Higher values make output more random.
+                  example: 1
+                top_p:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 1
+                  description: Nucleus sampling threshold.
+                frequency_penalty:
+                  type: number
+                  minimum: -2
+                  maximum: 2
+                  default: 0
+                  description: Penalizes repeated tokens based on their frequency in the text so far.
+                presence_penalty:
+                  type: number
+                  minimum: -2
+                  maximum: 2
+                  default: 0
+                  description: Penalizes tokens that have already appeared in the text.
+                stream:
+                  type: boolean
+                  default: false
+                  description: If true, stream partial message deltas using SSE.
+                stop:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: Sequences where the model will stop generating further tokens.
+                n:
+                  type: integer
+                  minimum: 1
+                  default: 1
+                  description: How many chat completion choices to generate for each input message.
+                response_format:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum: [text, json_object]
+                  description: 'An object specifying the format that the model must output. Setting to {"type": "json_object"} enables JSON mode.'
+                tools:
+                  type: array
+                  items:
+                    type: object
+                  description: A list of tools the model may call. Currently, only functions are supported.
+                tool_choice:
+                  oneOf:
+                    - type: string
+                    - type: object
+                  description: Controls which (if any) tool is called by the model.
+                user:
+                  type: string
+                  description: A unique identifier representing your end-user.
+      responses:
+        "200":
+          description: Completion generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatCompletion"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    ChatCompletion:
+      type: object
+      required:
+        - id
+        - object
+        - created
+        - model
+        - choices
+      properties:
+        id:
+          type: string
+          example: chatcmpl-abc123
+        object:
+          type: string
+          example: chat.completion
+        created:
+          type: integer
+          description: Unix timestamp
+        model:
+          type: string
+          example: gpt-5.1-chat
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    example: assistant
+                  content:
+                    type: string
+                    example: Hello! How can I help you today?
+              finish_reason:
+                type: string
+                enum: [stop, length, content_filter, null]
+        usage:
+          type: object
+          properties:
+            prompt_tokens:
+              type: integer
+            completion_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
