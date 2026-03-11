@@ -1,0 +1,159 @@
+openapi: 3.1.0
+info:
+  title: Gemini 2.5 Flash Image
+  description: 通过 AnyFast 代理调用 Google Gemini 2.5 Flash Image
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+paths:
+  /v1beta/models/gemini-2.5-flash-image:generateContent:
+    post:
+      operationId: Gemini25FlashImageGenerateImage
+      summary: 图片生成
+      description: 使用 Gemini 模型生成图片。
+      parameters:
+        - name: key
+          in: query
+          description: API 密钥
+          required: true
+          schema:
+            type: string
+          example: YOUR_API_KEY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - contents
+                - generationConfig
+              properties:
+                contents:
+                  type: array
+                  description: 对话内容数组，包含提示文本和可选的参考图片。
+                  items:
+                    type: object
+                    properties:
+                      role:
+                        type: string
+                        enum: [user, model]
+                        example: user
+                      parts:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            text:
+                              type: string
+                              description: 文本提示
+                            inline_data:
+                              type: object
+                              properties:
+                                mime_type:
+                                  type: string
+                                  description: 图片 MIME 类型（如 image/png）
+                                  example: image/png
+                                data:
+                                  type: string
+                                  description: Base64 编码的图片数据
+                  example:
+                    - role: user
+                      parts:
+                        - text: "生成一只可爱的猫咪图片"
+                generationConfig:
+                  type: object
+                  required:
+                    - responseModalities
+                  properties:
+                    responseModalities:
+                      type: array
+                      description: 响应模态，设为 IMAGE 以生成图片。
+                      items:
+                        type: string
+                      example:
+                        - IMAGE
+                    imageConfig:
+                      type: object
+                      properties:
+                        aspectRatio:
+                          type: string
+                          description: 图片宽高比（如 1:1, 16:9, 9:16）
+                          example: "1:1"
+      responses:
+        "200":
+          description: 成功生成图片
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenerateContentResponse"
+        "400":
+          description: 请求参数有误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    GenerateContentResponse:
+      type: object
+      properties:
+        candidates:
+          type: array
+          items:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  parts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        inline_data:
+                          type: object
+                          properties:
+                            mime_type:
+                              type: string
+                              example: image/png
+                            data:
+                              type: string
+                              example: "iVBORw0KGgo..."
+                        text:
+                          type: string
+                  role:
+                    type: string
+                    example: model
+              finishReason:
+                type: string
+                example: STOP
+        usageMetadata:
+          type: object
+          properties:
+            promptTokenCount:
+              type: integer
+            candidatesTokenCount:
+              type: integer
+            totalTokenCount:
+              type: integer
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: integer
+            message:
+              type: string
+            status:
+              type: string

@@ -1,0 +1,91 @@
+openapi: 3.1.0
+info:
+  title: "Seedream 3.0 文生图"
+  description: "通过 AnyFast API 调用字节跳动 Seedream 3.0 文生图模型"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/generations:
+    post:
+      operationId: createSeedream30T2i
+      summary: 创建文生图任务
+      description: "使用 doubao-seedream-3-0-t2i-250415 模型从文本生成图片。"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - doubao-seedream-3-0-t2i-250415
+                  description: 模型 ID
+                  example: doubao-seedream-3-0-t2i-250415
+                prompt:
+                  type: string
+                  description: "图片生成提示词。"
+                  example: "生成3张女孩和奶牛玩偶在游乐园开心地坐过山车的图片"
+                size:
+                  type: string
+                  description: "输出图片尺寸，支持的值因模型而异。"
+                  example: "1024x1024"
+                watermark:
+                  type: boolean
+                  default: false
+                  description: "是否添加水印。"
+                seed:
+                  type: integer
+                  description: "随机种子，用于复现结果。"
+                logo_info:
+                  type: object
+                  description: "自定义 Logo 水印配置。"
+                  properties:
+                    add_logo:
+                      type: boolean
+                      description: "是否添加 Logo 水印。"
+                    position:
+                      type: integer
+                      description: "Logo 位置。"
+                    language:
+                      type: integer
+                      description: "Logo 语言。"
+                    opacity:
+                      type: number
+                      description: "Logo 透明度（0-1）。"
+      responses:
+        "200":
+          description: 任务已创建
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "gen-abc123"
+                  model:
+                    type: string
+                    example: doubao-seedream-3-0-t2i-250415
+                  status:
+                    type: string
+                    example: processing
+                  created_at:
+                    type: integer
+                    example: 1773130665
+        "401":
+          description: 未授权
+        "429":
+          description: 请求频率超限
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

@@ -1,0 +1,86 @@
+---
+title: "Gemini 2.0 Flash"
+description: "通过 Gemini API 调用 Google Gemini 2.0 Flash 进行 AI 图片编辑。"
+---
+
+Gemini 2.0 Flash 是 Google 的多模态模型，具有图片编辑能力，通过 AnyFast 以原生 Gemini API 提供服务。可以根据文本指令编辑已有图片。
+
+## 核心能力
+
+- **图片编辑** — 使用自然语言指令修改已有图片
+- **多模态输入** — 同时接受文本指令和源图片
+- **文本生成** — 同时支持标准文本生成任务
+- **高效灵活** — 适用于各种多模态任务
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl "https://www.anyfast.ai/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          { "text": "把背景换成海滩场景" },
+          { "inline_data": { "mime_type": "image/png", "data": "BASE64_DATA" } }
+        ]
+      }
+    ],
+    "generationConfig": {
+      "responseModalities": ["IMAGE"]
+    }
+  }'
+```
+
+```python Python
+import requests
+import base64
+
+url = "https://www.anyfast.ai/v1beta/models/gemini-2.0-flash:generateContent"
+params = {"key": "YOUR_API_KEY"}
+
+with open("input.png", "rb") as f:
+    image_b64 = base64.b64encode(f.read()).decode()
+
+data = {
+    "contents": [
+        {
+            "role": "user",
+            "parts": [
+                {"text": "把背景换成海滩场景"},
+                {"inline_data": {"mime_type": "image/png", "data": image_b64}}
+            ]
+        }
+    ],
+    "generationConfig": {
+        "responseModalities": ["IMAGE"]
+    }
+}
+
+response = requests.post(url, params=params, json=data)
+result = response.json()
+output = result["candidates"][0]["content"]["parts"][0]["inline_data"]["data"]
+with open("output.png", "wb") as f:
+    f.write(base64.b64decode(output))
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `key` | string | 是 | API 密钥（查询参数） |
+| `contents` | array | 是 | 包含 text 和 inline_data 的 `{ role, parts }` 数组 |
+| `generationConfig.responseModalities` | array | 是 | 必须包含 `IMAGE` |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/google/gemini-2-0-flash"
+>
+  查看 Gemini 2.0 Flash 的交互式 API Playground。
+</Card>

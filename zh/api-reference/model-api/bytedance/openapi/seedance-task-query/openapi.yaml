@@ -1,0 +1,56 @@
+openapi: 3.1.0
+info:
+  title: "Seedance 任务查询"
+  description: "通过 AnyFast API 查询 Seedance 视频生成任务的状态和结果"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/video/generations/{id}:
+    get:
+      operationId: getSeedanceTaskStatus
+      summary: 查询视频生成任务
+      description: "通过任务 ID 查询 Seedance 视频生成任务的状态和结果。"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "视频生成请求返回的任务 ID。"
+          example: "gen-abc123"
+      responses:
+        "200":
+          description: 任务状态获取成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "gen-abc123"
+                  model:
+                    type: string
+                    example: "doubao-seedance-1-5-pro-251215"
+                  status:
+                    type: string
+                    enum: [processing, completed, failed]
+                    description: "任务状态。"
+                  video_url:
+                    type: string
+                    description: "生成的视频 URL（任务完成后可用）。"
+                  created_at:
+                    type: integer
+                    example: 1773130665
+        "401":
+          description: 未授权
+        "404":
+          description: 任务不存在
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

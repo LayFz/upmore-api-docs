@@ -1,0 +1,84 @@
+---
+title: "Seedream 5.0 图生图"
+description: "字节跳动 Seedream 5.0 图生图模型，使用参考图片和文本提示词生成图片。"
+---
+
+Seedream 5.0 图生图是字节跳动 Seedream 系列的图生图模型，通过 AnyFast API 提供服务。
+
+## 核心能力
+
+- **图生图** — 使用参考图片和文本提示词生成图片
+- **连续生成** — 单次请求批量生成多张图片
+- **自定义尺寸** — 灵活的输出尺寸
+- **水印控制** — 可选水印和 Logo 配置
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/images/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seedream-5-0-260128",
+    "prompt": "生成女孩和奶牛玩偶在游乐园开心地坐过山车的图片，涵盖早晨、中午、晚上",
+    "image": ["https://example.com/ref1.png", "https://example.com/ref2.png"],
+    "sequential_image_generation": "auto",
+    "sequential_image_generation_options": {
+      "max_images": 3
+    },
+    "size": "2K",
+    "watermark": false
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/v1/images/generations",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={
+        "model": "doubao-seedream-5-0-260128",
+        "prompt": "生成女孩和奶牛玩偶在游乐园开心地坐过山车的图片，涵盖早晨、中午、晚上",
+        "image": ["https://example.com/ref1.png", "https://example.com/ref2.png"],
+        "sequential_image_generation": "auto",
+        "sequential_image_generation_options": {
+            "max_images": 3
+        },
+        "size": "2K",
+        "watermark": False
+    }
+)
+
+task = response.json()
+print(f"任务 ID: {task['id']}")
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | 固定为 `doubao-seedream-5-0-260128` |
+| `prompt` | string | 是 | 图片生成提示词 |
+| `image` | array | 是 | 参考图片 URL 数组 |
+| `sequential_image_generation` | string | 否 | 设为 `auto` 启用批量生成 |
+| `sequential_image_generation_options` | object | 否 | 选项：`max_images`（int） |
+| `size` | string | 否 | 输出图片尺寸，如 `1024x1024`、`2K` |
+| `watermark` | boolean | 否 | 默认 `false` |
+| `seed` | integer | 否 | 随机种子 |
+| `logo_info` | object | 否 | Logo 配置：`add_logo`、`position`、`language`、`opacity` |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/bytedance/doubao-seedream-5-0-260128-i2i"
+>
+  查看 Seedream 5.0 图生图的交互式 API Playground。
+</Card>

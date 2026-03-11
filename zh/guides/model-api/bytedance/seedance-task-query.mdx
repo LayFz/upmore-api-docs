@@ -1,0 +1,54 @@
+---
+title: "Seedance 任务查询"
+description: "查询字节跳动 Seedance 视频生成任务的状态和结果。"
+---
+
+创建 Seedance 视频生成任务后，使用此端点轮询任务状态并在完成后获取结果。
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/video/generations/gen-abc123 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    "https://www.anyfast.ai/v1/video/generations/gen-abc123",
+    headers={"Authorization": "Bearer YOUR_API_KEY"}
+)
+
+result = response.json()
+print(f"状态: {result['status']}")
+if result['status'] == 'completed':
+    print(f"视频 URL: {result['video_url']}")
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `id` | string (路径) | 是 | 视频生成请求返回的任务 ID |
+
+## 响应字段
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `id` | string | 任务 ID |
+| `model` | string | 使用的模型 |
+| `status` | string | `processing`、`completed` 或 `failed` |
+| `video_url` | string | 生成的视频 URL（任务完成后） |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/bytedance/seedance-task-query"
+>
+  查看 Seedance 任务查询 的交互式 API Playground。
+</Card>

@@ -1,0 +1,56 @@
+openapi: 3.1.0
+info:
+  title: "Seedance Task Query"
+  description: "Query the status and result of a Seedance video generation task via AnyFast API"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/video/generations/{id}:
+    get:
+      operationId: getSeedanceTaskStatus
+      summary: Query Video Generation Task
+      description: "Retrieve the status and result of a Seedance video generation task by its ID."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Task ID returned from the video generation request."
+          example: "gen-abc123"
+      responses:
+        "200":
+          description: Task status retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "gen-abc123"
+                  model:
+                    type: string
+                    example: "doubao-seedance-1-5-pro-251215"
+                  status:
+                    type: string
+                    enum: [processing, completed, failed]
+                    description: "Task status."
+                  video_url:
+                    type: string
+                    description: "URL of the generated video (available when completed)."
+                  created_at:
+                    type: integer
+                    example: 1773130665
+        "401":
+          description: Unauthorized
+        "404":
+          description: Task not found
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

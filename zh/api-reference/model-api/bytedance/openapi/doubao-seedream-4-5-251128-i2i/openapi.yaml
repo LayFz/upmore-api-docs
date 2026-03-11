@@ -1,0 +1,112 @@
+openapi: 3.1.0
+info:
+  title: "Seedream 4.5 图生图"
+  description: "通过 AnyFast API 调用字节跳动 Seedream 4.5 图生图模型"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/generations:
+    post:
+      operationId: createSeedream45I2i
+      summary: 创建图生图任务
+      description: "使用 doubao-seedream-4-5-251128 模型从文本和参考图片生成图片。"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+                - image
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - doubao-seedream-4-5-251128
+                  description: Model ID
+                  example: doubao-seedream-4-5-251128
+                prompt:
+                  type: string
+                  description: "图片生成提示词。"
+                  example: "生成女孩和奶牛玩偶在游乐园开心地坐过山车的图片"
+                image:
+                  type: array
+                  items:
+                    type: string
+                  description: "参考图片 URL 列表，用于图生图。图生图时必填。"
+                  example:
+                    - "https://example.com/ref1.png"
+                    - "https://example.com/ref2.png"
+                sequential_image_generation:
+                  type: string
+                  enum: ["auto"]
+                  description: "连续图片生成模式。设为 'auto' 可批量生成多张图片。"
+                sequential_image_generation_options:
+                  type: object
+                  description: "连续图片生成选项。"
+                  properties:
+                    max_images:
+                      type: integer
+                      description: "批量生成的最大图片数量。"
+                      example: 3
+                size:
+                  type: string
+                  description: "输出图片尺寸，支持的值因模型而异。"
+                  example: "1024x1024"
+                watermark:
+                  type: boolean
+                  default: false
+                  description: "是否添加水印。"
+                seed:
+                  type: integer
+                  description: "随机种子，用于复现结果。"
+                logo_info:
+                  type: object
+                  description: "自定义 Logo 水印配置。"
+                  properties:
+                    add_logo:
+                      type: boolean
+                      description: "是否添加 Logo 水印。"
+                    position:
+                      type: integer
+                      description: "Logo 位置。"
+                    language:
+                      type: integer
+                      description: "Logo 语言。"
+                    opacity:
+                      type: number
+                      description: "Logo 透明度（0-1）。"
+      responses:
+        "200":
+          description: 任务已创建
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "gen-abc123"
+                  model:
+                    type: string
+                    example: doubao-seedream-4-5-251128
+                  status:
+                    type: string
+                    example: processing
+                  created_at:
+                    type: integer
+                    example: 1773130665
+        "401":
+          description: 未授权
+        "429":
+          description: 请求频率超限
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

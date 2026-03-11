@@ -1,0 +1,83 @@
+---
+title: "Gemini 3 Pro Image Preview"
+description: "Google's Gemini 3 Pro Image Preview for AI image generation via Gemini API."
+---
+
+Gemini 3 Pro Image Preview is Google's image generation model, available through AnyFast via the native Gemini API. It can generate images from text prompts and edit existing images.
+
+## Key capabilities
+
+- **Text-to-image** — Generate images from text descriptions
+- **Image editing** — Edit existing images with text instructions
+- **Aspect ratio control** — Configure output image dimensions
+- **Multi-modal input** — Accept both text and image inputs
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl "https://www.anyfast.ai/v1beta/models/gemini-3-pro-image-preview:generateContent?key=YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "role": "user",
+        "parts": [{ "text": "Generate an image of a sunset over mountains" }]
+      }
+    ],
+    "generationConfig": {
+      "responseModalities": ["IMAGE"],
+      "imageConfig": {
+        "aspectRatio": "16:9"
+      }
+    }
+  }'
+```
+
+```python Python
+import requests
+import base64
+
+url = "https://www.anyfast.ai/v1beta/models/gemini-3-pro-image-preview:generateContent"
+params = {"key": "YOUR_API_KEY"}
+data = {
+    "contents": [
+        {
+            "role": "user",
+            "parts": [{"text": "Generate an image of a sunset over mountains"}]
+        }
+    ],
+    "generationConfig": {
+        "responseModalities": ["IMAGE"],
+        "imageConfig": {
+            "aspectRatio": "16:9"
+        }
+    }
+}
+
+response = requests.post(url, params=params, json=data)
+result = response.json()
+image_data = result["candidates"][0]["content"]["parts"][0]["inline_data"]["data"]
+with open("output.png", "wb") as f:
+    f.write(base64.b64decode(image_data))
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `key` | string | Yes | API key (query parameter) |
+| `contents` | array | Yes | Array of `{ role, parts }` objects |
+| `generationConfig.responseModalities` | array | Yes | Must include `IMAGE` |
+| `generationConfig.imageConfig.aspectRatio` | string | No | e.g. `1:1`, `16:9`, `9:16` |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/google/gemini-3-pro-image-preview"
+>
+  View the interactive API playground for Gemini 3 Pro Image Preview.
+</Card>

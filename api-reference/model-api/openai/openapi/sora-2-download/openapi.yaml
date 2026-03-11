@@ -1,0 +1,88 @@
+openapi: 3.1.0
+info:
+  title: "Sora 2 Download Video"
+  description: "Download a completed Sora 2 video via AnyFast API"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/videos/{id}/content:
+    get:
+      operationId: downloadSora2Video
+      summary: Download Video Content
+      description: "Download the generated video after the task is completed. Returns an error if the task is still in progress."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Video task ID."
+          example: "video_69b131ea03548190925a6a06febf993b"
+      responses:
+        "200":
+          description: Video download info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "sora-2:task_01k7yhn8vae4ev52cnyxw3gn68"
+                  object:
+                    type: string
+                    example: video
+                  model:
+                    type: string
+                    example: sora-2
+                  status:
+                    type: string
+                    example: completed
+                  progress:
+                    type: integer
+                    example: 100
+                  url:
+                    type: string
+                    description: "Video download URL."
+                    example: "https://filesystem.site/cdn/20251019/example.mp4"
+                  video_url:
+                    type: string
+                    description: "Video download URL (alias)."
+                    example: "https://filesystem.site/cdn/20251019/example.mp4"
+                  size:
+                    type: string
+                    example: "small"
+                  seconds:
+                    type: string
+                    example: "12"
+                  created_at:
+                    type: integer
+                    example: 1773220330
+        "400":
+          description: "Task not completed yet"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: "Task is not completed yet, current status: IN_PROGRESS"
+                      type:
+                        type: string
+                        example: "invalid_request_error"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Task not found
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
