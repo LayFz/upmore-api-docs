@@ -73,7 +73,16 @@
                   {
                     "group": "Google",
                     "icon": "/images/providers/google.svg",
-                    "pages": []
+                    "pages": [
+                      "guides/model-api/google/gemini-2-5-pro",
+                      "guides/model-api/google/gemini-2-5-pro-stream",
+                      "guides/model-api/google/gemini-3-pro-preview",
+                      "guides/model-api/google/gemini-3-pro-preview-stream",
+                      "guides/model-api/google/gemini-2-5-flash",
+                      "guides/model-api/google/gemini-2-0-flash",
+                      "guides/model-api/google/gemini-2-5-flash-image",
+                      "guides/model-api/google/gemini-3-pro-image-preview"
+                    ]
                   },
                   {
                     "group": "Kuaishou",
@@ -179,7 +188,16 @@
                   {
                     "group": "Google",
                     "icon": "/images/providers/google.svg",
-                    "pages": []
+                    "pages": [
+                      "api-reference/model-api/google/gemini-2-5-pro",
+                      "api-reference/model-api/google/gemini-2-5-pro-stream",
+                      "api-reference/model-api/google/gemini-3-pro-preview",
+                      "api-reference/model-api/google/gemini-3-pro-preview-stream",
+                      "api-reference/model-api/google/gemini-2-5-flash",
+                      "api-reference/model-api/google/gemini-2-0-flash",
+                      "api-reference/model-api/google/gemini-2-5-flash-image",
+                      "api-reference/model-api/google/gemini-3-pro-image-preview"
+                    ]
                   },
                   {
                     "group": "Kuaishou",
@@ -300,7 +318,16 @@
                   {
                     "group": "Google",
                     "icon": "/images/providers/google.svg",
-                    "pages": []
+                    "pages": [
+                      "zh/guides/model-api/google/gemini-2-5-pro",
+                      "zh/guides/model-api/google/gemini-2-5-pro-stream",
+                      "zh/guides/model-api/google/gemini-3-pro-preview",
+                      "zh/guides/model-api/google/gemini-3-pro-preview-stream",
+                      "zh/guides/model-api/google/gemini-2-5-flash",
+                      "zh/guides/model-api/google/gemini-2-0-flash",
+                      "zh/guides/model-api/google/gemini-2-5-flash-image",
+                      "zh/guides/model-api/google/gemini-3-pro-image-preview"
+                    ]
                   },
                   {
                     "group": "Kuaishou",
@@ -406,7 +433,16 @@
                   {
                     "group": "Google",
                     "icon": "/images/providers/google.svg",
-                    "pages": []
+                    "pages": [
+                      "zh/api-reference/model-api/google/gemini-2-5-pro",
+                      "zh/api-reference/model-api/google/gemini-2-5-pro-stream",
+                      "zh/api-reference/model-api/google/gemini-3-pro-preview",
+                      "zh/api-reference/model-api/google/gemini-3-pro-preview-stream",
+                      "zh/api-reference/model-api/google/gemini-2-5-flash",
+                      "zh/api-reference/model-api/google/gemini-2-0-flash",
+                      "zh/api-reference/model-api/google/gemini-2-5-flash-image",
+                      "zh/api-reference/model-api/google/gemini-3-pro-image-preview"
+                    ]
                   },
                   {
                     "group": "Kuaishou",

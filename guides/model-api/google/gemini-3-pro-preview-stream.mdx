@@ -1,0 +1,89 @@
+---
+title: "Gemini 3 Pro Preview (Stream)"
+description: "Google's Gemini 3 Pro Preview streaming via Gemini API. Real-time token streaming with SSE."
+---
+
+Gemini 3 Pro Preview (Stream) provides streaming text generation using Google's Gemini 3 Pro Preview model via AnyFast. Responses are delivered in real-time using Server-Sent Events (SSE).
+
+## Key capabilities
+
+- **SSE Streaming** — Real-time token-by-token response delivery
+- **Thinking mode** — Supports thinking configuration for enhanced reasoning
+- **Multi-turn conversations** — Handles complex dialogue with system instructions
+- **Safety settings** — Configurable content safety filters
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl "https://www.anyfast.ai/v1beta/models/gemini-3-pro-preview:streamGenerateContent?key=YOUR_API_KEY&alt=sse" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "role": "user",
+        "parts": [{ "text": "Write a short poem about the ocean." }]
+      }
+    ],
+    "generationConfig": {
+      "temperature": 1,
+      "topP": 1,
+      "thinkingConfig": {
+        "includeThoughts": true,
+        "thinkingBudget": 26240
+      }
+    }
+  }'
+```
+
+```python Python
+import requests
+
+url = "https://www.anyfast.ai/v1beta/models/gemini-3-pro-preview:streamGenerateContent"
+params = {"key": "YOUR_API_KEY", "alt": "sse"}
+data = {
+    "contents": [
+        {
+            "role": "user",
+            "parts": [{"text": "Write a short poem about the ocean."}]
+        }
+    ],
+    "generationConfig": {
+        "temperature": 1,
+        "topP": 1,
+        "thinkingConfig": {
+            "includeThoughts": True,
+            "thinkingBudget": 26240
+        }
+    }
+}
+
+response = requests.post(url, params=params, json=data, stream=True)
+for line in response.iter_lines():
+    if line:
+        print(line.decode())
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `key` | string | Yes | API key (query parameter) |
+| `alt` | string | No | Set to `sse` for SSE streaming |
+| `contents` | array | Yes | Array of `{ role, parts }` objects |
+| `systemInstruction` | object | No | System instruction with `parts` array |
+| `generationConfig.temperature` | float | No | `0`–`2`. Controls randomness. Default: `1` |
+| `generationConfig.topP` | float | No | Nucleus sampling threshold. Default: `1` |
+| `generationConfig.thinkingConfig` | object | No | Thinking mode configuration |
+| `safetySettings` | array | No | Content safety filter settings |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/google/gemini-3-pro-preview-stream"
+>
+  View the interactive API playground for Gemini 3 Pro Preview (Stream).
+</Card>

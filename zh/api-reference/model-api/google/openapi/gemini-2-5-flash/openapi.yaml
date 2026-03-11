@@ -1,0 +1,149 @@
+openapi: 3.1.0
+info:
+  title: Gemini 2.5 Flash
+  description: 通过 AnyFast 代理调用 Google Gemini 2.5 Flash
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+paths:
+  /v1beta/models/gemini-2.5-flash:generateContent:
+    post:
+      operationId: Gemini25FlashGenerateWithSearch
+      summary: 文本生成（含搜索）
+      description: 使用 Gemini 模型生成回复，支持 Google 搜索增强。
+      parameters:
+        - name: key
+          in: query
+          description: API 密钥
+          required: true
+          schema:
+            type: string
+          example: YOUR_API_KEY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - contents
+              properties:
+                contents:
+                  type: array
+                  description: 对话内容数组。
+                  items:
+                    type: object
+                    properties:
+                      role:
+                        type: string
+                        enum: [user, model]
+                        example: user
+                      parts:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            text:
+                              type: string
+                              description: 文本内容
+                            inline_data:
+                              type: object
+                              properties:
+                                mime_type:
+                                  type: string
+                                  description: 文件 MIME 类型
+                                data:
+                                  type: string
+                                  description: Base64 编码的文件数据
+                  example:
+                    - role: user
+                      parts:
+                        - text: "今天重庆天气如何？"
+                tools:
+                  type: array
+                  description: 工具配置，启用 Google 搜索。
+                  items:
+                    type: object
+                    properties:
+                      googleSearch:
+                        type: object
+                  example:
+                    - googleSearch: {}
+      responses:
+        "200":
+          description: 成功生成回复
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenerateContentResponse"
+        "400":
+          description: 请求参数有误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    GenerateContentResponse:
+      type: object
+      properties:
+        candidates:
+          type: array
+          items:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  parts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        text:
+                          type: string
+                          example: "根据搜索结果，今天重庆天气..."
+                  role:
+                    type: string
+                    example: model
+              finishReason:
+                type: string
+                example: STOP
+              groundingMetadata:
+                type: object
+                properties:
+                  searchEntryPoint:
+                    type: object
+                  groundingChunks:
+                    type: array
+                    items:
+                      type: object
+        usageMetadata:
+          type: object
+          properties:
+            promptTokenCount:
+              type: integer
+            candidatesTokenCount:
+              type: integer
+            totalTokenCount:
+              type: integer
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: integer
+            message:
+              type: string
+            status:
+              type: string
