@@ -6,14 +6,13 @@
   "seo": {
     "indexHiddenPages": false
   },
+  "og": {
+    "image": "/images/layfz/social-media-cover.png"
+  },
   "metadata": {
     "og:site_name": "AnyFast Docs",
-    "og:description": "Unified API platform for AI models — chat, image, and video generation across multiple providers.",
-    "og:image": "https://docs.anyfast.ai/images/layfz/social-media-cover.png",
-    "og:url": "https://docs.anyfast.ai",
     "twitter:card": "summary_large_image",
-    "twitter:site": "@anyfast_ai",
-    "twitter:image": "https://docs.anyfast.ai/images/layfz/social-media-cover.png"
+    "twitter:site": "@anyfast_ai"
   },
   "colors": {
     "primary": "#16A34A",
@@ -657,26 +656,17 @@
           "anchor": "Documentation",
           "href": "https://docs.anyfast.ai",
           "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Developer Support",
-          "href": "mailto:layfz@anyfast.ai",
-          "icon": "envelope"
         }
       ]
     }
   },
   "logo": {
     "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "dark": "/logo/dark.svg",
+    "href": "https://www.anyfast.ai"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:layfz@anyfast.ai"
-      }
-    ],
+    "links": [],
     "primary": {
       "type": "button",
       "label": "Dashboard",
