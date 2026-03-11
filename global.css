@@ -1,3 +1,11 @@
 :root {
   font-size: 17px;
 }
+
+.bg-primary\/10 {
+  background-color: transparent !important;
+}
+
+.dark .dark\:bg-primary-light\/10 {
+  background-color: transparent !important;
+}
