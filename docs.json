@@ -66,6 +66,35 @@
                     ]
                   },
                   {
+                    "group": "ByteDance",
+                    "icon": "/images/providers/bytedance.svg",
+                    "pages": [
+                      "guides/model-api/bytedance/doubao-seed-1-6-flash",
+                      "guides/model-api/bytedance/doubao-seed-1-6",
+                      "guides/model-api/bytedance/doubao-seed-1-6-lite",
+                      "guides/model-api/bytedance/glm-4-7",
+                      "guides/model-api/bytedance/deepseek-v3-2",
+                      "guides/model-api/bytedance/doubao-seed-1-8",
+                      "guides/model-api/bytedance/doubao-seed-1-6-vision",
+                      "guides/model-api/bytedance/doubao-seedance-1-5-pro-t2v",
+                      "guides/model-api/bytedance/doubao-seedance-1-5-pro-i2v",
+                      "guides/model-api/bytedance/doubao-seedance-1-0-pro-t2v",
+                      "guides/model-api/bytedance/doubao-seedance-1-0-pro-i2v",
+                      "guides/model-api/bytedance/doubao-seedance-1-0-pro-fast-t2v",
+                      "guides/model-api/bytedance/doubao-seedance-1-0-pro-fast-i2v",
+                      "guides/model-api/bytedance/doubao-seedance-1-0-lite-i2v",
+                      "guides/model-api/bytedance/doubao-seedance-1-0-lite-t2v",
+                      "guides/model-api/bytedance/doubao-seedream-3-0-t2i",
+                      "guides/model-api/bytedance/doubao-seedream-4-0-t2i",
+                      "guides/model-api/bytedance/doubao-seedream-4-0-i2i",
+                      "guides/model-api/bytedance/doubao-seedream-4-5-t2i",
+                      "guides/model-api/bytedance/doubao-seedream-4-5-i2i",
+                      "guides/model-api/bytedance/doubao-seedream-5-0-t2i",
+                      "guides/model-api/bytedance/doubao-seedream-5-0-i2i",
+                      "guides/model-api/bytedance/seedance-task-query"
+                    ]
+                  },
+                  {
                     "group": "Alibaba",
                     "icon": "/images/providers/alibaba.svg",
                     "pages": []
@@ -134,7 +163,8 @@
                       "guides/model-api/openai/gpt-5-2-chat-latest",
                       "guides/model-api/openai/gpt-5-2-codex",
                       "guides/model-api/openai/gpt-5-3-codex",
-                      "guides/model-api/openai/gpt-5-4"
+                      "guides/model-api/openai/gpt-5-4",
+                      "guides/model-api/openai/sora-2"
                     ]
                   }
                 ]
@@ -151,6 +181,12 @@
           {
             "tab": "API Reference",
             "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "api-reference/introduction"
+                ]
+              },
               {
                 "group": "Model APIs",
                 "pages": [
@@ -178,6 +214,35 @@
                       "api-reference/model-api/anthropic/claude-sonnet-4-5-20250929-thinking",
                       "api-reference/model-api/anthropic/claude-sonnet-4-6",
                       "api-reference/model-api/anthropic/claude-sonnet-4-6-thinking"
+                    ]
+                  },
+                  {
+                    "group": "ByteDance",
+                    "icon": "/images/providers/bytedance.svg",
+                    "pages": [
+                      "api-reference/model-api/bytedance/doubao-seed-1-6-flash-250828",
+                      "api-reference/model-api/bytedance/doubao-seed-1-6-251015",
+                      "api-reference/model-api/bytedance/doubao-seed-1-6-lite-251015",
+                      "api-reference/model-api/bytedance/glm-4-7-251222",
+                      "api-reference/model-api/bytedance/deepseek-v3-2-251201",
+                      "api-reference/model-api/bytedance/doubao-seed-1-8-251228",
+                      "api-reference/model-api/bytedance/doubao-seed-1-6-vision-250815",
+                      "api-reference/model-api/bytedance/doubao-seedance-1-5-pro-251215-t2v",
+                      "api-reference/model-api/bytedance/doubao-seedance-1-5-pro-251215-i2v",
+                      "api-reference/model-api/bytedance/doubao-seedance-1-0-pro-250528-t2v",
+                      "api-reference/model-api/bytedance/doubao-seedance-1-0-pro-250528-i2v",
+                      "api-reference/model-api/bytedance/doubao-seedance-1-0-pro-fast-251015-t2v",
+                      "api-reference/model-api/bytedance/doubao-seedance-1-0-pro-fast-251015-i2v",
+                      "api-reference/model-api/bytedance/doubao-seedance-1-0-lite-i2v-250428",
+                      "api-reference/model-api/bytedance/doubao-seedance-1-0-lite-t2v-250428",
+                      "api-reference/model-api/bytedance/doubao-seedream-3-0-t2i-250415",
+                      "api-reference/model-api/bytedance/doubao-seedream-4-0-250828-t2i",
+                      "api-reference/model-api/bytedance/doubao-seedream-4-0-250828-i2i",
+                      "api-reference/model-api/bytedance/doubao-seedream-4-5-251128-t2i",
+                      "api-reference/model-api/bytedance/doubao-seedream-4-5-251128-i2i",
+                      "api-reference/model-api/bytedance/doubao-seedream-5-0-260128-t2i",
+                      "api-reference/model-api/bytedance/doubao-seedream-5-0-260128-i2i",
+                      "api-reference/model-api/bytedance/seedance-task-query"
                     ]
                   },
                   {
@@ -249,7 +314,10 @@
                       "api-reference/model-api/openai/gpt-5-2-chat-latest",
                       "api-reference/model-api/openai/gpt-5-2-codex",
                       "api-reference/model-api/openai/gpt-5-3-codex",
-                      "api-reference/model-api/openai/gpt-5-4"
+                      "api-reference/model-api/openai/gpt-5-4",
+                      "api-reference/model-api/openai/sora-2",
+                      "api-reference/model-api/openai/sora-2-query",
+                      "api-reference/model-api/openai/sora-2-download"
                     ]
                   }
                 ]
@@ -308,6 +376,35 @@
                       "zh/guides/model-api/anthropic/claude-sonnet-4-5-thinking",
                       "zh/guides/model-api/anthropic/claude-sonnet-4-6",
                       "zh/guides/model-api/anthropic/claude-sonnet-4-6-thinking"
+                    ]
+                  },
+                  {
+                    "group": "ByteDance",
+                    "icon": "/images/providers/bytedance.svg",
+                    "pages": [
+                      "zh/guides/model-api/bytedance/doubao-seed-1-6-flash",
+                      "zh/guides/model-api/bytedance/doubao-seed-1-6",
+                      "zh/guides/model-api/bytedance/doubao-seed-1-6-lite",
+                      "zh/guides/model-api/bytedance/glm-4-7",
+                      "zh/guides/model-api/bytedance/deepseek-v3-2",
+                      "zh/guides/model-api/bytedance/doubao-seed-1-8",
+                      "zh/guides/model-api/bytedance/doubao-seed-1-6-vision",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-5-pro-t2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-5-pro-i2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-0-pro-t2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-0-pro-i2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-0-pro-fast-t2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-0-pro-fast-i2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-0-lite-i2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-0-lite-t2v",
+                      "zh/guides/model-api/bytedance/doubao-seedream-3-0-t2i",
+                      "zh/guides/model-api/bytedance/doubao-seedream-4-0-t2i",
+                      "zh/guides/model-api/bytedance/doubao-seedream-4-0-i2i",
+                      "zh/guides/model-api/bytedance/doubao-seedream-4-5-t2i",
+                      "zh/guides/model-api/bytedance/doubao-seedream-4-5-i2i",
+                      "zh/guides/model-api/bytedance/doubao-seedream-5-0-t2i",
+                      "zh/guides/model-api/bytedance/doubao-seedream-5-0-i2i",
+                      "zh/guides/model-api/bytedance/seedance-task-query"
                     ]
                   },
                   {
@@ -379,7 +476,8 @@
                       "zh/guides/model-api/openai/gpt-5-2-chat-latest",
                       "zh/guides/model-api/openai/gpt-5-2-codex",
                       "zh/guides/model-api/openai/gpt-5-3-codex",
-                      "zh/guides/model-api/openai/gpt-5-4"
+                      "zh/guides/model-api/openai/gpt-5-4",
+                      "zh/guides/model-api/openai/sora-2"
                     ]
                   }
                 ]
@@ -396,6 +494,12 @@
           {
             "tab": "API 参考",
             "groups": [
+              {
+                "group": "概览",
+                "pages": [
+                  "zh/api-reference/introduction"
+                ]
+              },
               {
                 "group": "模型 API",
                 "pages": [
@@ -423,6 +527,35 @@
                       "zh/api-reference/model-api/anthropic/claude-sonnet-4-5-20250929-thinking",
                       "zh/api-reference/model-api/anthropic/claude-sonnet-4-6",
                       "zh/api-reference/model-api/anthropic/claude-sonnet-4-6-thinking"
+                    ]
+                  },
+                  {
+                    "group": "ByteDance",
+                    "icon": "/images/providers/bytedance.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/bytedance/doubao-seed-1-6-flash-250828",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-1-6-251015",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-1-6-lite-251015",
+                      "zh/api-reference/model-api/bytedance/glm-4-7-251222",
+                      "zh/api-reference/model-api/bytedance/deepseek-v3-2-251201",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-1-8-251228",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-1-6-vision-250815",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-5-pro-251215-t2v",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-5-pro-251215-i2v",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-pro-250528-t2v",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-pro-250528-i2v",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-pro-fast-251015-t2v",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-pro-fast-251015-i2v",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-lite-i2v-250428",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-lite-t2v-250428",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-3-0-t2i-250415",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-4-0-250828-t2i",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-4-0-250828-i2i",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-4-5-251128-t2i",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-4-5-251128-i2i",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-5-0-260128-t2i",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-5-0-260128-i2i",
+                      "zh/api-reference/model-api/bytedance/seedance-task-query"
                     ]
                   },
                   {
@@ -494,7 +627,10 @@
                       "zh/api-reference/model-api/openai/gpt-5-2-chat-latest",
                       "zh/api-reference/model-api/openai/gpt-5-2-codex",
                       "zh/api-reference/model-api/openai/gpt-5-3-codex",
-                      "zh/api-reference/model-api/openai/gpt-5-4"
+                      "zh/api-reference/model-api/openai/gpt-5-4",
+                      "zh/api-reference/model-api/openai/sora-2",
+                      "zh/api-reference/model-api/openai/sora-2-query",
+                      "zh/api-reference/model-api/openai/sora-2-download"
                     ]
                   }
                 ]
