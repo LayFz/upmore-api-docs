@@ -26,9 +26,9 @@ paths:
                 model:
                   type: string
                   enum:
-                    - official-sora-2
+                    - sora-2
                   description: "Video generation model ID."
-                  example: official-sora-2
+                  example: sora-2
                 prompt:
                   type: string
                   description: "Natural language description of the video. Include shot type, subject, action, setting, lighting, and desired camera movement for best results. Keep it single-purpose for optimal adherence."

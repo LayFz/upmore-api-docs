@@ -26,9 +26,9 @@ paths:
                 model:
                   type: string
                   enum:
-                    - official-sora-2
+                    - sora-2
                   description: "视频生成模型 ID"
-                  example: official-sora-2
+                  example: sora-2
                 prompt:
                   type: string
                   description: "视频内容的自然语言描述。包括镜头类型、主题、动作、场景、光照和所需的相机运动，以减少歧义。保持单一用途以获得最佳效果。"
