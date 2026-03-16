@@ -1,0 +1,84 @@
+---
+title: "Gemini 3.1 Flash Image Preview"
+description: "通过 Gemini API 调用 Google Gemini 3.1 Flash Image Preview 进行快速 AI 图片生成。"
+---
+
+Gemini 3.1 Flash Image Preview 是 Google 的快速图片生成模型，通过 AnyFast 以原生 Gemini API 提供服务。可以根据文本提示生成图片，也可以编辑已有图片，具有更低的延迟。
+
+## 核心能力
+
+- **文生图** — 根据文本描述生成图片
+- **图片编辑** — 通过文本指令编辑已有图片
+- **宽高比控制** — 配置输出图片尺寸
+- **多模态输入** — 同时接受文本和图片输入
+- **快速推理** — 相比 Pro 模型具有更低的延迟
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl "https://www.anyfast.ai/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key=YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "role": "user",
+        "parts": [{ "text": "生成一张山间日落的图片" }]
+      }
+    ],
+    "generationConfig": {
+      "responseModalities": ["IMAGE"],
+      "imageConfig": {
+        "aspectRatio": "16:9"
+      }
+    }
+  }'
+```
+
+```python Python
+import requests
+import base64
+
+url = "https://www.anyfast.ai/v1beta/models/gemini-3.1-flash-image-preview:generateContent"
+params = {"key": "YOUR_API_KEY"}
+data = {
+    "contents": [
+        {
+            "role": "user",
+            "parts": [{"text": "生成一张山间日落的图片"}]
+        }
+    ],
+    "generationConfig": {
+        "responseModalities": ["IMAGE"],
+        "imageConfig": {
+            "aspectRatio": "16:9"
+        }
+    }
+}
+
+response = requests.post(url, params=params, json=data)
+result = response.json()
+image_data = result["candidates"][0]["content"]["parts"][0]["inline_data"]["data"]
+with open("output.png", "wb") as f:
+    f.write(base64.b64decode(image_data))
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `key` | string | 是 | API 密钥（查询参数） |
+| `contents` | array | 是 | `{ role, parts }` 对象数组 |
+| `generationConfig.responseModalities` | array | 是 | 必须包含 `IMAGE` |
+| `generationConfig.imageConfig.aspectRatio` | string | 否 | 如 `1:1`、`16:9`、`9:16` |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/google/gemini-3.1-flash-image-preview"
+>
+  查看 Gemini 3.1 Flash Image Preview 的交互式 API Playground。
+</Card>
