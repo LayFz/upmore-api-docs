@@ -1,0 +1,77 @@
+---
+title: "Gemini 3.1 Flash Lite Preview"
+description: "通过 Gemini API 调用 Google Gemini 3.1 Flash Lite Preview。快速高效的文本生成。"
+---
+
+Gemini 3.1 Flash Lite Preview 是 Google 轻量高效的语言模型，通过 AnyFast 以原生 Gemini API 提供服务。针对低延迟和高性价比进行优化，适合高吞吐量应用场景。
+
+## 核心能力
+
+- **原生 Gemini API** — 使用 Google 原生 API 格式，完整功能访问
+- **快速推理** — 针对低延迟响应优化
+- **多轮对话** — 支持系统指令的复杂对话
+- **成本高效** — 适合大规模高并发应用
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl "https://www.anyfast.ai/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "role": "user",
+        "parts": [{ "text": "用简单的语言解释量子计算。" }]
+      }
+    ],
+    "generationConfig": {
+      "temperature": 1,
+      "topP": 1
+    }
+  }'
+```
+
+```python Python
+import requests
+
+url = "https://www.anyfast.ai/v1beta/models/gemini-3.1-flash-lite-preview:generateContent"
+params = {"key": "YOUR_API_KEY"}
+data = {
+    "contents": [
+        {
+            "role": "user",
+            "parts": [{"text": "用简单的语言解释量子计算。"}]
+        }
+    ],
+    "generationConfig": {
+        "temperature": 1,
+        "topP": 1
+    }
+}
+
+response = requests.post(url, params=params, json=data)
+result = response.json()
+print(result["candidates"][0]["content"]["parts"][0]["text"])
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `key` | string | 是 | API 密钥（查询参数） |
+| `contents` | array | 是 | `{ role, parts }` 对象数组 |
+| `systemInstruction` | object | 否 | 包含 `parts` 数组的系统指令 |
+| `generationConfig.temperature` | float | 否 | `0`–`2`，控制随机性，默认 `1` |
+| `generationConfig.topP` | float | 否 | 核采样阈值，默认 `1` |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/google/gemini-3.1-flash-lite-preview"
+>
+  查看 Gemini 3.1 Flash Lite Preview 的交互式 API Playground。
+</Card>

@@ -4,10 +4,14 @@
   "name": "AnyFast",
   "description": "AnyFast API documentation — unified access to AI models from Anthropic, ByteDance, OpenAI, and more.",
   "seo": {
-    "indexHiddenPages": false
-  },
-  "og": {
-    "image": "/images/layfz/social-media-cover.png"
+    "indexHiddenPages": false,
+    "metatags": {
+      "og:image": "https://docs.anyfast.ai/images/layfz/social-media-cover.png",
+      "og:site_name": "AnyFast Docs",
+      "twitter:card": "summary_large_image",
+      "twitter:site": "@anyfast_ai",
+      "twitter:image": "https://docs.anyfast.ai/images/layfz/social-media-cover.png"
+    }
   },
   "metadata": {
     "og:site_name": "AnyFast Docs",
@@ -102,13 +106,18 @@
                     "group": "Google",
                     "icon": "/images/providers/google.svg",
                     "pages": [
+                      "guides/model-api/google/gemini-3.1-flash-image-preview",
+                      "guides/model-api/google/gemini-3.1-pro-preview",
+                      "guides/model-api/google/gemini-3.1-flash-lite-preview",
                       "guides/model-api/google/gemini-3-pro-preview",
                       "guides/model-api/google/gemini-3-pro-preview-stream",
                       "guides/model-api/google/gemini-3-pro-image-preview",
+                      "guides/model-api/google/gemini-3-flash-preview",
                       "guides/model-api/google/gemini-2-5-pro",
                       "guides/model-api/google/gemini-2-5-pro-stream",
                       "guides/model-api/google/gemini-2-5-flash",
                       "guides/model-api/google/gemini-2-5-flash-image",
+                      "guides/model-api/google/gemini-2.5-flash-lite",
                       "guides/model-api/google/gemini-2-0-flash"
                     ]
                   },
@@ -253,13 +262,18 @@
                     "group": "Google",
                     "icon": "/images/providers/google.svg",
                     "pages": [
+                      "api-reference/model-api/google/gemini-3.1-flash-image-preview",
+                      "api-reference/model-api/google/gemini-3.1-pro-preview",
+                      "api-reference/model-api/google/gemini-3.1-flash-lite-preview",
                       "api-reference/model-api/google/gemini-3-pro-preview",
                       "api-reference/model-api/google/gemini-3-pro-preview-stream",
                       "api-reference/model-api/google/gemini-3-pro-image-preview",
+                      "api-reference/model-api/google/gemini-3-flash-preview",
                       "api-reference/model-api/google/gemini-2-5-pro",
                       "api-reference/model-api/google/gemini-2-5-pro-stream",
                       "api-reference/model-api/google/gemini-2-5-flash",
                       "api-reference/model-api/google/gemini-2-5-flash-image",
+                      "api-reference/model-api/google/gemini-2.5-flash-lite",
                       "api-reference/model-api/google/gemini-2-0-flash"
                     ]
                   },
@@ -415,13 +429,18 @@
                     "group": "Google",
                     "icon": "/images/providers/google.svg",
                     "pages": [
+                      "zh/guides/model-api/google/gemini-3.1-flash-image-preview",
+                      "zh/guides/model-api/google/gemini-3.1-pro-preview",
+                      "zh/guides/model-api/google/gemini-3.1-flash-lite-preview",
                       "zh/guides/model-api/google/gemini-3-pro-preview",
                       "zh/guides/model-api/google/gemini-3-pro-preview-stream",
                       "zh/guides/model-api/google/gemini-3-pro-image-preview",
+                      "zh/guides/model-api/google/gemini-3-flash-preview",
                       "zh/guides/model-api/google/gemini-2-5-pro",
                       "zh/guides/model-api/google/gemini-2-5-pro-stream",
                       "zh/guides/model-api/google/gemini-2-5-flash",
                       "zh/guides/model-api/google/gemini-2-5-flash-image",
+                      "zh/guides/model-api/google/gemini-2.5-flash-lite",
                       "zh/guides/model-api/google/gemini-2-0-flash"
                     ]
                   },
@@ -566,13 +585,18 @@
                     "group": "Google",
                     "icon": "/images/providers/google.svg",
                     "pages": [
+                      "zh/api-reference/model-api/google/gemini-3.1-flash-image-preview",
+                      "zh/api-reference/model-api/google/gemini-3.1-pro-preview",
+                      "zh/api-reference/model-api/google/gemini-3.1-flash-lite-preview",
                       "zh/api-reference/model-api/google/gemini-3-pro-preview",
                       "zh/api-reference/model-api/google/gemini-3-pro-preview-stream",
                       "zh/api-reference/model-api/google/gemini-3-pro-image-preview",
+                      "zh/api-reference/model-api/google/gemini-3-flash-preview",
                       "zh/api-reference/model-api/google/gemini-2-5-pro",
                       "zh/api-reference/model-api/google/gemini-2-5-pro-stream",
                       "zh/api-reference/model-api/google/gemini-2-5-flash",
                       "zh/api-reference/model-api/google/gemini-2-5-flash-image",
+                      "zh/api-reference/model-api/google/gemini-2.5-flash-lite",
                       "zh/api-reference/model-api/google/gemini-2-0-flash"
                     ]
                   },
@@ -687,5 +711,10 @@
   },
   "footer": {
     "socials": {}
+  },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-Q8ECQEP3W9"
+    }
   }
 }
