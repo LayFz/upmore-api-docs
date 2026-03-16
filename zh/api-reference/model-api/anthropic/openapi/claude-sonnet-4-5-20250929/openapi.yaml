@@ -64,7 +64,6 @@ paths:
                   type: number
                   minimum: 0
                   maximum: 1
-                  default: 1
                   description: 核采样阈值。
                 frequency_penalty:
                   type: number
