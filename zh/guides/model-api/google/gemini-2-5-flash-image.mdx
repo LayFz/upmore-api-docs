@@ -1,18 +1,19 @@
 ---
 title: "Gemini 2.5 Flash Image"
-description: "通过 Gemini API 调用 Google Gemini 2.5 Flash Image 进行 AI 图片生成。"
+description: "通过 Gemini API 调用 Google Gemini 2.5 Flash Image 进行 AI 图片生成与编辑。"
 ---
 
-Gemini 2.5 Flash Image 是 Google 的图片生成模型，通过 AnyFast 以原生 Gemini API 提供服务。可以根据文本提示生成图片，也可以编辑已有图片。
+Gemini 2.5 Flash Image 是 Google 的图片生成模型，通过 AnyFast 以原生 Gemini API 提供服务。支持文字生成图片，也可传入参考图片进行图片编辑。
 
 ## 核心能力
 
 - **文生图** — 根据文本描述生成图片
-- **图片编辑** — 通过文本指令编辑已有图片
-- **宽高比控制** — 配置输出图片尺寸
-- **多模态输入** — 同时接受文本和图片输入
+- **图片编辑** — 在 `inline_data` 中传入参考图，配合文字指令进行编辑
+- **宽高比控制** — `1:1`、`4:3`、`3:4`、`16:9`、`9:16`
+- **分辨率控制** — `1K`（~1024px）、`2K`（~2048px）、`4K`（~4096px，按长边）
+- **多模态输出** — 通过 `responseModalities: ["TEXT", "IMAGE"]` 同时返回图片和文字说明
 
-## 快速示例
+## 文生图示例
 
 <CodeGroup>
 
@@ -23,25 +24,26 @@ curl "https://www.anyfast.ai/v1beta/models/gemini-2.5-flash-image:generateConten
     "contents": [
       {
         "role": "user",
-        "parts": [{ "text": "生成一张山间日落的图片" }]
+        "parts": [
+          { "text": "生成一张山间日落的图片" }
+        ]
       }
     ],
     "generationConfig": {
-      "responseModalities": ["IMAGE"],
+      "responseModalities": ["TEXT", "IMAGE"],
       "imageConfig": {
-        "aspectRatio": "16:9"
+        "aspectRatio": "16:9",
+        "imageSize": "1K"
       }
     }
   }'
 ```
 
 ```python Python
-import requests
-import base64
+import requests, base64
 
 url = "https://www.anyfast.ai/v1beta/models/gemini-2.5-flash-image:generateContent"
-params = {"key": "YOUR_API_KEY"}
-data = {
+response = requests.post(url, params={"key": "YOUR_API_KEY"}, json={
     "contents": [
         {
             "role": "user",
@@ -49,18 +51,100 @@ data = {
         }
     ],
     "generationConfig": {
-        "responseModalities": ["IMAGE"],
-        "imageConfig": {
-            "aspectRatio": "16:9"
-        }
+        "responseModalities": ["TEXT", "IMAGE"],
+        "imageConfig": {"aspectRatio": "16:9", "imageSize": "1K"}
     }
-}
+})
 
-response = requests.post(url, params=params, json=data)
-result = response.json()
-image_data = result["candidates"][0]["content"]["parts"][0]["inline_data"]["data"]
-with open("output.png", "wb") as f:
-    f.write(base64.b64decode(image_data))
+for part in response.json()["candidates"][0]["content"]["parts"]:
+    if "inline_data" in part:
+        with open("output.jpg", "wb") as f:
+            f.write(base64.b64decode(part["inline_data"]["data"]))
+        print("图片已保存至 output.jpg")
+    elif "text" in part:
+        print("说明文字：", part["text"])
+```
+
+</CodeGroup>
+
+## 图片编辑示例（传入参考图）
+
+在同一个 `parts` 数组中同时传入 `text` 指令和 `inline_data` 参考图。
+
+<CodeGroup>
+
+```bash cURL
+# 先将图片转为 base64：
+# BASE64=$(base64 -i your_photo.jpg)
+#
+# 然后发送请求：
+curl "https://www.anyfast.ai/v1beta/models/gemini-2.5-flash-image:generateContent?key=YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "这是我的一张照片，请在我旁边加一只羊驼"
+          },
+          {
+            "inline_data": {
+              "mime_type": "image/jpeg",
+              "data": "<YOUR_BASE64_ENCODED_IMAGE>"
+            }
+          }
+        ]
+      }
+    ],
+    "generationConfig": {
+      "responseModalities": ["TEXT", "IMAGE"],
+      "imageConfig": {
+        "aspectRatio": "1:1",
+        "imageSize": "1K"
+      }
+    }
+  }'
+```
+
+```python Python
+import requests, base64
+
+# 读取并编码参考图片
+with open("your_photo.jpg", "rb") as f:
+    image_b64 = base64.b64encode(f.read()).decode("utf-8")
+
+url = "https://www.anyfast.ai/v1beta/models/gemini-2.5-flash-image:generateContent"
+response = requests.post(url, params={"key": "YOUR_API_KEY"}, json={
+    "contents": [
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "这是我的一张照片，请在我旁边加一只羊驼"
+                },
+                {
+                    "inline_data": {
+                        "mime_type": "image/jpeg",
+                        "data": image_b64          # ← 将 base64 字符串粘贴至此
+                    }
+                }
+            ]
+        }
+    ],
+    "generationConfig": {
+        "responseModalities": ["TEXT", "IMAGE"],
+        "imageConfig": {"aspectRatio": "1:1", "imageSize": "1K"}
+    }
+})
+
+for part in response.json()["candidates"][0]["content"]["parts"]:
+    if "inline_data" in part:
+        with open("output.jpg", "wb") as f:
+            f.write(base64.b64decode(part["inline_data"]["data"]))
+        print("图片已保存至 output.jpg")
+    elif "text" in part:
+        print("说明文字：", part["text"])
 ```
 
 </CodeGroup>
@@ -70,9 +154,12 @@ with open("output.png", "wb") as f:
 | 参数 | 类型 | 必填 | 说明 |
 |---|---|---|---|
 | `key` | string | 是 | API 密钥（查询参数） |
-| `contents` | array | 是 | `{ role, parts }` 对象数组 |
-| `generationConfig.responseModalities` | array | 是 | 必须包含 `IMAGE` |
-| `generationConfig.imageConfig.aspectRatio` | string | 否 | 如 `1:1`、`16:9`、`9:16` |
+| `contents[].parts[].text` | string | 是 | 文字提示或指令 |
+| `contents[].parts[].inline_data.mime_type` | string | 否 | 参考图类型：`image/jpeg`、`image/png`、`image/webp` |
+| `contents[].parts[].inline_data.data` | string | 否 | Base64 编码的参考图数据 |
+| `generationConfig.responseModalities` | array | 是 | `["IMAGE"]` 或 `["TEXT", "IMAGE"]` |
+| `generationConfig.imageConfig.aspectRatio` | string | 否 | `1:1` / `4:3` / `3:4` / `16:9` / `9:16` |
+| `generationConfig.imageConfig.imageSize` | string | 否 | `1K` / `2K` / `4K`（默认 `1K`） |
 
 <Card
   title="API 参考"

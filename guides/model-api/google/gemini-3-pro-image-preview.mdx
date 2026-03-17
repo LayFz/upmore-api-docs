@@ -1,18 +1,19 @@
 ---
 title: "Gemini 3 Pro Image Preview"
-description: "Google's Gemini 3 Pro Image Preview for AI image generation via Gemini API."
+description: "Google's Gemini 3 Pro Image Preview for AI image generation and editing via Gemini API."
 ---
 
-Gemini 3 Pro Image Preview is Google's image generation model, available through AnyFast via the native Gemini API. It can generate images from text prompts and edit existing images.
+Gemini 3 Pro Image Preview is Google's image generation model, available through AnyFast via the native Gemini API. It can generate images from text prompts and edit existing images using a reference photo.
 
 ## Key capabilities
 
 - **Text-to-image** — Generate images from text descriptions
-- **Image editing** — Edit existing images with text instructions
-- **Aspect ratio control** — Configure output image dimensions
-- **Multi-modal input** — Accept both text and image inputs
+- **Image editing** — Pass a reference image in `inline_data` alongside your text instruction
+- **Aspect ratio control** — `1:1`, `4:3`, `3:4`, `16:9`, `9:16`
+- **Resolution control** — `1K` (~1024px), `2K` (~2048px), `4K` (~4096px) on the long edge
+- **Multi-modal output** — Return both the image and a text caption with `responseModalities: ["TEXT", "IMAGE"]`
 
-## Quick example
+## Text-to-image example
 
 <CodeGroup>
 
@@ -23,25 +24,26 @@ curl "https://www.anyfast.ai/v1beta/models/gemini-3-pro-image-preview:generateCo
     "contents": [
       {
         "role": "user",
-        "parts": [{ "text": "Generate an image of a sunset over mountains" }]
+        "parts": [
+          { "text": "Generate an image of a sunset over mountains" }
+        ]
       }
     ],
     "generationConfig": {
-      "responseModalities": ["IMAGE"],
+      "responseModalities": ["TEXT", "IMAGE"],
       "imageConfig": {
-        "aspectRatio": "16:9"
+        "aspectRatio": "16:9",
+        "imageSize": "1K"
       }
     }
   }'
 ```
 
 ```python Python
-import requests
-import base64
+import requests, base64
 
 url = "https://www.anyfast.ai/v1beta/models/gemini-3-pro-image-preview:generateContent"
-params = {"key": "YOUR_API_KEY"}
-data = {
+response = requests.post(url, params={"key": "YOUR_API_KEY"}, json={
     "contents": [
         {
             "role": "user",
@@ -49,18 +51,100 @@ data = {
         }
     ],
     "generationConfig": {
-        "responseModalities": ["IMAGE"],
-        "imageConfig": {
-            "aspectRatio": "16:9"
-        }
+        "responseModalities": ["TEXT", "IMAGE"],
+        "imageConfig": {"aspectRatio": "16:9", "imageSize": "1K"}
     }
-}
+})
 
-response = requests.post(url, params=params, json=data)
-result = response.json()
-image_data = result["candidates"][0]["content"]["parts"][0]["inline_data"]["data"]
-with open("output.png", "wb") as f:
-    f.write(base64.b64decode(image_data))
+for part in response.json()["candidates"][0]["content"]["parts"]:
+    if "inline_data" in part:
+        with open("output.jpg", "wb") as f:
+            f.write(base64.b64decode(part["inline_data"]["data"]))
+        print("Image saved to output.jpg")
+    elif "text" in part:
+        print("Caption:", part["text"])
+```
+
+</CodeGroup>
+
+## Image editing example (with reference image)
+
+Include both a `text` instruction and an `inline_data` reference image in the same `parts` array.
+
+<CodeGroup>
+
+```bash cURL
+# First encode your image to base64:
+# BASE64=$(base64 -i your_photo.jpg)
+#
+# Then send the request:
+curl "https://www.anyfast.ai/v1beta/models/gemini-3-pro-image-preview:generateContent?key=YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text": "Hi, this is a picture of me. Can you add a llama next to me?"
+          },
+          {
+            "inline_data": {
+              "mime_type": "image/jpeg",
+              "data": "<YOUR_BASE64_ENCODED_IMAGE>"
+            }
+          }
+        ]
+      }
+    ],
+    "generationConfig": {
+      "responseModalities": ["TEXT", "IMAGE"],
+      "imageConfig": {
+        "aspectRatio": "1:1",
+        "imageSize": "1K"
+      }
+    }
+  }'
+```
+
+```python Python
+import requests, base64
+
+# Read and encode your reference image
+with open("your_photo.jpg", "rb") as f:
+    image_b64 = base64.b64encode(f.read()).decode("utf-8")
+
+url = "https://www.anyfast.ai/v1beta/models/gemini-3-pro-image-preview:generateContent"
+response = requests.post(url, params={"key": "YOUR_API_KEY"}, json={
+    "contents": [
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "text": "Hi, this is a picture of me. Can you add a llama next to me?"
+                },
+                {
+                    "inline_data": {
+                        "mime_type": "image/jpeg",
+                        "data": image_b64          # ← paste your base64 string here
+                    }
+                }
+            ]
+        }
+    ],
+    "generationConfig": {
+        "responseModalities": ["TEXT", "IMAGE"],
+        "imageConfig": {"aspectRatio": "1:1", "imageSize": "1K"}
+    }
+})
+
+for part in response.json()["candidates"][0]["content"]["parts"]:
+    if "inline_data" in part:
+        with open("output.jpg", "wb") as f:
+            f.write(base64.b64decode(part["inline_data"]["data"]))
+        print("Image saved to output.jpg")
+    elif "text" in part:
+        print("Caption:", part["text"])
 ```
 
 </CodeGroup>
@@ -70,9 +154,12 @@ with open("output.png", "wb") as f:
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `key` | string | Yes | API key (query parameter) |
-| `contents` | array | Yes | Array of `{ role, parts }` objects |
-| `generationConfig.responseModalities` | array | Yes | Must include `IMAGE` |
-| `generationConfig.imageConfig.aspectRatio` | string | No | e.g. `1:1`, `16:9`, `9:16` |
+| `contents[].parts[].text` | string | Yes | Text prompt or instruction |
+| `contents[].parts[].inline_data.mime_type` | string | No | Reference image type: `image/jpeg`, `image/png`, `image/webp` |
+| `contents[].parts[].inline_data.data` | string | No | Base64-encoded reference image |
+| `generationConfig.responseModalities` | array | Yes | `["IMAGE"]` or `["TEXT", "IMAGE"]` |
+| `generationConfig.imageConfig.aspectRatio` | string | No | `1:1` / `4:3` / `3:4` / `16:9` / `9:16` |
+| `generationConfig.imageConfig.imageSize` | string | No | `1K` / `2K` / `4K` (default: `1K`) |
 
 <Card
   title="API Reference"
