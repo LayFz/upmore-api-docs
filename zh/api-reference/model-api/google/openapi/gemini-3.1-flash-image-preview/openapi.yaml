@@ -1,20 +1,20 @@
 openapi: 3.1.0
 info:
   title: Gemini 3.1 Flash Image Preview
-  description: 通过 AnyFast 代理调用 Google Gemini 3.1 Flash Image Preview
+  description: Google Gemini 3.1 Flash Image Preview via AnyFast proxy
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
 paths:
   /v1beta/models/gemini-3.1-flash-image-preview:generateContent:
     post:
-      operationId: Gemini31FlashImagePreviewGenerateImage
-      summary: 图片生成
-      description: 使用 Gemini 模型生成图片。
+      operationId: Gemini31FlashImagePreviewGenerateImageZh
+      summary: Image Generation
+      description: Generate images using Gemini model.
       parameters:
         - name: key
           in: query
-          description: API 密钥
+          description: API Key
           required: true
           schema:
             type: string
@@ -31,7 +31,10 @@ paths:
               properties:
                 contents:
                   type: array
-                  description: 对话内容数组，包含提示文本和可选的参考图片。
+                  description: >
+                    Array of conversation turns. Each turn has a role and parts.
+                    A part can be a text prompt, or an inline_data image (base64).
+                    To use a reference image, include both a text part and an inline_data part in the same parts array.
                   items:
                     type: object
                     properties:
@@ -41,26 +44,43 @@ paths:
                         example: user
                       parts:
                         type: array
+                        description: >
+                          List of content parts. Combine text and inline_data in the same array
+                          to send a prompt alongside a reference image.
                         items:
                           type: object
                           properties:
                             text:
                               type: string
-                              description: 文本提示
+                              description: Text prompt
+                              example: "Hi, this is a picture of me. Can you add a llama next to me?"
                             inline_data:
                               type: object
+                              description: >
+                                Reference image encoded as base64.
+                                Replace `data` with your actual base64-encoded image string.
                               properties:
                                 mime_type:
                                   type: string
-                                  description: 图片 MIME 类型（如 image/png）
-                                  example: image/png
+                                  description: "MIME type of the image. Supported: image/jpeg, image/png, image/webp"
+                                  enum:
+                                    - image/jpeg
+                                    - image/png
+                                    - image/webp
+                                  example: image/jpeg
                                 data:
                                   type: string
-                                  description: Base64 编码的图片数据
+                                  description: >
+                                    Base64-encoded image data. Paste your base64 string here.
+                                    Example: convert your image with `base64 image.jpg` or use an online tool.
+                                  example: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
                   example:
                     - role: user
                       parts:
-                        - text: "生成一只可爱的猫咪图片"
+                        - text: "Hi, this is a picture of me. Can you add a llama next to me?"
+                        - inline_data:
+                            mime_type: image/jpeg
+                            data: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
                 generationConfig:
                   type: object
                   required:
@@ -68,33 +88,75 @@ paths:
                   properties:
                     responseModalities:
                       type: array
-                      description: 响应模态，设为 IMAGE 以生成图片。
+                      description: >
+                        Output modalities. Use ["IMAGE"] for image-only output,
+                        or ["TEXT", "IMAGE"] to receive both a caption and the image.
                       items:
                         type: string
+                        enum: [TEXT, IMAGE]
                       example:
+                        - TEXT
                         - IMAGE
                     imageConfig:
                       type: object
+                      description: Image generation configuration
                       properties:
                         aspectRatio:
                           type: string
-                          description: 图片宽高比（如 1:1, 16:9, 9:16）
-                          example: "1:1"
+                          description: >
+                            Desired aspect ratio of the generated image.
+                          enum:
+                            - "1:1"
+                            - "4:3"
+                            - "3:4"
+                            - "16:9"
+                            - "9:16"
+                          example: "9:16"
+                        imageSize:
+                          type: string
+                          description: >
+                            Resolution of the generated image.
+                            1K ≈ 1024px, 2K ≈ 2048px, 4K ≈ 4096px on the long edge.
+                          enum:
+                            - "1K"
+                            - "2K"
+                            - "4K"
+                          example: "1K"
       responses:
         "200":
-          description: 成功生成图片
+          description: Image generated successfully
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/GenerateContentResponse"
+              example:
+                candidates:
+                  - content:
+                      role: model
+                      parts:
+                        - text: "Here is the image with a llama added next to you."
+                        - inline_data:
+                            mime_type: image/jpeg
+                            data: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+                    finishReason: STOP
+                usageMetadata:
+                  promptTokenCount: 10
+                  candidatesTokenCount: 1
+                  totalTokenCount: 11
         "400":
-          description: 请求参数有误
+          description: Invalid request
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         "401":
-          description: 未授权
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Rate limit exceeded
           content:
             application/json:
               schema:
@@ -118,24 +180,26 @@ components:
                     items:
                       type: object
                       properties:
+                        text:
+                          type: string
+                          description: Text caption (present when TEXT is in responseModalities)
                         inline_data:
                           type: object
+                          description: Generated image data
                           properties:
                             mime_type:
                               type: string
-                              example: image/png
+                              example: image/jpeg
                             data:
                               type: string
-                              format: byte
-                              description: Base64 编码的图片数据（二进制内容，不在页面内联展示）
-                              example: "iVBORw0KGgo..."
-                        text:
-                          type: string
+                              description: Base64-encoded generated image
+                              example: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
                   role:
                     type: string
                     example: model
               finishReason:
                 type: string
+                enum: [STOP, MAX_TOKENS, SAFETY, RECITATION, OTHER]
                 example: STOP
         usageMetadata:
           type: object
