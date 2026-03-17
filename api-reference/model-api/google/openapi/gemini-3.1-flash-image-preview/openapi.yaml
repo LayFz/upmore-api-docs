@@ -31,7 +31,10 @@ paths:
               properties:
                 contents:
                   type: array
-                  description: Array of contents with prompt text and optional reference images.
+                  description: >
+                    Array of conversation turns. Each turn has a role and parts.
+                    A part can be a text prompt, or an inline_data image (base64).
+                    To use a reference image, include both a text part and an inline_data part in the same parts array.
                   items:
                     type: object
                     properties:
@@ -41,26 +44,43 @@ paths:
                         example: user
                       parts:
                         type: array
+                        description: >
+                          List of content parts. Combine text and inline_data in the same array
+                          to send a prompt alongside a reference image.
                         items:
                           type: object
                           properties:
                             text:
                               type: string
                               description: Text prompt
+                              example: "Hi, this is a picture of me. Can you add a llama next to me?"
                             inline_data:
                               type: object
+                              description: >
+                                Reference image encoded as base64.
+                                Replace `data` with your actual base64-encoded image string.
                               properties:
                                 mime_type:
                                   type: string
-                                  description: Image MIME type (e.g. image/png)
-                                  example: image/png
+                                  description: "MIME type of the image. Supported: image/jpeg, image/png, image/webp"
+                                  enum:
+                                    - image/jpeg
+                                    - image/png
+                                    - image/webp
+                                  example: image/jpeg
                                 data:
                                   type: string
-                                  description: Base64 encoded image data
+                                  description: >
+                                    Base64-encoded image data. Paste your base64 string here.
+                                    Example: convert your image with `base64 image.jpg` or use an online tool.
+                                  example: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
                   example:
                     - role: user
                       parts:
-                        - text: "Generate an image of a cute cat"
+                        - text: "Hi, this is a picture of me. Can you add a llama next to me?"
+                        - inline_data:
+                            mime_type: image/jpeg
+                            data: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
                 generationConfig:
                   type: object
                   required:
@@ -68,18 +88,40 @@ paths:
                   properties:
                     responseModalities:
                       type: array
-                      description: Response modalities. Set to IMAGE for image generation.
+                      description: >
+                        Output modalities. Use ["IMAGE"] for image-only output,
+                        or ["TEXT", "IMAGE"] to receive both a caption and the image.
                       items:
                         type: string
+                        enum: [TEXT, IMAGE]
                       example:
+                        - TEXT
                         - IMAGE
                     imageConfig:
                       type: object
+                      description: Image generation configuration
                       properties:
                         aspectRatio:
                           type: string
-                          description: Image aspect ratio (e.g. 1:1, 16:9, 9:16)
-                          example: "1:1"
+                          description: >
+                            Desired aspect ratio of the generated image.
+                          enum:
+                            - "1:1"
+                            - "4:3"
+                            - "3:4"
+                            - "16:9"
+                            - "9:16"
+                          example: "9:16"
+                        imageSize:
+                          type: string
+                          description: >
+                            Resolution of the generated image.
+                            1K ≈ 1024px, 2K ≈ 2048px, 4K ≈ 4096px on the long edge.
+                          enum:
+                            - "1K"
+                            - "2K"
+                            - "4K"
+                          example: "1K"
       responses:
         "200":
           description: Image generated successfully
@@ -87,6 +129,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GenerateContentResponse"
+              example:
+                candidates:
+                  - content:
+                      role: model
+                      parts:
+                        - text: "Here is the image with a llama added next to you."
+                        - inline_data:
+                            mime_type: image/jpeg
+                            data: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+                    finishReason: STOP
+                usageMetadata:
+                  promptTokenCount: 10
+                  candidatesTokenCount: 1
+                  totalTokenCount: 11
         "400":
           description: Invalid request
           content:
@@ -95,6 +151,12 @@ paths:
                 $ref: "#/components/schemas/Error"
         "401":
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Rate limit exceeded
           content:
             application/json:
               schema:
@@ -118,24 +180,26 @@ components:
                     items:
                       type: object
                       properties:
+                        text:
+                          type: string
+                          description: Text caption (present when TEXT is in responseModalities)
                         inline_data:
                           type: object
+                          description: Generated image data
                           properties:
                             mime_type:
                               type: string
-                              example: image/png
+                              example: image/jpeg
                             data:
                               type: string
-                              format: byte
-                              description: Base64 encoded image data (binary content, not displayed inline)
-                              example: "iVBORw0KGgo..."
-                        text:
-                          type: string
+                              description: Base64-encoded generated image
+                              example: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
                   role:
                     type: string
                     example: model
               finishReason:
                 type: string
+                enum: [STOP, MAX_TOKENS, SAFETY, RECITATION, OTHER]
                 example: STOP
         usageMetadata:
           type: object
