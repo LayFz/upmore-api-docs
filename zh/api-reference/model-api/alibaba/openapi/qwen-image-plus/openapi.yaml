@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: "Qwen Image Plus"
-  description: "Qwen Image Plus text-to-image model via Alibaba via AnyFast API"
+  description: "通过 AnyFast API 调用阿里巴巴 Qwen Image Plus 文生图模型"
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -10,9 +10,9 @@ security:
 paths:
   /v1/images/generations:
     post:
-      operationId: createQwenImagePlusZh
-      summary: Text-to-Image Generation
-      description: "Generate an image from a text prompt. Returns the result synchronously."
+      operationId: createQwenImagePlus
+      summary: 生成图片
+      description: 根据文本描述生成图片。接口为同步调用，直接返回最终图片 URL。
       requestBody:
         required: true
         content:
@@ -27,35 +27,34 @@ paths:
                   type: string
                   enum:
                     - qwen-image-plus
-                  description: Model ID
+                  description: 模型 ID
                   example: qwen-image-plus
                 prompt:
                   type: string
-                  description: "Text description of the image to generate."
-                  example: "A cute cat in Studio Ghibli style"
+                  description: 图片描述文字。
+                  example: 吉卜力风格的可爱猫咪
                 n:
                   type: integer
                   minimum: 1
+                  maximum: 4
                   default: 1
-                  description: "Number of images to generate."
+                  description: 生成图片数量。
                 size:
                   type: string
-                  description: "Output image size, e.g. `1024x1024`, `768x1344`."
-                  example: "1024x1024"
+                  description: 输出图片尺寸，如 `1024x1024`、`768x1344`。
+                  example: 1024x1024
                 quality:
                   type: string
                   enum: [standard, hd]
-                  description: "Image quality. `standard` or `hd`."
-                  example: standard
+                  description: 图片质量，`standard` 或 `hd`。
                 response_format:
                   type: string
                   enum: [url, b64_json]
                   default: url
-                  description: "Return a URL or base64-encoded JSON."
-                  example: url
+                  description: 返回 URL 或 Base64 编码的 JSON。
       responses:
         "200":
-          description: Image generated successfully
+          description: 图片生成成功
           content:
             application/json:
               schema:
@@ -63,7 +62,7 @@ paths:
                 properties:
                   created:
                     type: integer
-                    example: 1773803391
+                    description: 创建时间戳
                   data:
                     type: array
                     items:
@@ -71,21 +70,37 @@ paths:
                       properties:
                         url:
                           type: string
-                          description: "Image download URL (valid ~24 hours)."
-                          example: "https://example.com/generated.png"
+                          description: 图片下载链接（有效期约 24 小时）。
                         b64_json:
                           type: string
-                          description: "Base64-encoded image (only when response_format=b64_json)."
+                          description: Base64 编码图片（仅 `response_format=b64_json` 时返回）。
                         revised_prompt:
                           type: string
-                          description: "AI-expanded prompt actually used for generation."
+                          description: AI 扩展后的实际提示词。
         "400":
-          description: Invalid request
+          description: 请求参数有误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "401":
-          description: Unauthorized
-        "429":
-          description: Rate limit exceeded
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
   securitySchemes:
     bearerAuth:
       type: http

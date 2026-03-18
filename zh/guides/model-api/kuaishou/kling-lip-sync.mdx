@@ -125,7 +125,7 @@ while True:
 | `input.session_id` | string | ✅ | 人脸识别步骤返回的会话 ID |
 | `input.face_image_url` | string | 否 | 人脸参考图片 URL，用于提升人物一致性 |
 | `input.text` | string | 文本模式必填 | 人物要说的文字内容 |
-| `input.voice_id` | string | 文本模式必填 | TTS 音色 ID |
+| `input.voice_id` | string | 文本模式必填 | TTS 音色 ID。可查阅[音色 ID 参考文档](https://docs.qingque.cn/s/home/eZQDvafJ4vXQkP8T9ZPvmye8S?identityId=2E1MlYrrPk4)在线试听并选择合适的音色。 |
 | `input.voice_language` | string | 文本模式必填 | 语言代码：`zh`（中文）或 `en`（英文） |
 | `input.audio_url` | string | 音频模式必填 | 音频文件的公网 URL |
 
@@ -137,10 +137,18 @@ while True:
 
 <Card
   title="前置步骤：人脸识别"
-  icon="scan-face"
+  icon="user"
   href="/zh/guides/model-api/kuaishou/kling-identify-face"
 >
   必须先调用此接口获取 session_id。
+</Card>
+
+<Card
+  title="音色 ID 参考文档"
+  icon="volume"
+  href="https://docs.qingque.cn/s/home/eZQDvafJ4vXQkP8T9ZPvmye8S?identityId=2E1MlYrrPk4"
+>
+  在线试听所有可用音色，选择适合的 voice_id 参数值。
 </Card>
 
 <Card

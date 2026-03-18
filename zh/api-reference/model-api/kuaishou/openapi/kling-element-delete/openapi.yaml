@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Kling Delete Element
-  description: Delete a custom element by element_id.
+  title: "Kling 删除主体"
+  description: "通过 element_id 删除自定义主体"
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -10,9 +10,9 @@ security:
 paths:
   /kling/v1/general/delete-elements:
     post:
-      operationId: deleteKlingElement
-      summary: Delete Element
-      description: Delete a custom element by its element_id. Only custom elements (not Kling presets) can be deleted.
+      operationId: deleteKlingElementZh
+      summary: 删除主体
+      description: 通过 `element_id` 删除自定义主体。仅可删除自定义主体，官方预设主体不可删除。
       requestBody:
         required: true
         content:
@@ -23,11 +23,11 @@ paths:
               properties:
                 element_id:
                   type: string
-                  description: The element ID to delete (from `elements[].element_id` in query results).
+                  description: 要删除的主体 ID（来自查询响应的 `elements[].element_id`）。
                   example: "863121023120580662"
       responses:
         "200":
-          description: Element deleted successfully
+          description: 删除成功
           content:
             application/json:
               schema:
@@ -35,21 +35,21 @@ paths:
                 properties:
                   code:
                     type: integer
+                    description: 0 表示成功
                     example: 0
                   message:
                     type: string
                     example: SUCCEED
                   request_id:
                     type: string
-                    example: "5b9a3935-f65b-4a86-a4cb-de073c95d563"
         "400":
-          description: Invalid request
+          description: 请求参数有误
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         "401":
-          description: Unauthorized
+          description: 未授权
           content:
             application/json:
               schema:

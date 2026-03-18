@@ -125,7 +125,7 @@ while True:
 | `input.session_id` | string | Yes | Session ID from the Identify Face step |
 | `input.face_image_url` | string | No | Reference face image URL for identity consistency |
 | `input.text` | string | Text mode | Text for the character to speak |
-| `input.voice_id` | string | Text mode | Voice ID for TTS synthesis |
+| `input.voice_id` | string | Text mode | Voice ID for TTS synthesis. See the [Voice ID reference](https://docs.qingque.cn/s/home/eZQDvafJ4vXQkP8T9ZPvmye8S?identityId=2E1MlYrrPk4) for available voices with audio previews. |
 | `input.voice_language` | string | Text mode | Language code: `zh` or `en` |
 | `input.audio_url` | string | Audio mode | Public URL of an audio file |
 
@@ -137,10 +137,18 @@ On success, the video download URL is available in `data.data.task_result.videos
 
 <Card
   title="Prerequisites: Identify Face"
-  icon="scan-face"
+  icon="user"
   href="/guides/model-api/kuaishou/kling-identify-face"
 >
   You must call this first to obtain a session_id.
+</Card>
+
+<Card
+  title="Voice ID Reference"
+  icon="volume"
+  href="https://docs.qingque.cn/s/home/eZQDvafJ4vXQkP8T9ZPvmye8S?identityId=2E1MlYrrPk4"
+>
+  Browse all available voice IDs with audio previews to choose the right voice for your lip sync.
 </Card>
 
 <Card

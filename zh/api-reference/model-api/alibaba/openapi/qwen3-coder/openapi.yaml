@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: "Qwen3-Coder"
-  description: "Qwen3-Coder chat model via Alibaba via AnyFast OpenAI-compatible API"
+  description: "通过 AnyFast OpenAI 兼容接口调用 阿里巴巴 Qwen3-Coder 模型"
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -10,9 +10,9 @@ security:
 paths:
   /v1/chat/completions:
     post:
-      operationId: createChatCompletionQwen3CoderZh
-      summary: Chat Completion
-      description: Creates a model response for the given chat conversation.
+      operationId: createChatCompletionQwen3Coder
+      summary: 创建对话补全
+      description: 根据给定的对话历史生成模型响应。
       requestBody:
         required: true
         content:
@@ -27,12 +27,12 @@ paths:
                   type: string
                   enum:
                     - qwen3-coder
-                  description: Model ID
+                  description: 模型 ID
                   example: qwen3-coder
                 messages:
                   type: array
                   minItems: 1
-                  description: A list of messages comprising the conversation so far.
+                  description: 对话消息列表。
                   items:
                     type: object
                     required:
@@ -46,69 +46,69 @@ paths:
                         type: string
                   example:
                     - role: user
-                      content: Hello!
+                      content: 你好！
                 max_tokens:
                   type: integer
                   minimum: 1
                   maximum: 8192
                   default: 8192
-                  description: The maximum number of tokens to generate.
+                  description: 最大生成 Token 数量。
                 temperature:
                   type: number
                   minimum: 0
                   maximum: 2
                   default: 1
-                  description: Sampling temperature. Higher values make output more random.
+                  description: 采样温度，越高输出越随机。
                   example: 1
                 top_p:
                   type: number
                   minimum: 0
                   maximum: 1
-                  description: Nucleus sampling threshold.
+                  description: 核采样阈值。
                 frequency_penalty:
                   type: number
                   minimum: -2
                   maximum: 2
                   default: 0
-                  description: Penalizes repeated tokens based on their frequency in the text so far.
+                  description: 频率惩罚，抑制已出现 token 的重复。
                 presence_penalty:
                   type: number
                   minimum: -2
                   maximum: 2
                   default: 0
-                  description: Penalizes tokens that have already appeared in the text.
+                  description: 存在惩罚，抑制已出现过的 token。
                 stream:
                   type: boolean
                   default: false
-                  description: If true, stream partial message deltas using SSE.
+                  description: 为 true 时通过 SSE 流式返回增量内容。
                 stop:
                   oneOf:
                     - type: string
                     - type: array
                       items:
                         type: string
-                  description: Sequences where the model will stop generating further tokens.
+                  description: 停止生成的序列。
       responses:
         "200":
-          description: Completion generated successfully
+          description: 成功生成响应
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ChatCompletion"
         "400":
-          description: Invalid request
+          description: 请求参数有误
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         "401":
-          description: Unauthorized
+          description: 未授权
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         "429":
-          description: Rate limit exceeded
+          description: 请求频率超限
           content:
             application/json:
               schema:
@@ -133,7 +133,7 @@ components:
           example: chat.completion
         created:
           type: integer
-          description: Unix timestamp
+          description: Unix 时间戳
         model:
           type: string
           example: qwen3-coder
@@ -152,7 +152,7 @@ components:
                     example: assistant
                   content:
                     type: string
-                    example: Hello! How can I help you today?
+                    example: 你好！有什么我可以帮你的吗？
               finish_reason:
                 type: string
                 enum: [stop, length, content_filter, null]

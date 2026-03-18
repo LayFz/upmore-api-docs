@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Kling Custom Element List
-  description: List all custom elements created by the current user.
+  title: "Kling 查询自定义主体列表"
+  description: "分页查询当前用户创建的所有自定义主体"
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -10,14 +10,14 @@ security:
 paths:
   /kling/v1/general/advanced-custom-elements:
     get:
-      operationId: listKlingCustomElements
-      summary: List Custom Elements
-      description: Retrieve a paginated list of all custom elements created by the current user.
+      operationId: listKlingCustomElementsZh
+      summary: 查询自定义主体列表
+      description: 分页获取当前用户创建的所有自定义主体列表。
       parameters:
         - name: pageNum
           in: query
           required: false
-          description: Page number, starting from 1.
+          description: 页码，从 1 开始。
           schema:
             type: integer
             default: 1
@@ -25,14 +25,14 @@ paths:
         - name: pageSize
           in: query
           required: false
-          description: Number of items per page.
+          description: 每页数量。
           schema:
             type: integer
             default: 10
             example: 10
       responses:
         "200":
-          description: List retrieved successfully
+          description: 查询成功
           content:
             application/json:
               schema:
@@ -44,9 +44,6 @@ paths:
                   message:
                     type: string
                     example: SUCCEED
-                  request_id:
-                    type: string
-                    example: "94005dc2-d539-4f44-b6ef-e113d180e63b"
                   data:
                     type: array
                     items:
@@ -57,51 +54,34 @@ paths:
                         task_status:
                           type: string
                           enum: [submitted, succeed, failed]
+                          description: 任务状态。
                         task_result:
                           type: object
                           properties:
                             elements:
                               type: array
                               items:
-                                $ref: "#/components/schemas/Element"
+                                type: object
+                                properties:
+                                  element_id:
+                                    type: integer
+                                  element_name:
+                                    type: string
+                                  status:
+                                    type: string
                         created_at:
                           type: integer
-                          description: Creation timestamp (ms)
+                          description: 创建时间（毫秒时间戳）
                         updated_at:
                           type: integer
-                          description: Update timestamp (ms)
-                        final_unit_deduction:
-                          type: string
         "401":
-          description: Unauthorized
+          description: 未授权
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
 components:
   schemas:
-    Element:
-      type: object
-      properties:
-        element_id:
-          type: integer
-        element_name:
-          type: string
-        element_description:
-          type: string
-        element_type:
-          type: string
-        status:
-          type: string
-        tag_list:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
     Error:
       type: object
       properties:

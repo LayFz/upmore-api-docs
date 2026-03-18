@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Kling Preset Element List
-  description: List official preset elements provided by Kling.
+  title: "Kling 查询官方预设主体列表"
+  description: "查询 Kling 官方提供的预设主体列表，所有用户均可使用"
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -10,14 +10,14 @@ security:
 paths:
   /kling/v1/general/advanced-presets-elements:
     get:
-      operationId: listKlingPresetElements
-      summary: List Preset Elements
-      description: Retrieve a paginated list of official preset elements provided by Kling. These elements have `owned_by` set to `"kling"`.
+      operationId: listKlingPresetElementsZh
+      summary: 查询官方预设主体列表
+      description: 分页获取 Kling 官方预设主体列表。预设主体的 `owned_by` 固定为 `"kling"`。
       parameters:
         - name: pageNum
           in: query
           required: false
-          description: Page number, starting from 1.
+          description: 页码，从 1 开始。
           schema:
             type: integer
             default: 1
@@ -25,14 +25,14 @@ paths:
         - name: pageSize
           in: query
           required: false
-          description: Number of items per page.
+          description: 每页数量。
           schema:
             type: integer
             default: 10
             example: 10
       responses:
         "200":
-          description: List retrieved successfully
+          description: 查询成功
           content:
             application/json:
               schema:
@@ -44,9 +44,6 @@ paths:
                   message:
                     type: string
                     example: SUCCEED
-                  request_id:
-                    type: string
-                    example: "20ba8938-4ccb-4295-a3c5-e401769a5853"
                   data:
                     type: array
                     items:
@@ -63,43 +60,41 @@ paths:
                             elements:
                               type: array
                               items:
-                                $ref: "#/components/schemas/PresetElement"
+                                type: object
+                                properties:
+                                  element_id:
+                                    type: integer
+                                  element_name:
+                                    type: string
+                                  element_description:
+                                    type: string
+                                  element_type:
+                                    type: string
+                                    example: image_refer
+                                  owned_by:
+                                    type: string
+                                    description: 固定为 `"kling"`
+                                    example: kling
+                                  status:
+                                    type: string
+                                    example: succeed
+                                  tag_list:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        id:
+                                          type: string
+                                        name:
+                                          type: string
         "401":
-          description: Unauthorized
+          description: 未授权
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
 components:
   schemas:
-    PresetElement:
-      type: object
-      properties:
-        element_id:
-          type: integer
-        element_name:
-          type: string
-        element_description:
-          type: string
-        element_type:
-          type: string
-          example: image_refer
-        owned_by:
-          type: string
-          description: Fixed value `kling` for preset elements
-          example: kling
-        status:
-          type: string
-          example: succeed
-        tag_list:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
     Error:
       type: object
       properties:

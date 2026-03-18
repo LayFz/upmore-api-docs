@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Kling Advanced Lip Sync
-  description: Generate a lip-synced video by driving facial movements from text (TTS) or an existing audio file.
+  title: "Kling 对口型生成"
+  description: "驱动视频中人物的嘴型匹配文本（TTS）或音频文件中的语音"
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -10,18 +10,18 @@ security:
 paths:
   /kling/v1/videos/advanced-lip-sync:
     post:
-      operationId: klingAdvancedLipSync
-      summary: Create Lip Sync Task
+      operationId: klingAdvancedLipSyncZh
+      summary: 创建对口型任务
       description: |
-        Create an asynchronous lip sync video generation task. The facial movements in the source video are re-animated to match the provided speech.
+        创建对口型视频生成异步任务。视频中人物的嘴型将与提供的语音内容对齐。
 
-        **Prerequisite**: call the `identify-face` endpoint first to obtain a `session_id`.
+        **前置条件**：必须先调用 `identify-face` 接口获取 `session_id`。
 
-        Two input modes are supported:
-        - **Text mode** — provide `text`, `voice_id`, and `voice_language`. The platform converts the text to speech using the specified voice and drives the lip movements.
-        - **Audio mode** — provide `audio_url`. The lip movements are driven directly by the supplied audio file.
+        支持两种输入方式：
+        - **文本模式**：提供 `text`、`voice_id`、`voice_language`，平台内置 TTS 合成语音并驱动嘴型。
+        - **音频模式**：提供 `audio_url`，直接用已有音频文件驱动嘴型。
 
-        After submission, poll `GET /kling/v1/videos/advanced-lip-sync/{task_id}` until `status` is `succeeded`.
+        提交后轮询 `GET /kling/v1/videos/advanced-lip-sync/{task_id}` 直到 `status` 为 `succeeded`。
       requestBody:
         required: true
         content:
@@ -36,36 +36,33 @@ paths:
                   properties:
                     session_id:
                       type: string
-                      description: Session ID obtained from the `identify-face` endpoint.
+                      description: 人脸识别接口返回的会话 ID。
                       example: abc123-session-id
                     face_image_url:
                       type: string
-                      description: Optional reference face image URL to improve identity consistency.
-                      example: https://example.com/face.jpg
+                      description: 人脸参考图片 URL（可选，用于提升人物一致性）。
                     text:
                       type: string
                       description: |
-                        Text for the character to speak (Text mode). The platform uses built-in TTS to synthesize the audio.
-                        Required when `audio_url` is not provided.
+                        人物要说的文字内容（文本模式）。与 `audio_url` 二选一。
                       example: 你好，欢迎来到我的频道
                     voice_id:
                       type: string
-                      description: Voice ID for TTS synthesis (Text mode). Required when `text` is provided.
+                      description: TTS 音色 ID（文本模式必填）。
                       example: girlfriend_1_cn
                     voice_language:
                       type: string
-                      description: Language code for TTS synthesis (Text mode). Required when `text` is provided.
+                      description: 语言代码（文本模式必填）。
                       enum: [zh, en]
                       example: zh
                     audio_url:
                       type: string
                       description: |
-                        Public URL of an audio file to drive lip movements directly (Audio mode).
-                        Required when `text` is not provided.
+                        音频文件的公网 URL（音频模式）。与 `text` 二选一。
                       example: https://example.com/speech.mp3
       responses:
         "200":
-          description: Lip sync task created
+          description: 对口型任务已创建
           content:
             application/json:
               schema:
@@ -73,11 +70,11 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: Task ID
+                    description: 任务 ID
                     example: task_abc123
                   task_id:
                     type: string
-                    description: Task ID (same as id)
+                    description: 任务 ID（同 id）
                     example: task_abc123
                   object:
                     type: string
@@ -87,24 +84,24 @@ paths:
                     example: kling-lip-sync
                   status:
                     type: string
-                    description: Initially empty; poll the query endpoint for updates.
+                    description: 初始为空，通过查询接口获取最新状态。
                     example: ""
                   progress:
                     type: integer
-                    description: Progress 0–100
+                    description: 进度 0–100
                     example: 0
                   created_at:
                     type: integer
-                    description: Unix timestamp
+                    description: Unix 时间戳
                     example: 1773812605
         "400":
-          description: Invalid request
+          description: 请求参数有误
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         "401":
-          description: Unauthorized
+          description: 未授权
           content:
             application/json:
               schema:

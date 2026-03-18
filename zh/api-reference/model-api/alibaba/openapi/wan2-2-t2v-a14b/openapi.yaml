@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: "Wan2.2 T2V A14B"
-  description: "Wan2.2 T2V A14B video generation model via Alibaba via AnyFast API"
+  description: "通过 AnyFast API 调用阿里巴巴 Wan2.2 文生视频模型（异步任务）"
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -10,11 +10,10 @@ security:
 paths:
   /v1/video/generations:
     post:
-      operationId: createWan22T2vA14bZh
-      summary: Create Video Generation Task
-      description: >
-        Submit a video generation task. Returns a `task_id` immediately.
-        Poll `GET /v1/video/generations/{task_id}` to check status and retrieve the video URL.
+      operationId: createWan22T2v
+      summary: 创建文生视频任务
+      description: |
+        根据文本描述生成视频。为异步任务——提交后通过 `GET /v1/video/generations/{task_id}` 轮询状态，直到 `status` 为 `succeeded`。
       requestBody:
         required: true
         content:
@@ -29,69 +28,69 @@ paths:
                   type: string
                   enum:
                     - wan2-2-t2v-a14b
-                  description: Model ID
+                  description: 模型 ID
                   example: wan2-2-t2v-a14b
                 prompt:
                   type: string
-                  description: "Text description of the video to generate."
-                  example: "a cat playing piano"
+                  description: 视频描述文字。
+                  example: 一只猫在弹钢琴
                 duration:
                   type: number
+                  description: 视频时长（秒），3–5。
                   minimum: 3
                   maximum: 5
                   default: 5
-                  description: "Video duration in seconds (3–5)."
                   example: 5
                 width:
                   type: integer
-                  description: "Output video width in pixels."
-                  example: 1280
+                  description: 输出视频宽度（像素）。
                 height:
                   type: integer
-                  description: "Output video height in pixels."
-                  example: 720
+                  description: 输出视频高度（像素）。
                 seed:
                   type: integer
-                  description: "Random seed for reproducibility."
+                  description: 随机种子，用于复现结果。
                 metadata:
                   type: object
-                  description: "Extra parameters passed through to the upstream API."
+                  description: 透传至上游 API 的扩展参数。
       responses:
         "200":
-          description: Task created successfully
+          description: 任务创建成功
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                    example: "5WZH6fIngVFPrffXrECtcN"
                   task_id:
                     type: string
-                    example: "5WZH6fIngVFPrffXrECtcN"
-                  object:
-                    type: string
-                    example: video
-                  model:
-                    type: string
-                    example: wan2-2-t2v-a14b
+                    description: 任务 ID，用于轮询状态。
                   status:
                     type: string
-                    example: ""
-                  progress:
-                    type: integer
-                    example: 0
-                  created_at:
-                    type: integer
-                    example: 1773803799
+                    description: 初始状态（`queued`）。
         "400":
-          description: Invalid request
+          description: 请求参数有误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "401":
-          description: Unauthorized
-        "429":
-          description: Rate limit exceeded
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
   securitySchemes:
     bearerAuth:
       type: http

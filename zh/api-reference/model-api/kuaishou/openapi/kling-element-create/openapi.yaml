@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Kling Custom Element Create
-  description: Create a custom element (character, scene, prop, etc.) for use in Kling video generation.
+  title: "Kling 创建自定义主体"
+  description: "创建自定义主体（人物、场景、道具等），用于 Kling 视频生成"
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -10,11 +10,11 @@ security:
 paths:
   /kling/v1/general/advanced-custom-elements:
     post:
-      operationId: createKlingCustomElement
-      summary: Create Custom Element
+      operationId: createKlingCustomElementZh
+      summary: 创建自定义主体
       description: |
-        Create a custom element by uploading reference images. The element can be a character, animal, prop, outfit, scene, or special effect.
-        Returns a task_id for polling status via the query endpoint.
+        上传参考图片，创建可复用的自定义主体。支持人物、动物、道具、服饰、场景、特效等分类。
+        返回 `task_id`，通过查询接口轮询直到 `task_status` 为 `succeed`。
       requestBody:
         required: true
         content:
@@ -30,15 +30,15 @@ paths:
               properties:
                 element_name:
                   type: string
-                  description: Name of the custom element.
+                  description: 主体名称。
                   example: my-character
                 element_description:
                   type: string
-                  description: Description of the custom element.
-                  example: A protagonist character for my video series
+                  description: 主体描述。
+                  example: 视频系列主角
                 reference_type:
                   type: string
-                  description: Reference type. Currently fixed to `image_refer`.
+                  description: 参考类型，固定为 `image_refer`。
                   enum: [image_refer]
                   example: image_refer
                 element_image_list:
@@ -49,31 +49,31 @@ paths:
                   properties:
                     frontal_image:
                       type: string
-                      description: URL of the frontal reference image.
+                      description: 正面参考图片 URL。
                       example: https://example.com/frontal.jpg
                     refer_images:
                       type: array
-                      description: Additional reference images.
+                      description: 其他参考图片。
                       items:
                         type: object
                         required: [image_url]
                         properties:
                           image_url:
                             type: string
-                            description: URL of a reference image.
+                            description: 参考图片 URL。
                             example: https://example.com/side.jpg
                 tag_list:
                   type: array
                   description: |
-                    Tag list. Available tag_id values:
-                    - `o_101`: 热梗
-                    - `o_102`: 人物 (Character)
-                    - `o_103`: 动物
-                    - `o_104`: 道具
-                    - `o_105`: 服饰
-                    - `o_106`: 场景 (Scene)
-                    - `o_107`: 特效
-                    - `o_108`: 其他
+                    标签列表。可用 tag_id：
+                    - `o_101`：热梗
+                    - `o_102`：人物（Character）
+                    - `o_103`：动物
+                    - `o_104`：道具
+                    - `o_105`：服饰
+                    - `o_106`：场景（Scene）
+                    - `o_107`：特效
+                    - `o_108`：其他
                   items:
                     type: object
                     required: [tag_id]
@@ -83,7 +83,7 @@ paths:
                         example: o_102
       responses:
         "200":
-          description: Element creation task submitted
+          description: 主体创建任务已提交
           content:
             application/json:
               schema:
@@ -91,40 +91,40 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: Task ID
+                    description: 任务 ID
                     example: "863121016086724692"
                   task_id:
                     type: string
-                    description: Task ID (same as id)
+                    description: 任务 ID（同 id）
                     example: "863121016086724692"
                   object:
                     type: string
-                    description: Fixed value `video`
+                    description: 固定 `video`
                     example: video
                   model:
                     type: string
-                    description: Fixed value `kling-element`
+                    description: 固定 `kling-element`
                     example: kling-element
                   status:
                     type: string
-                    description: Initial status (empty)
+                    description: 初始为空
                     example: ""
                   progress:
                     type: integer
-                    description: Progress 0–100
+                    description: 进度 0–100
                     example: 0
                   created_at:
                     type: integer
-                    description: Unix timestamp
+                    description: Unix 时间戳
                     example: 1773812605
         "400":
-          description: Invalid request
+          description: 请求参数有误
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         "401":
-          description: Unauthorized
+          description: 未授权
           content:
             application/json:
               schema:
