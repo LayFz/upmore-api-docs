@@ -1,0 +1,87 @@
+openapi: 3.1.0
+info:
+  title: "Wan2.6 T2I"
+  description: "Wan2.6 T2I text-to-image model via Alibaba via AnyFast API"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/generations:
+    post:
+      operationId: createWan26T2i
+      summary: Text-to-Image Generation
+      description: "Generate an image from a text prompt. Returns the result synchronously."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - wan2-6-t2i
+                  description: Model ID
+                  example: wan2-6-t2i
+                prompt:
+                  type: string
+                  description: "Text description of the image to generate."
+                  example: "A cute cat in Studio Ghibli style"
+                n:
+                  type: integer
+                  minimum: 1
+                  default: 1
+                  description: "Number of images to generate."
+                size:
+                  type: string
+                  description: "Output image size, e.g. `1024x1024`, `768x1344`."
+                  example: "1024x1024"
+                response_format:
+                  type: string
+                  enum: [url, b64_json]
+                  default: url
+                  description: "Return a URL or base64-encoded JSON."
+                  example: url
+      responses:
+        "200":
+          description: Image generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: integer
+                    example: 1773803391
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: "Image download URL (valid ~24 hours)."
+                          example: "https://example.com/generated.png"
+                        b64_json:
+                          type: string
+                          description: "Base64-encoded image (only when response_format=b64_json)."
+                        revised_prompt:
+                          type: string
+                          description: "AI-expanded prompt actually used for generation."
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "429":
+          description: Rate limit exceeded
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

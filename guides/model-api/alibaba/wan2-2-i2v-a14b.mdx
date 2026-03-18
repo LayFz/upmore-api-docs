@@ -1,0 +1,100 @@
+---
+title: "Wan2.2 I2V A14B"
+description: "Wan2.2 I2V A14B video generation model via Alibaba via AnyFast API."
+---
+
+Wan2.2 I2V A14B is an image-to-video generation model available through AnyFast. Video generation is **asynchronous** — submit a task and poll `GET /v1/video/generations/{task_id}` until `status` is `succeeded`.
+
+## Key capabilities
+
+- **Image-to-video** — Generate videos from an image + text prompt
+- **Image-to-video** — Provide a reference image URL via `image`
+- **Duration control** — 3–5 seconds
+- **Custom resolution** — Set `width` × `height`
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+# Step 1 — create task
+curl https://www.anyfast.ai/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "wan2-2-i2v-a14b",
+    "prompt": "a cat playing piano",
+    "duration": 5,
+    "image": "https://example.com/cat.jpg"
+  }'
+
+# Step 2 — poll until succeeded
+curl https://www.anyfast.ai/v1/video/generations/{TASK_ID} \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```python Python
+import requests, time
+
+headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+# Step 1 — create task
+resp = requests.post(
+    "https://www.anyfast.ai/v1/video/generations",
+    headers=headers,
+    json={
+        "model": "wan2-2-i2v-a14b",
+        "prompt": "a cat playing piano",
+        "duration": 5,
+        "image": "https://example.com/cat.jpg",
+    }
+)
+task_id = resp.json()["task_id"]
+
+# Step 2 — poll until done
+while True:
+    result = requests.get(
+        f"https://www.anyfast.ai/v1/video/generations/{task_id}",
+        headers=headers
+    ).json()
+    status = result["data"]["status"]
+    if status == "succeeded":
+        print(result["data"]["url"])
+        break
+    elif status == "failed":
+        print("Failed:", result["data"]["error"])
+        break
+    time.sleep(3)
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `model` | string | Yes | Must be `wan2-2-i2v-a14b` |
+| `prompt` | string | Yes | Text description of the video |
+| `image` | string | Yes (i2v) | Reference image URL |
+| `duration` | number | No | 3–5 seconds. Default: `5` |
+| `width` | integer | No | Output video width in pixels |
+| `height` | integer | No | Output video height in pixels |
+| `seed` | integer | No | Random seed for reproducibility |
+| `metadata` | object | No | Extra parameters passed to upstream |
+
+## Task status values
+
+| Status | Description |
+|---|---|
+| `queued` | Task is waiting in queue |
+| `processing` | Video is being generated |
+| `succeeded` | Done — `data.url` contains the video link (valid ~24h) |
+| `failed` | Failed — `data.error` contains the error message |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/alibaba/wan2-2-i2v-a14b"
+>
+  View the interactive API playground for Wan2.2 I2V A14B.
+</Card>

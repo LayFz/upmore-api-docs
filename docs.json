@@ -134,7 +134,12 @@
                       "guides/model-api/alibaba/qwen2-5-vl-32b-instruct",
                       "guides/model-api/alibaba/qwen2-5-vl-7b-instruct",
                       "guides/model-api/alibaba/qwen2-vl-72b-instruct",
-                      "guides/model-api/alibaba/qwen2-vl-7b-instruct"
+                      "guides/model-api/alibaba/qwen2-vl-7b-instruct",
+                      "guides/model-api/alibaba/qwen-image-plus",
+                      "guides/model-api/alibaba/wan2-6-t2i",
+                      "guides/model-api/alibaba/wan2-2-t2v-a14b",
+                      "guides/model-api/alibaba/wan2-2-i2v-a14b",
+                      "guides/model-api/alibaba/wan2-task-query"
                     ]
                   },
                   {
@@ -340,7 +345,12 @@
                       "api-reference/model-api/alibaba/qwen2-5-vl-32b-instruct",
                       "api-reference/model-api/alibaba/qwen2-5-vl-7b-instruct",
                       "api-reference/model-api/alibaba/qwen2-vl-72b-instruct",
-                      "api-reference/model-api/alibaba/qwen2-vl-7b-instruct"
+                      "api-reference/model-api/alibaba/qwen2-vl-7b-instruct",
+                      "api-reference/model-api/alibaba/qwen-image-plus",
+                      "api-reference/model-api/alibaba/wan2-6-t2i",
+                      "api-reference/model-api/alibaba/wan2-2-t2v-a14b",
+                      "api-reference/model-api/alibaba/wan2-2-i2v-a14b",
+                      "api-reference/model-api/alibaba/wan2-task-query"
                     ]
                   },
                   {
@@ -557,7 +567,12 @@
                       "zh/guides/model-api/alibaba/qwen2-5-vl-32b-instruct",
                       "zh/guides/model-api/alibaba/qwen2-5-vl-7b-instruct",
                       "zh/guides/model-api/alibaba/qwen2-vl-72b-instruct",
-                      "zh/guides/model-api/alibaba/qwen2-vl-7b-instruct"
+                      "zh/guides/model-api/alibaba/qwen2-vl-7b-instruct",
+                      "zh/guides/model-api/alibaba/qwen-image-plus",
+                      "zh/guides/model-api/alibaba/wan2-6-t2i",
+                      "zh/guides/model-api/alibaba/wan2-2-t2v-a14b",
+                      "zh/guides/model-api/alibaba/wan2-2-i2v-a14b",
+                      "zh/guides/model-api/alibaba/wan2-task-query"
                     ]
                   },
                   {
@@ -763,7 +778,12 @@
                       "zh/api-reference/model-api/alibaba/qwen2-5-vl-32b-instruct",
                       "zh/api-reference/model-api/alibaba/qwen2-5-vl-7b-instruct",
                       "zh/api-reference/model-api/alibaba/qwen2-vl-72b-instruct",
-                      "zh/api-reference/model-api/alibaba/qwen2-vl-7b-instruct"
+                      "zh/api-reference/model-api/alibaba/qwen2-vl-7b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen-image-plus",
+                      "zh/api-reference/model-api/alibaba/wan2-6-t2i",
+                      "zh/api-reference/model-api/alibaba/wan2-2-t2v-a14b",
+                      "zh/api-reference/model-api/alibaba/wan2-2-i2v-a14b",
+                      "zh/api-reference/model-api/alibaba/wan2-task-query"
                     ]
                   },
                   {

@@ -1,0 +1,56 @@
+---
+title: "Wan2 任务查询"
+description: "查询 Wan2 视频生成任务的状态与结果。"
+---
+
+通过 `wan2-2-t2v-a14b` 或 `wan2-2-i2v-a14b` 提交视频任务后，使用此接口轮询任务状态直至完成。
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/video/generations/{TASK_ID} \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```python Python
+import requests, time
+
+headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+while True:
+    result = requests.get(
+        f"https://www.anyfast.ai/v1/video/generations/{task_id}",
+        headers=headers
+    ).json()
+    status = result["data"]["status"]
+    print(f"状态：{status}")
+    if status == "succeeded":
+        print("视频链接：", result["data"]["url"])
+        break
+    elif status == "failed":
+        print("错误：", result["data"]["error"])
+        break
+    time.sleep(3)
+```
+
+</CodeGroup>
+
+## 响应字段
+
+| 字段 | 说明 |
+|---|---|
+| `data.task_id` | 任务 ID |
+| `data.status` | `queued` → `processing` → `succeeded` / `failed` |
+| `data.format` | 视频格式，固定为 `mp4` |
+| `data.url` | 视频下载链接（有效期约 24 小时，仅 `succeeded` 时有值） |
+| `data.error` | 错误信息（仅 `failed` 时有值） |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/alibaba/wan2-task-query"
+>
+  查看 Wan2 任务查询的交互式 API Playground。
+</Card>
