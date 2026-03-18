@@ -1,0 +1,68 @@
+---
+title: "Kling Element Query"
+description: "Query the status and result of a custom element creation task by task_id."
+---
+
+After creating a custom element, use this endpoint to poll the task status until it reaches `succeed` or `failed`. On success, the response contains the element details including its `element_id`.
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/kling/v1/general/advanced-custom-elements/863121016086724692 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```python Python
+import requests
+import time
+
+task_id = "863121016086724692"
+
+while True:
+    response = requests.get(
+        f"https://www.anyfast.ai/kling/v1/general/advanced-custom-elements/{task_id}",
+        headers={"Authorization": "Bearer YOUR_API_KEY"}
+    )
+    result = response.json()
+    status = result["data"]["task_status"]
+    print(f"Status: {status}")
+
+    if status == "succeed":
+        elements = result["data"]["task_result"]["elements"]
+        print(f"Element ID: {elements[0]['element_id']}")
+        break
+    elif status == "failed":
+        print("Element creation failed")
+        break
+
+    time.sleep(3)
+```
+
+</CodeGroup>
+
+## Response fields
+
+| Field | Description |
+|-------|-------------|
+| `data.task_id` | Task ID |
+| `data.task_status` | `submitted` / `succeed` / `failed` |
+| `data.task_result.elements[]` | List of created elements |
+| `elements[].element_id` | Element ID (used for delete) |
+| `elements[].element_name` | Element name |
+| `elements[].element_description` | Element description |
+| `elements[].element_type` | Always `image_refer` |
+| `elements[].element_image_list` | CDN URLs of uploaded images |
+| `elements[].status` | `succeed` / `failed` |
+| `elements[].tag_list` | Tags with id and name |
+| `data.created_at` | Creation timestamp (ms) |
+| `data.updated_at` | Update timestamp (ms) |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/kuaishou/kling-element-query"
+>
+  View the interactive API playground for Kling Element Query.
+</Card>

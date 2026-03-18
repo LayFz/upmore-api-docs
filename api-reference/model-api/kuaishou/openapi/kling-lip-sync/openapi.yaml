@@ -1,0 +1,127 @@
+openapi: 3.1.0
+info:
+  title: Kling Advanced Lip Sync
+  description: Generate a lip-synced video by driving facial movements from text (TTS) or an existing audio file.
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /kling/v1/videos/advanced-lip-sync:
+    post:
+      operationId: klingAdvancedLipSync
+      summary: Create Lip Sync Task
+      description: |
+        Create an asynchronous lip sync video generation task. The facial movements in the source video are re-animated to match the provided speech.
+
+        **Prerequisite**: call the `identify-face` endpoint first to obtain a `session_id`.
+
+        Two input modes are supported:
+        - **Text mode** — provide `text`, `voice_id`, and `voice_language`. The platform converts the text to speech using the specified voice and drives the lip movements.
+        - **Audio mode** — provide `audio_url`. The lip movements are driven directly by the supplied audio file.
+
+        After submission, poll `GET /kling/v1/videos/advanced-lip-sync/{task_id}` until `status` is `succeeded`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [input]
+              properties:
+                input:
+                  type: object
+                  required: [session_id]
+                  properties:
+                    session_id:
+                      type: string
+                      description: Session ID obtained from the `identify-face` endpoint.
+                      example: abc123-session-id
+                    face_image_url:
+                      type: string
+                      description: Optional reference face image URL to improve identity consistency.
+                      example: https://example.com/face.jpg
+                    text:
+                      type: string
+                      description: |
+                        Text for the character to speak (Text mode). The platform uses built-in TTS to synthesize the audio.
+                        Required when `audio_url` is not provided.
+                      example: 你好，欢迎来到我的频道
+                    voice_id:
+                      type: string
+                      description: Voice ID for TTS synthesis (Text mode). Required when `text` is provided.
+                      example: girlfriend_1_cn
+                    voice_language:
+                      type: string
+                      description: Language code for TTS synthesis (Text mode). Required when `text` is provided.
+                      enum: [zh, en]
+                      example: zh
+                    audio_url:
+                      type: string
+                      description: |
+                        Public URL of an audio file to drive lip movements directly (Audio mode).
+                        Required when `text` is not provided.
+                      example: https://example.com/speech.mp3
+      responses:
+        "200":
+          description: Lip sync task created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Task ID
+                    example: task_abc123
+                  task_id:
+                    type: string
+                    description: Task ID (same as id)
+                    example: task_abc123
+                  object:
+                    type: string
+                    example: video
+                  model:
+                    type: string
+                    example: kling-lip-sync
+                  status:
+                    type: string
+                    description: Initially empty; poll the query endpoint for updates.
+                    example: ""
+                  progress:
+                    type: integer
+                    description: Progress 0–100
+                    example: 0
+                  created_at:
+                    type: integer
+                    description: Unix timestamp
+                    example: 1773812605
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

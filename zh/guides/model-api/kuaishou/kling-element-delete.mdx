@@ -1,0 +1,58 @@
+---
+title: "Kling 删除主体"
+description: "通过 element_id 删除自定义主体。"
+---
+
+删除不再需要的自定义主体。需提供查询响应中的 `element_id`（非 `task_id`）。只能删除自定义主体，Kling 官方预设主体不可删除。
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/kling/v1/general/delete-elements \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"element_id": "863121023120580662"}'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/kling/v1/general/delete-elements",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={"element_id": "863121023120580662"}
+)
+
+result = response.json()
+if result["code"] == 0:
+    print("主体删除成功")
+```
+
+</CodeGroup>
+
+## 请求参数
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `element_id` | string | ✅ | 要删除的主体 ID（来自查询响应的 `elements[].element_id`） |
+
+## 返回结果
+
+| 字段 | 说明 |
+|------|------|
+| `code` | 成功为 `0` |
+| `message` | 成功为 `SUCCEED` |
+| `request_id` | 请求追踪 ID |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/kuaishou/kling-element-delete"
+>
+  查看 Kling 删除主体的交互式 API 文档。
+</Card>

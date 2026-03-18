@@ -1,0 +1,147 @@
+openapi: 3.1.0
+info:
+  title: Kling Custom Element Create
+  description: Create a custom element (character, scene, prop, etc.) for use in Kling video generation.
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /kling/v1/general/advanced-custom-elements:
+    post:
+      operationId: createKlingCustomElement
+      summary: Create Custom Element
+      description: |
+        Create a custom element by uploading reference images. The element can be a character, animal, prop, outfit, scene, or special effect.
+        Returns a task_id for polling status via the query endpoint.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - element_name
+                - element_description
+                - reference_type
+                - element_image_list
+                - tag_list
+              properties:
+                element_name:
+                  type: string
+                  description: Name of the custom element.
+                  example: my-character
+                element_description:
+                  type: string
+                  description: Description of the custom element.
+                  example: A protagonist character for my video series
+                reference_type:
+                  type: string
+                  description: Reference type. Currently fixed to `image_refer`.
+                  enum: [image_refer]
+                  example: image_refer
+                element_image_list:
+                  type: object
+                  required:
+                    - frontal_image
+                    - refer_images
+                  properties:
+                    frontal_image:
+                      type: string
+                      description: URL of the frontal reference image.
+                      example: https://example.com/frontal.jpg
+                    refer_images:
+                      type: array
+                      description: Additional reference images.
+                      items:
+                        type: object
+                        required: [image_url]
+                        properties:
+                          image_url:
+                            type: string
+                            description: URL of a reference image.
+                            example: https://example.com/side.jpg
+                tag_list:
+                  type: array
+                  description: |
+                    Tag list. Available tag_id values:
+                    - `o_101`: 热梗
+                    - `o_102`: 人物 (Character)
+                    - `o_103`: 动物
+                    - `o_104`: 道具
+                    - `o_105`: 服饰
+                    - `o_106`: 场景 (Scene)
+                    - `o_107`: 特效
+                    - `o_108`: 其他
+                  items:
+                    type: object
+                    required: [tag_id]
+                    properties:
+                      tag_id:
+                        type: string
+                        example: o_102
+      responses:
+        "200":
+          description: Element creation task submitted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Task ID
+                    example: "863121016086724692"
+                  task_id:
+                    type: string
+                    description: Task ID (same as id)
+                    example: "863121016086724692"
+                  object:
+                    type: string
+                    description: Fixed value `video`
+                    example: video
+                  model:
+                    type: string
+                    description: Fixed value `kling-element`
+                    example: kling-element
+                  status:
+                    type: string
+                    description: Initial status (empty)
+                    example: ""
+                  progress:
+                    type: integer
+                    description: Progress 0–100
+                    example: 0
+                  created_at:
+                    type: integer
+                    description: Unix timestamp
+                    example: 1773812605
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

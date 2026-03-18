@@ -1,0 +1,152 @@
+---
+title: "Kling Advanced Lip Sync"
+description: "Re-animate the facial movements of a source video to match text (TTS) or an existing audio file."
+---
+
+Advanced Lip Sync drives a person's lip movements in a video to match provided speech. It supports two input modes — synthesize speech from text, or supply your own audio file.
+
+**This endpoint requires a `session_id`** obtained from the [Identify Face](/guides/model-api/kuaishou/kling-identify-face) step. Always call Identify Face first.
+
+## Workflow overview
+
+```
+1. identify-face  →  session_id
+2. advanced-lip-sync (session_id + speech input)  →  task_id
+3. Poll GET /kling/v1/videos/advanced-lip-sync/{task_id}  →  video URL
+```
+
+## Input modes
+
+### Text mode — built-in TTS
+
+Provide `text`, `voice_id`, and `voice_language`. The platform synthesizes the audio using the specified voice and drives the lip movements.
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/kling/v1/videos/advanced-lip-sync \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "input": {
+      "session_id": "YOUR_SESSION_ID",
+      "text": "Hello, welcome to my channel.",
+      "voice_id": "girlfriend_1_cn",
+      "voice_language": "en"
+    }
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/kling/v1/videos/advanced-lip-sync",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={
+        "input": {
+            "session_id": "YOUR_SESSION_ID",
+            "text": "Hello, welcome to my channel.",
+            "voice_id": "girlfriend_1_cn",
+            "voice_language": "en"
+        }
+    }
+)
+task = response.json()
+print(f"Task ID: {task['task_id']}")
+```
+
+</CodeGroup>
+
+### Audio mode — custom audio file
+
+Provide `audio_url` to drive lip movements directly from an existing audio recording.
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/kling/v1/videos/advanced-lip-sync \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "input": {
+      "session_id": "YOUR_SESSION_ID",
+      "audio_url": "https://example.com/speech.mp3"
+    }
+  }'
+```
+
+```python Python
+import requests
+import time
+
+# Step 1: create task
+response = requests.post(
+    "https://www.anyfast.ai/kling/v1/videos/advanced-lip-sync",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={
+        "input": {
+            "session_id": "YOUR_SESSION_ID",
+            "audio_url": "https://example.com/speech.mp3"
+        }
+    }
+)
+task_id = response.json()["task_id"]
+
+# Step 2: poll for result
+while True:
+    result = requests.get(
+        f"https://www.anyfast.ai/kling/v1/videos/advanced-lip-sync/{task_id}",
+        headers={"Authorization": "Bearer YOUR_API_KEY"}
+    ).json()
+    status = result["data"]["status"]
+    print(f"Status: {status}")
+    if status == "succeeded":
+        print("Video URL:", result["data"]["data"]["task_result"]["videos"][0]["url"])
+        break
+    elif status == "failed":
+        print("Failed:", result["data"].get("fail_reason"))
+        break
+    time.sleep(5)
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `input.session_id` | string | Yes | Session ID from the Identify Face step |
+| `input.face_image_url` | string | No | Reference face image URL for identity consistency |
+| `input.text` | string | Text mode | Text for the character to speak |
+| `input.voice_id` | string | Text mode | Voice ID for TTS synthesis |
+| `input.voice_language` | string | Text mode | Language code: `zh` or `en` |
+| `input.audio_url` | string | Audio mode | Public URL of an audio file |
+
+## Polling
+
+After the task is created, poll with `GET /kling/v1/videos/advanced-lip-sync/{task_id}` using the [Task Query](/guides/model-api/kuaishou/kling-task-query) endpoint. Status transitions: `queued` → `processing` → `succeeded` / `failed`.
+
+On success, the video download URL is available in `data.data.task_result.videos[0].url`.
+
+<Card
+  title="Prerequisites: Identify Face"
+  icon="scan-face"
+  href="/guides/model-api/kuaishou/kling-identify-face"
+>
+  You must call this first to obtain a session_id.
+</Card>
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/kuaishou/kling-lip-sync"
+>
+  View the interactive API playground for Kling Advanced Lip Sync.
+</Card>

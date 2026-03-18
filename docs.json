@@ -198,7 +198,14 @@
                       "guides/model-api/kuaishou/kling-v1-5-i2v",
                       "guides/model-api/kuaishou/kling-v1-i2v",
                       "guides/model-api/kuaishou/kling-v1-t2v",
-                      "guides/model-api/kuaishou/kling-task-query"
+                      "guides/model-api/kuaishou/kling-identify-face",
+                      "guides/model-api/kuaishou/kling-lip-sync",
+                      "guides/model-api/kuaishou/kling-task-query",
+                      "guides/model-api/kuaishou/kling-element-create",
+                      "guides/model-api/kuaishou/kling-element-query",
+                      "guides/model-api/kuaishou/kling-element-list",
+                      "guides/model-api/kuaishou/kling-element-preset-list",
+                      "guides/model-api/kuaishou/kling-element-delete"
                     ]
                   },
                   {
@@ -409,7 +416,14 @@
                       "api-reference/model-api/kuaishou/kling-v1-5-i2v",
                       "api-reference/model-api/kuaishou/kling-v1-i2v",
                       "api-reference/model-api/kuaishou/kling-v1-t2v",
-                      "api-reference/model-api/kuaishou/kling-task-query"
+                      "api-reference/model-api/kuaishou/kling-identify-face",
+                      "api-reference/model-api/kuaishou/kling-lip-sync",
+                      "api-reference/model-api/kuaishou/kling-task-query",
+                      "api-reference/model-api/kuaishou/kling-element-create",
+                      "api-reference/model-api/kuaishou/kling-element-query",
+                      "api-reference/model-api/kuaishou/kling-element-list",
+                      "api-reference/model-api/kuaishou/kling-element-preset-list",
+                      "api-reference/model-api/kuaishou/kling-element-delete"
                     ]
                   },
                   {
@@ -631,7 +645,14 @@
                       "zh/guides/model-api/kuaishou/kling-v1-5-i2v",
                       "zh/guides/model-api/kuaishou/kling-v1-i2v",
                       "zh/guides/model-api/kuaishou/kling-v1-t2v",
-                      "zh/guides/model-api/kuaishou/kling-task-query"
+                      "zh/guides/model-api/kuaishou/kling-identify-face",
+                      "zh/guides/model-api/kuaishou/kling-lip-sync",
+                      "zh/guides/model-api/kuaishou/kling-task-query",
+                      "zh/guides/model-api/kuaishou/kling-element-create",
+                      "zh/guides/model-api/kuaishou/kling-element-query",
+                      "zh/guides/model-api/kuaishou/kling-element-list",
+                      "zh/guides/model-api/kuaishou/kling-element-preset-list",
+                      "zh/guides/model-api/kuaishou/kling-element-delete"
                     ]
                   },
                   {
@@ -842,7 +863,14 @@
                       "zh/api-reference/model-api/kuaishou/kling-v1-5-i2v",
                       "zh/api-reference/model-api/kuaishou/kling-v1-i2v",
                       "zh/api-reference/model-api/kuaishou/kling-v1-t2v",
-                      "zh/api-reference/model-api/kuaishou/kling-task-query"
+                      "zh/api-reference/model-api/kuaishou/kling-identify-face",
+                      "zh/api-reference/model-api/kuaishou/kling-lip-sync",
+                      "zh/api-reference/model-api/kuaishou/kling-task-query",
+                      "zh/api-reference/model-api/kuaishou/kling-element-create",
+                      "zh/api-reference/model-api/kuaishou/kling-element-query",
+                      "zh/api-reference/model-api/kuaishou/kling-element-list",
+                      "zh/api-reference/model-api/kuaishou/kling-element-preset-list",
+                      "zh/api-reference/model-api/kuaishou/kling-element-delete"
                     ]
                   },
                   {

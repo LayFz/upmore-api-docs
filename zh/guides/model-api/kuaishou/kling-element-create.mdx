@@ -1,0 +1,107 @@
+---
+title: "Kling 创建自定义主体"
+description: "创建自定义主体（人物、场景、道具、服饰等），用于 Kling 视频生成。"
+---
+
+自定义主体允许您将参考图片绑定为可复用的主体 ID，在 Kling 视频生成中引用。创建为异步任务——提交后请轮询查询接口，直到 `task_status` 为 `succeed`。
+
+## 核心能力
+
+- **人物与场景主体** — 上传正面 + 侧面图片，构建可复用的角色或背景
+- **多种分类** — 支持人物、动物、道具、服饰、场景、特效等类型
+- **异步处理** — 创建在后台进行，使用 task_id 轮询状态
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/kling/v1/general/advanced-custom-elements \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "element_name": "my-character",
+    "element_description": "视频系列主角",
+    "reference_type": "image_refer",
+    "element_image_list": {
+      "frontal_image": "https://example.com/frontal.jpg",
+      "refer_images": [
+        {"image_url": "https://example.com/side.jpg"}
+      ]
+    },
+    "tag_list": [{"tag_id": "o_102"}]
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/kling/v1/general/advanced-custom-elements",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json"
+    },
+    json={
+        "element_name": "my-character",
+        "element_description": "视频系列主角",
+        "reference_type": "image_refer",
+        "element_image_list": {
+            "frontal_image": "https://example.com/frontal.jpg",
+            "refer_images": [
+                {"image_url": "https://example.com/side.jpg"}
+            ]
+        },
+        "tag_list": [{"tag_id": "o_102"}]
+    }
+)
+
+task = response.json()
+print(f"Task ID: {task['task_id']}")
+```
+
+</CodeGroup>
+
+## 请求参数
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `element_name` | string | ✅ | 主体名称 |
+| `element_description` | string | ✅ | 主体描述 |
+| `reference_type` | string | ✅ | 固定值 `image_refer` |
+| `element_image_list.frontal_image` | string | ✅ | 正面参考图片 URL |
+| `element_image_list.refer_images` | array | ✅ | 其他参考图片数组，每项包含 `image_url` |
+| `tag_list` | array | ✅ | 标签列表，每项包含 `tag_id` |
+
+### tag_id 可用值
+
+| tag_id | 标签名称 |
+|--------|---------|
+| `o_101` | 热梗 |
+| `o_102` | 人物（Character） |
+| `o_103` | 动物 |
+| `o_104` | 道具 |
+| `o_105` | 服饰 |
+| `o_106` | 场景（Scene） |
+| `o_107` | 特效 |
+| `o_108` | 其他 |
+
+## 返回结果
+
+接口立即返回 `task_id`，请使用[查询自定义主体](/zh/guides/model-api/kuaishou/kling-element-query)轮询，直到 `task_status` 为 `succeed`。
+
+| 字段 | 说明 |
+|------|------|
+| `id` / `task_id` | 任务 ID |
+| `object` | 固定 `video` |
+| `model` | 固定 `kling-element` |
+| `status` | 初始为空 |
+| `progress` | 进度 0–100 |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/kuaishou/kling-element-create"
+>
+  查看 Kling 创建自定义主体的交互式 API 文档。
+</Card>
