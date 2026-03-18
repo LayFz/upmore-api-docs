@@ -93,14 +93,69 @@
                       "guides/model-api/bytedance/doubao-seedance-1-0-lite-t2v",
                       "guides/model-api/bytedance/doubao-seedance-1-0-lite-i2v",
                       "guides/model-api/bytedance/seedance-task-query",
-                      "guides/model-api/bytedance/glm-4-7",
-                      "guides/model-api/bytedance/deepseek-v3-2"
+                      "guides/model-api/bytedance/glm-4-7"
+                    ]
+                  },
+                  {
+                    "group": "DeepSeek",
+                    "icon": "/images/providers/deepseek.svg",
+                    "pages": [
+                      "guides/model-api/deepseek/deepseek-v3-2-speciale",
+                      "guides/model-api/deepseek/deepseek-v3-2",
+                      "guides/model-api/deepseek/deepseek-v3-2-exp",
+                      "guides/model-api/deepseek/deepseek-v3-2-251201",
+                      "guides/model-api/deepseek/deepseek-v3-1-terminus",
+                      "guides/model-api/deepseek/deepseek-v3-1",
+                      "guides/model-api/deepseek/deepseek-v3"
                     ]
                   },
                   {
                     "group": "Alibaba",
                     "icon": "/images/providers/alibaba.svg",
-                    "pages": []
+                    "pages": [
+                      "guides/model-api/alibaba/qwen3-5-397b-a17b",
+                      "guides/model-api/alibaba/qwen3-coder-next",
+                      "guides/model-api/alibaba/qwen3-coder",
+                      "guides/model-api/alibaba/qwen3-next-80b-a3b-instruct",
+                      "guides/model-api/alibaba/qwen3-next-80b-a3b-thinking",
+                      "guides/model-api/alibaba/qwen3-235b-a22b-instruct-2507",
+                      "guides/model-api/alibaba/qwen3-235b-a22b-thinking-2507",
+                      "guides/model-api/alibaba/qwen3-235b-a22b",
+                      "guides/model-api/alibaba/qwen3-30b-a3b-instruct-2507",
+                      "guides/model-api/alibaba/qwen3-30b-a3b-thinking-2507",
+                      "guides/model-api/alibaba/qwen3-32b",
+                      "guides/model-api/alibaba/qwen3-14b",
+                      "guides/model-api/alibaba/qwen2-5-72b-instruct",
+                      "guides/model-api/alibaba/qwen2-5-32b-instruct",
+                      "guides/model-api/alibaba/qwen2-5-7b-instruct",
+                      "guides/model-api/alibaba/qwen3-vl-235b-a22b-instruct",
+                      "guides/model-api/alibaba/qwen3-vl-235b-a22b-thinking",
+                      "guides/model-api/alibaba/qwen2-5-vl-72b-instruct",
+                      "guides/model-api/alibaba/qwen2-5-vl-32b-instruct",
+                      "guides/model-api/alibaba/qwen2-5-vl-7b-instruct",
+                      "guides/model-api/alibaba/qwen2-vl-72b-instruct",
+                      "guides/model-api/alibaba/qwen2-vl-7b-instruct",
+                      "guides/model-api/alibaba/qwen-image-plus",
+                      "guides/model-api/alibaba/wan2-6-t2i",
+                      "guides/model-api/alibaba/wan2-2-t2v-a14b",
+                      "guides/model-api/alibaba/wan2-2-i2v-a14b",
+                      "guides/model-api/alibaba/wan2-task-query"
+                    ]
+                  },
+                  {
+                    "group": "MiniMax",
+                    "icon": "/images/providers/minimax.svg",
+                    "pages": [
+                      "guides/model-api/minimax/minimax-m2-5",
+                      "guides/model-api/minimax/minimax-m2-1"
+                    ]
+                  },
+                  {
+                    "group": "MoonShot",
+                    "icon": "/images/providers/moonshot.svg",
+                    "pages": [
+                      "guides/model-api/moonshot/kimi-k2-5"
+                    ]
                   },
                   {
                     "group": "Google",
@@ -143,7 +198,14 @@
                       "guides/model-api/kuaishou/kling-v1-5-i2v",
                       "guides/model-api/kuaishou/kling-v1-i2v",
                       "guides/model-api/kuaishou/kling-v1-t2v",
-                      "guides/model-api/kuaishou/kling-task-query"
+                      "guides/model-api/kuaishou/kling-identify-face",
+                      "guides/model-api/kuaishou/kling-lip-sync",
+                      "guides/model-api/kuaishou/kling-task-query",
+                      "guides/model-api/kuaishou/kling-element-create",
+                      "guides/model-api/kuaishou/kling-element-query",
+                      "guides/model-api/kuaishou/kling-element-list",
+                      "guides/model-api/kuaishou/kling-element-preset-list",
+                      "guides/model-api/kuaishou/kling-element-delete"
                     ]
                   },
                   {
@@ -249,14 +311,69 @@
                       "api-reference/model-api/bytedance/doubao-seedance-1-0-lite-t2v-250428",
                       "api-reference/model-api/bytedance/doubao-seedance-1-0-lite-i2v-250428",
                       "api-reference/model-api/bytedance/seedance-task-query",
-                      "api-reference/model-api/bytedance/glm-4-7-251222",
-                      "api-reference/model-api/bytedance/deepseek-v3-2-251201"
+                      "api-reference/model-api/bytedance/glm-4-7-251222"
+                    ]
+                  },
+                  {
+                    "group": "DeepSeek",
+                    "icon": "/images/providers/deepseek.svg",
+                    "pages": [
+                      "api-reference/model-api/deepseek/deepseek-v3-2-speciale",
+                      "api-reference/model-api/deepseek/deepseek-v3-2",
+                      "api-reference/model-api/deepseek/deepseek-v3-2-exp",
+                      "api-reference/model-api/deepseek/deepseek-v3-2-251201",
+                      "api-reference/model-api/deepseek/deepseek-v3-1-terminus",
+                      "api-reference/model-api/deepseek/deepseek-v3-1",
+                      "api-reference/model-api/deepseek/deepseek-v3"
                     ]
                   },
                   {
                     "group": "Alibaba",
                     "icon": "/images/providers/alibaba.svg",
-                    "pages": []
+                    "pages": [
+                      "api-reference/model-api/alibaba/qwen3-5-397b-a17b",
+                      "api-reference/model-api/alibaba/qwen3-coder-next",
+                      "api-reference/model-api/alibaba/qwen3-coder",
+                      "api-reference/model-api/alibaba/qwen3-next-80b-a3b-instruct",
+                      "api-reference/model-api/alibaba/qwen3-next-80b-a3b-thinking",
+                      "api-reference/model-api/alibaba/qwen3-235b-a22b-instruct-2507",
+                      "api-reference/model-api/alibaba/qwen3-235b-a22b-thinking-2507",
+                      "api-reference/model-api/alibaba/qwen3-235b-a22b",
+                      "api-reference/model-api/alibaba/qwen3-30b-a3b-instruct-2507",
+                      "api-reference/model-api/alibaba/qwen3-30b-a3b-thinking-2507",
+                      "api-reference/model-api/alibaba/qwen3-32b",
+                      "api-reference/model-api/alibaba/qwen3-14b",
+                      "api-reference/model-api/alibaba/qwen2-5-72b-instruct",
+                      "api-reference/model-api/alibaba/qwen2-5-32b-instruct",
+                      "api-reference/model-api/alibaba/qwen2-5-7b-instruct",
+                      "api-reference/model-api/alibaba/qwen3-vl-235b-a22b-instruct",
+                      "api-reference/model-api/alibaba/qwen3-vl-235b-a22b-thinking",
+                      "api-reference/model-api/alibaba/qwen2-5-vl-72b-instruct",
+                      "api-reference/model-api/alibaba/qwen2-5-vl-32b-instruct",
+                      "api-reference/model-api/alibaba/qwen2-5-vl-7b-instruct",
+                      "api-reference/model-api/alibaba/qwen2-vl-72b-instruct",
+                      "api-reference/model-api/alibaba/qwen2-vl-7b-instruct",
+                      "api-reference/model-api/alibaba/qwen-image-plus",
+                      "api-reference/model-api/alibaba/wan2-6-t2i",
+                      "api-reference/model-api/alibaba/wan2-2-t2v-a14b",
+                      "api-reference/model-api/alibaba/wan2-2-i2v-a14b",
+                      "api-reference/model-api/alibaba/wan2-task-query"
+                    ]
+                  },
+                  {
+                    "group": "MiniMax",
+                    "icon": "/images/providers/minimax.svg",
+                    "pages": [
+                      "api-reference/model-api/minimax/minimax-m2-5",
+                      "api-reference/model-api/minimax/minimax-m2-1"
+                    ]
+                  },
+                  {
+                    "group": "MoonShot",
+                    "icon": "/images/providers/moonshot.svg",
+                    "pages": [
+                      "api-reference/model-api/moonshot/kimi-k2-5"
+                    ]
                   },
                   {
                     "group": "Google",
@@ -299,7 +416,14 @@
                       "api-reference/model-api/kuaishou/kling-v1-5-i2v",
                       "api-reference/model-api/kuaishou/kling-v1-i2v",
                       "api-reference/model-api/kuaishou/kling-v1-t2v",
-                      "api-reference/model-api/kuaishou/kling-task-query"
+                      "api-reference/model-api/kuaishou/kling-identify-face",
+                      "api-reference/model-api/kuaishou/kling-lip-sync",
+                      "api-reference/model-api/kuaishou/kling-task-query",
+                      "api-reference/model-api/kuaishou/kling-element-create",
+                      "api-reference/model-api/kuaishou/kling-element-query",
+                      "api-reference/model-api/kuaishou/kling-element-list",
+                      "api-reference/model-api/kuaishou/kling-element-preset-list",
+                      "api-reference/model-api/kuaishou/kling-element-delete"
                     ]
                   },
                   {
@@ -416,14 +540,69 @@
                       "zh/guides/model-api/bytedance/doubao-seedance-1-0-lite-t2v",
                       "zh/guides/model-api/bytedance/doubao-seedance-1-0-lite-i2v",
                       "zh/guides/model-api/bytedance/seedance-task-query",
-                      "zh/guides/model-api/bytedance/glm-4-7",
-                      "zh/guides/model-api/bytedance/deepseek-v3-2"
+                      "zh/guides/model-api/bytedance/glm-4-7"
+                    ]
+                  },
+                  {
+                    "group": "DeepSeek",
+                    "icon": "/images/providers/deepseek.svg",
+                    "pages": [
+                      "zh/guides/model-api/deepseek/deepseek-v3-2-speciale",
+                      "zh/guides/model-api/deepseek/deepseek-v3-2",
+                      "zh/guides/model-api/deepseek/deepseek-v3-2-exp",
+                      "zh/guides/model-api/deepseek/deepseek-v3-2-251201",
+                      "zh/guides/model-api/deepseek/deepseek-v3-1-terminus",
+                      "zh/guides/model-api/deepseek/deepseek-v3-1",
+                      "zh/guides/model-api/deepseek/deepseek-v3"
                     ]
                   },
                   {
                     "group": "Alibaba",
                     "icon": "/images/providers/alibaba.svg",
-                    "pages": []
+                    "pages": [
+                      "zh/guides/model-api/alibaba/qwen3-5-397b-a17b",
+                      "zh/guides/model-api/alibaba/qwen3-coder-next",
+                      "zh/guides/model-api/alibaba/qwen3-coder",
+                      "zh/guides/model-api/alibaba/qwen3-next-80b-a3b-instruct",
+                      "zh/guides/model-api/alibaba/qwen3-next-80b-a3b-thinking",
+                      "zh/guides/model-api/alibaba/qwen3-235b-a22b-instruct-2507",
+                      "zh/guides/model-api/alibaba/qwen3-235b-a22b-thinking-2507",
+                      "zh/guides/model-api/alibaba/qwen3-235b-a22b",
+                      "zh/guides/model-api/alibaba/qwen3-30b-a3b-instruct-2507",
+                      "zh/guides/model-api/alibaba/qwen3-30b-a3b-thinking-2507",
+                      "zh/guides/model-api/alibaba/qwen3-32b",
+                      "zh/guides/model-api/alibaba/qwen3-14b",
+                      "zh/guides/model-api/alibaba/qwen2-5-72b-instruct",
+                      "zh/guides/model-api/alibaba/qwen2-5-32b-instruct",
+                      "zh/guides/model-api/alibaba/qwen2-5-7b-instruct",
+                      "zh/guides/model-api/alibaba/qwen3-vl-235b-a22b-instruct",
+                      "zh/guides/model-api/alibaba/qwen3-vl-235b-a22b-thinking",
+                      "zh/guides/model-api/alibaba/qwen2-5-vl-72b-instruct",
+                      "zh/guides/model-api/alibaba/qwen2-5-vl-32b-instruct",
+                      "zh/guides/model-api/alibaba/qwen2-5-vl-7b-instruct",
+                      "zh/guides/model-api/alibaba/qwen2-vl-72b-instruct",
+                      "zh/guides/model-api/alibaba/qwen2-vl-7b-instruct",
+                      "zh/guides/model-api/alibaba/qwen-image-plus",
+                      "zh/guides/model-api/alibaba/wan2-6-t2i",
+                      "zh/guides/model-api/alibaba/wan2-2-t2v-a14b",
+                      "zh/guides/model-api/alibaba/wan2-2-i2v-a14b",
+                      "zh/guides/model-api/alibaba/wan2-task-query"
+                    ]
+                  },
+                  {
+                    "group": "MiniMax",
+                    "icon": "/images/providers/minimax.svg",
+                    "pages": [
+                      "zh/guides/model-api/minimax/minimax-m2-5",
+                      "zh/guides/model-api/minimax/minimax-m2-1"
+                    ]
+                  },
+                  {
+                    "group": "MoonShot",
+                    "icon": "/images/providers/moonshot.svg",
+                    "pages": [
+                      "zh/guides/model-api/moonshot/kimi-k2-5"
+                    ]
                   },
                   {
                     "group": "Google",
@@ -466,7 +645,14 @@
                       "zh/guides/model-api/kuaishou/kling-v1-5-i2v",
                       "zh/guides/model-api/kuaishou/kling-v1-i2v",
                       "zh/guides/model-api/kuaishou/kling-v1-t2v",
-                      "zh/guides/model-api/kuaishou/kling-task-query"
+                      "zh/guides/model-api/kuaishou/kling-identify-face",
+                      "zh/guides/model-api/kuaishou/kling-lip-sync",
+                      "zh/guides/model-api/kuaishou/kling-task-query",
+                      "zh/guides/model-api/kuaishou/kling-element-create",
+                      "zh/guides/model-api/kuaishou/kling-element-query",
+                      "zh/guides/model-api/kuaishou/kling-element-list",
+                      "zh/guides/model-api/kuaishou/kling-element-preset-list",
+                      "zh/guides/model-api/kuaishou/kling-element-delete"
                     ]
                   },
                   {
@@ -572,14 +758,69 @@
                       "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-lite-t2v-250428",
                       "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-lite-i2v-250428",
                       "zh/api-reference/model-api/bytedance/seedance-task-query",
-                      "zh/api-reference/model-api/bytedance/glm-4-7-251222",
-                      "zh/api-reference/model-api/bytedance/deepseek-v3-2-251201"
+                      "zh/api-reference/model-api/bytedance/glm-4-7-251222"
+                    ]
+                  },
+                  {
+                    "group": "DeepSeek",
+                    "icon": "/images/providers/deepseek.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/deepseek/deepseek-v3-2-speciale",
+                      "zh/api-reference/model-api/deepseek/deepseek-v3-2",
+                      "zh/api-reference/model-api/deepseek/deepseek-v3-2-exp",
+                      "zh/api-reference/model-api/deepseek/deepseek-v3-2-251201",
+                      "zh/api-reference/model-api/deepseek/deepseek-v3-1-terminus",
+                      "zh/api-reference/model-api/deepseek/deepseek-v3-1",
+                      "zh/api-reference/model-api/deepseek/deepseek-v3"
                     ]
                   },
                   {
                     "group": "Alibaba",
                     "icon": "/images/providers/alibaba.svg",
-                    "pages": []
+                    "pages": [
+                      "zh/api-reference/model-api/alibaba/qwen3-5-397b-a17b",
+                      "zh/api-reference/model-api/alibaba/qwen3-coder-next",
+                      "zh/api-reference/model-api/alibaba/qwen3-coder",
+                      "zh/api-reference/model-api/alibaba/qwen3-next-80b-a3b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen3-next-80b-a3b-thinking",
+                      "zh/api-reference/model-api/alibaba/qwen3-235b-a22b-instruct-2507",
+                      "zh/api-reference/model-api/alibaba/qwen3-235b-a22b-thinking-2507",
+                      "zh/api-reference/model-api/alibaba/qwen3-235b-a22b",
+                      "zh/api-reference/model-api/alibaba/qwen3-30b-a3b-instruct-2507",
+                      "zh/api-reference/model-api/alibaba/qwen3-30b-a3b-thinking-2507",
+                      "zh/api-reference/model-api/alibaba/qwen3-32b",
+                      "zh/api-reference/model-api/alibaba/qwen3-14b",
+                      "zh/api-reference/model-api/alibaba/qwen2-5-72b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen2-5-32b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen2-5-7b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen3-vl-235b-a22b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen3-vl-235b-a22b-thinking",
+                      "zh/api-reference/model-api/alibaba/qwen2-5-vl-72b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen2-5-vl-32b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen2-5-vl-7b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen2-vl-72b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen2-vl-7b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen-image-plus",
+                      "zh/api-reference/model-api/alibaba/wan2-6-t2i",
+                      "zh/api-reference/model-api/alibaba/wan2-2-t2v-a14b",
+                      "zh/api-reference/model-api/alibaba/wan2-2-i2v-a14b",
+                      "zh/api-reference/model-api/alibaba/wan2-task-query"
+                    ]
+                  },
+                  {
+                    "group": "MiniMax",
+                    "icon": "/images/providers/minimax.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/minimax/minimax-m2-5",
+                      "zh/api-reference/model-api/minimax/minimax-m2-1"
+                    ]
+                  },
+                  {
+                    "group": "MoonShot",
+                    "icon": "/images/providers/moonshot.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/moonshot/kimi-k2-5"
+                    ]
                   },
                   {
                     "group": "Google",
@@ -622,7 +863,14 @@
                       "zh/api-reference/model-api/kuaishou/kling-v1-5-i2v",
                       "zh/api-reference/model-api/kuaishou/kling-v1-i2v",
                       "zh/api-reference/model-api/kuaishou/kling-v1-t2v",
-                      "zh/api-reference/model-api/kuaishou/kling-task-query"
+                      "zh/api-reference/model-api/kuaishou/kling-identify-face",
+                      "zh/api-reference/model-api/kuaishou/kling-lip-sync",
+                      "zh/api-reference/model-api/kuaishou/kling-task-query",
+                      "zh/api-reference/model-api/kuaishou/kling-element-create",
+                      "zh/api-reference/model-api/kuaishou/kling-element-query",
+                      "zh/api-reference/model-api/kuaishou/kling-element-list",
+                      "zh/api-reference/model-api/kuaishou/kling-element-preset-list",
+                      "zh/api-reference/model-api/kuaishou/kling-element-delete"
                     ]
                   },
                   {
@@ -714,7 +962,7 @@
   },
   "integrations": {
     "ga4": {
-      "measurementId": "G-Q8ECQEP3W9"
+      "measurementId": "G-JTFRWY5Z2S"
     }
   }
 }

@@ -1,0 +1,111 @@
+openapi: 3.1.0
+info:
+  title: "Kling 查询官方预设主体列表"
+  description: "查询 Kling 官方提供的预设主体列表，所有用户均可使用"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /kling/v1/general/advanced-presets-elements:
+    get:
+      operationId: listKlingPresetElementsZh
+      summary: 查询官方预设主体列表
+      description: 分页获取 Kling 官方预设主体列表。预设主体的 `owned_by` 固定为 `"kling"`。
+      parameters:
+        - name: pageNum
+          in: query
+          required: false
+          description: 页码，从 1 开始。
+          schema:
+            type: integer
+            default: 1
+            example: 1
+        - name: pageSize
+          in: query
+          required: false
+          description: 每页数量。
+          schema:
+            type: integer
+            default: 10
+            example: 10
+      responses:
+        "200":
+          description: 查询成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 0
+                  message:
+                    type: string
+                    example: SUCCEED
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        task_id:
+                          type: string
+                        task_status:
+                          type: string
+                          enum: [succeed]
+                        task_result:
+                          type: object
+                          properties:
+                            elements:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  element_id:
+                                    type: integer
+                                  element_name:
+                                    type: string
+                                  element_description:
+                                    type: string
+                                  element_type:
+                                    type: string
+                                    example: image_refer
+                                  owned_by:
+                                    type: string
+                                    description: 固定为 `"kling"`
+                                    example: kling
+                                  status:
+                                    type: string
+                                    example: succeed
+                                  tag_list:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        id:
+                                          type: string
+                                        name:
+                                          type: string
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

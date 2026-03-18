@@ -1,0 +1,72 @@
+openapi: 3.1.0
+info:
+  title: Kling Delete Element
+  description: Delete a custom element by element_id.
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /kling/v1/general/delete-elements:
+    post:
+      operationId: deleteKlingElement
+      summary: Delete Element
+      description: Delete a custom element by its element_id. Only custom elements (not Kling presets) can be deleted.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [element_id]
+              properties:
+                element_id:
+                  type: string
+                  description: The element ID to delete (from `elements[].element_id` in query results).
+                  example: "863121023120580662"
+      responses:
+        "200":
+          description: Element deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 0
+                  message:
+                    type: string
+                    example: SUCCEED
+                  request_id:
+                    type: string
+                    example: "5b9a3935-f65b-4a86-a4cb-de073c95d563"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

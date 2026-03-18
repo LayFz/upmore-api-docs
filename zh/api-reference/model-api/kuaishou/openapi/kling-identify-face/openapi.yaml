@@ -1,0 +1,112 @@
+openapi: 3.1.0
+info:
+  title: "Kling 人脸识别"
+  description: "检测视频中的人脸，为对口型生成建立会话"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /kling/v1/videos/identify-face:
+    post:
+      operationId: klingIdentifyFaceZh
+      summary: 人脸识别
+      description: |
+        分析视频中的人脸，返回 `session_id` 和人脸列表。`session_id` 是对口型生成接口的必填参数。
+
+        本接口为**同步调用**，结果立即返回，无需轮询。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                video_url:
+                  type: string
+                  description: |
+                    待分析视频的公网 URL，视频中须包含至少一张清晰可见的人脸。
+                    与 `video_id` 二选一必填。
+                  example: https://example.com/person-speaking.mp4
+                video_id:
+                  type: string
+                  description: |
+                    Kling 之前生成的视频 ID（如文生视频或图生视频任务的结果）。
+                    与 `video_url` 二选一必填。
+                  example: "860260754053148756"
+      responses:
+        "200":
+          description: 人脸检测成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 0
+                  message:
+                    type: string
+                    example: SUCCEED
+                  data:
+                    type: object
+                    properties:
+                      session_id:
+                        type: string
+                        description: 会话 ID，传给对口型接口使用。
+                        example: abc123-session-id
+                      face_list:
+                        type: array
+                        description: 检测到的人脸列表，视频中有多人时包含多个条目。
+                        items:
+                          type: object
+                          properties:
+                            face_id:
+                              type: string
+                              description: 人脸唯一标识。
+                              example: face_001
+                            face_rect:
+                              type: object
+                              description: 人脸边框坐标。
+                              properties:
+                                x:
+                                  type: integer
+                                  example: 120
+                                y:
+                                  type: integer
+                                  example: 80
+                                width:
+                                  type: integer
+                                  example: 200
+                                height:
+                                  type: integer
+                                  example: 250
+        "400":
+          description: 参数有误或人脸检测失败
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

@@ -1,0 +1,145 @@
+openapi: 3.1.0
+info:
+  title: Kling Custom Element Query
+  description: Query the status and result of a custom element creation task.
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /kling/v1/general/advanced-custom-elements/{task_id}:
+    get:
+      operationId: queryKlingCustomElement
+      summary: Query Custom Element
+      description: Query the status and result of a custom element creation task by task_id.
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          description: Task ID returned from the create custom element endpoint.
+          schema:
+            type: string
+            example: "863121016086724692"
+      responses:
+        "200":
+          description: Task status retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 0
+                  message:
+                    type: string
+                    example: SUCCEED
+                  request_id:
+                    type: string
+                    example: "747654a5-4407-4da5-99a6-b80bebc8035c"
+                  data:
+                    type: object
+                    properties:
+                      task_id:
+                        type: string
+                        example: "863121016086724692"
+                      task_status:
+                        type: string
+                        enum: [submitted, succeed, failed]
+                        example: succeed
+                      task_result:
+                        type: object
+                        properties:
+                          elements:
+                            type: array
+                            items:
+                              $ref: "#/components/schemas/Element"
+                      task_status_msg:
+                        type: string
+                        example: ""
+                      created_at:
+                        type: integer
+                        description: Creation timestamp (ms)
+                        example: 1773812605026
+                      updated_at:
+                        type: integer
+                        description: Update timestamp (ms)
+                        example: 1773812606753
+                      final_unit_deduction:
+                        type: string
+                        example: "0"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Element:
+      type: object
+      properties:
+        element_id:
+          type: integer
+          description: Element ID (use for delete operations)
+          example: 863121023120580662
+        element_name:
+          type: string
+          example: my-character
+        element_description:
+          type: string
+          example: A protagonist character
+        element_type:
+          type: string
+          example: image_refer
+        element_image_list:
+          type: object
+          properties:
+            frontal_image:
+              type: string
+              description: CDN URL of the frontal image
+            refer_images:
+              type: array
+              items:
+                type: object
+                properties:
+                  image_url:
+                    type: string
+        owned_by:
+          type: string
+          description: Owner user ID (or "kling" for presets)
+        status:
+          type: string
+          enum: [succeed, failed]
+        tag_list:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              description:
+                type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

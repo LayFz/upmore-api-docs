@@ -1,0 +1,75 @@
+---
+title: "Qwen Image Plus"
+description: "Qwen Image Plus text-to-image model via Alibaba via AnyFast API."
+---
+
+Qwen Image Plus is a text-to-image generation model available through AnyFast. The API is **synchronous** — it polls the upstream task automatically and returns the final image URL directly.
+
+## Key capabilities
+
+- **Text-to-image** — Generate images from text descriptions
+- **Flexible size** — Specify output dimensions with `size`
+- **URL or Base64** — Choose `response_format` as `url` or `b64_json`
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/images/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "qwen-image-plus",
+    "prompt": "A cute cat in Studio Ghibli style",
+    "size": "1024x1024",
+    "response_format": "url"
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/v1/images/generations",
+    headers={"Authorization": "Bearer YOUR_API_KEY"},
+    json={
+        "model": "qwen-image-plus",
+        "prompt": "A cute cat in Studio Ghibli style",
+        "size": "1024x1024",
+        "response_format": "url"
+    }
+)
+
+result = response.json()
+print(result["data"][0]["url"])
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `model` | string | Yes | Must be `qwen-image-plus` |
+| `prompt` | string | Yes | Text description of the image |
+| `n` | integer | No | Number of images. Default: `1` |
+| `size` | string | No | Output size, e.g. `1024x1024` |
+| `response_format` | string | No | `url` (default) or `b64_json` |
+
+## Response
+
+| Field | Description |
+|---|---|
+| `data[].url` | Generated image URL (valid ~24 hours) |
+| `data[].b64_json` | Base64 image (only when `response_format=b64_json`) |
+| `data[].revised_prompt` | AI-expanded prompt used for generation |
+| `created` | Unix timestamp |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/alibaba/qwen-image-plus"
+>
+  View the interactive API playground for Qwen Image Plus.
+</Card>
