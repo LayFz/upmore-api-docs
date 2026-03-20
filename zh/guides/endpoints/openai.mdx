@@ -1,0 +1,90 @@
+---
+title: "ChatGPT 兼容接口"
+description: "通过 OpenAI SDK 使用 AnyFast 的 /v1/chat/completions 端点访问所有对话模型。"
+---
+
+AnyFast 完全兼容 OpenAI Chat Completions API。如果你已在使用 OpenAI SDK，只需更改 base URL 即可切换到 AnyFast，无需重写代码。
+
+## 端点
+
+```
+POST https://www.anyfast.ai/v1/chat/completions
+```
+
+## 认证
+
+将你的 AnyFast API 密钥作为 Bearer token 传入：
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-6",
+    "messages": [
+      { "role": "user", "content": "你好！" }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+response = client.chat.completions.create(
+    model="claude-sonnet-4-6",
+    messages=[
+        {"role": "user", "content": "你好！"}
+    ]
+)
+print(response.choices[0].message.content)
+```
+
+```javascript Node.js
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: "YOUR_API_KEY",
+  baseURL: "https://www.anyfast.ai/v1",
+});
+
+const response = await client.chat.completions.create({
+  model: "claude-sonnet-4-6",
+  messages: [{ role: "user", content: "你好！" }],
+});
+console.log(response.choices[0].message.content);
+```
+
+</CodeGroup>
+
+## 支持的模型
+
+| 提供商 | 模型 |
+|--------|------|
+| Anthropic | claude-sonnet-4-6, claude-sonnet-4-5-20250929, claude-sonnet-4-20250514, claude-opus-4-6, claude-opus-4-5-20251101, claude-opus-4-1-20250805, claude-opus-4-20250514, claude-haiku-4-5-20251001, claude-3-7-sonnet-20250219, claude-3-5-sonnet-20241022 |
+| OpenAI | gpt-5-4, gpt-5-3-codex, gpt-5-2, gpt-5-1, gpt-5, gpt-5-pro, gpt-5-mini, gpt-5-nano, gpt-4o, gpt-4o-mini, gpt-4-1, gpt-4 |
+| DeepSeek | deepseek-v3-2-speciale, deepseek-v3-2, deepseek-v3-1-terminus, deepseek-v3-1, deepseek-v3 |
+| Alibaba | qwen3-5-397b-a17b, qwen3-coder-next, qwen3-coder, qwen3-235b-a22b, qwen3-32b, qwen3-14b, qwen2-5-72b-instruct |
+| ByteDance | doubao-seed-2.0-pro, doubao-seed-2.0-code, doubao-seed-2.0-lite, doubao-seed-2.0-mini, doubao-seed-1-8-251228, doubao-seed-1-6-251015, glm-4-7-251222 |
+| MiniMax | minimax-m2-5, minimax-m2-1 |
+| MoonShot | kimi-k2-5 |
+| Google | gemini-3.1-pro-preview, gemini-3-pro-preview, gemini-3-flash-preview, gemini-2.5-pro, gemini-2.5-flash, gemini-2.0-flash |
+
+## 功能特性
+
+- **流式输出** — 设置 `stream: true` 通过 SSE 实时流式传输 token
+- **函数调用** — 使用 `tools` 和 `tool_choice` 参数
+- **JSON 模式** — 设置 `response_format: { type: "json_object" }`
+- **多轮对话** — 在 `messages` 中包含完整的对话历史

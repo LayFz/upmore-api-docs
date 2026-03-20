@@ -1,0 +1,95 @@
+---
+title: "Chat 兼容格式"
+description: "通过 OpenAI 兼容的 chat completions 格式在 AnyFast 上使用 Gemini 模型。"
+---
+
+AnyFast 也通过 OpenAI 兼容的 `/v1/chat/completions` 端点提供 Gemini 模型。使用 OpenAI SDK 配合 Gemini 模型名称即可，无需 Google SDK。
+
+## 端点
+
+```
+POST https://www.anyfast.ai/v1/chat/completions
+```
+
+## 认证
+
+将你的 AnyFast API 密钥作为 Bearer token 传入：
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gemini-2.5-pro",
+    "messages": [
+      { "role": "user", "content": "你好，Gemini！" }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+response = client.chat.completions.create(
+    model="gemini-2.5-pro",
+    messages=[
+        {"role": "user", "content": "你好，Gemini！"}
+    ]
+)
+print(response.choices[0].message.content)
+```
+
+```javascript Node.js
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: "YOUR_API_KEY",
+  baseURL: "https://www.anyfast.ai/v1",
+});
+
+const response = await client.chat.completions.create({
+  model: "gemini-2.5-pro",
+  messages: [{ role: "user", content: "你好，Gemini！" }],
+});
+console.log(response.choices[0].message.content);
+```
+
+</CodeGroup>
+
+## 支持的模型
+
+| 模型 | 描述 |
+|------|------|
+| gemini-3.1-pro-preview | 最新 Gemini 3.1 Pro |
+| gemini-3.1-flash-image-preview | Gemini 3.1 Flash 图片生成版 |
+| gemini-3.1-flash-lite-preview | Gemini 3.1 Flash Lite |
+| gemini-3-pro-preview | Gemini 3 Pro |
+| gemini-3-pro-image-preview | Gemini 3 Pro 图片生成版 |
+| gemini-3-flash-preview | Gemini 3 Flash |
+| gemini-2.5-pro | Gemini 2.5 Pro |
+| gemini-2.5-flash | Gemini 2.5 Flash |
+| gemini-2.5-flash-lite | Gemini 2.5 Flash Lite |
+| gemini-2.0-flash | Gemini 2.0 Flash |
+
+## 功能特性
+
+- **流式输出** — 设置 `stream: true` 通过 SSE 实时流式传输 token
+- **JSON 模式** — 设置 `response_format: { type: "json_object" }`
+- **多轮对话** — 在 `messages` 中包含完整的对话历史
+
+<Note>
+  如需使用 Gemini 的高级功能（安全设置、结构化输出模式、Gemini 特有的函数调用参数），请使用[原生格式](/zh/guides/endpoints/gemini-native)。
+</Note>

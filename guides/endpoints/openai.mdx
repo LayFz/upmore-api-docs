@@ -1,0 +1,90 @@
+---
+title: "ChatGPT Compatible Endpoint"
+description: "Use the OpenAI SDK to access all chat models on AnyFast through a single /v1/chat/completions endpoint."
+---
+
+AnyFast is fully compatible with the OpenAI Chat Completions API. If you're already using the OpenAI SDK, switching to AnyFast requires only a base URL change — no code rewrite needed.
+
+## Endpoint
+
+```
+POST https://www.anyfast.ai/v1/chat/completions
+```
+
+## Authentication
+
+Include your AnyFast API key as a Bearer token:
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-6",
+    "messages": [
+      { "role": "user", "content": "Hello!" }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+response = client.chat.completions.create(
+    model="claude-sonnet-4-6",
+    messages=[
+        {"role": "user", "content": "Hello!"}
+    ]
+)
+print(response.choices[0].message.content)
+```
+
+```javascript Node.js
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: "YOUR_API_KEY",
+  baseURL: "https://www.anyfast.ai/v1",
+});
+
+const response = await client.chat.completions.create({
+  model: "claude-sonnet-4-6",
+  messages: [{ role: "user", content: "Hello!" }],
+});
+console.log(response.choices[0].message.content);
+```
+
+</CodeGroup>
+
+## Supported models
+
+| Provider | Models |
+|----------|--------|
+| Anthropic | claude-sonnet-4-6, claude-sonnet-4-5-20250929, claude-sonnet-4-20250514, claude-opus-4-6, claude-opus-4-5-20251101, claude-opus-4-1-20250805, claude-opus-4-20250514, claude-haiku-4-5-20251001, claude-3-7-sonnet-20250219, claude-3-5-sonnet-20241022 |
+| OpenAI | gpt-5-4, gpt-5-3-codex, gpt-5-2, gpt-5-1, gpt-5, gpt-5-pro, gpt-5-mini, gpt-5-nano, gpt-4o, gpt-4o-mini, gpt-4-1, gpt-4 |
+| DeepSeek | deepseek-v3-2-speciale, deepseek-v3-2, deepseek-v3-1-terminus, deepseek-v3-1, deepseek-v3 |
+| Alibaba | qwen3-5-397b-a17b, qwen3-coder-next, qwen3-coder, qwen3-235b-a22b, qwen3-32b, qwen3-14b, qwen2-5-72b-instruct |
+| ByteDance | doubao-seed-2.0-pro, doubao-seed-2.0-code, doubao-seed-2.0-lite, doubao-seed-2.0-mini, doubao-seed-1-8-251228, doubao-seed-1-6-251015, glm-4-7-251222 |
+| MiniMax | minimax-m2-5, minimax-m2-1 |
+| MoonShot | kimi-k2-5 |
+| Google | gemini-3.1-pro-preview, gemini-3-pro-preview, gemini-3-flash-preview, gemini-2.5-pro, gemini-2.5-flash, gemini-2.0-flash |
+
+## Features
+
+- **Streaming** — Set `stream: true` for real-time token streaming via SSE
+- **Function calling** — Use the `tools` and `tool_choice` parameters
+- **JSON mode** — Set `response_format: { type: "json_object" }`
+- **Multi-turn conversations** — Include full message history in `messages`
