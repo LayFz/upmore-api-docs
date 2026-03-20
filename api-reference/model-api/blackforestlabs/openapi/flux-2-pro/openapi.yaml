@@ -1,0 +1,83 @@
+openapi: 3.1.0
+info:
+  title: "FLUX.2 [pro]"
+  description: "Black Forest Labs FLUX.2 [pro] text-to-image model via AnyFast OpenAI-compatible API"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/generations:
+    post:
+      operationId: createFlux2Pro
+      summary: Text-to-Image Generation
+      description: "Generate an image from a text prompt using FLUX.2 [pro]. Supports up to 4MP resolution and multi-reference consistency. Returns the result synchronously as base64-encoded JSON."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - flux-2-pro
+                  description: Model ID
+                  example: flux-2-pro
+                prompt:
+                  type: string
+                  description: "Text description of the image to generate."
+                  example: "A cute baby polar bear"
+                n:
+                  type: integer
+                  minimum: 1
+                  maximum: 4
+                  default: 1
+                  description: "Number of images to generate."
+                size:
+                  type: string
+                  description: "Output image size, e.g. `1024x1024`. Supports up to 4MP resolution."
+                  example: "1024x1024"
+                output_format:
+                  type: string
+                  enum: [jpeg, png]
+                  description: "Output image format."
+                  example: jpeg
+                seed:
+                  type: integer
+                  description: "Random seed for reproducible generation."
+      responses:
+        "200":
+          description: Image generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: integer
+                    example: 1774002799
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        b64_json:
+                          type: string
+                          description: "Base64-encoded image data."
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "429":
+          description: Rate limit exceeded
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

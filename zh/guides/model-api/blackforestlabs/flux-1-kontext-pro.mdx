@@ -1,0 +1,95 @@
+---
+title: "FLUX.1 Kontext [pro]"
+description: "通过 AnyFast API 调用 Black Forest Labs FLUX.1 Kontext [pro] 图片编辑模型。"
+---
+
+FLUX.1 Kontext [pro] 是 Black Forest Labs 推出的上下文感知图片编辑模型，通过 AnyFast 提供。可以根据文字指令编辑已有图片，也可以直接文生图。API 为**同步调用** — 直接返回 Base64 编码的图片数据。
+
+## 核心能力
+
+- **图片编辑** — 根据文字指令修改已有图片（如"把红色汽车换成蓝色"）
+- **文生图** — 不传参考图时，可直接根据文字生成图片
+- **上下文感知** — 理解并保留参考图的上下文信息
+- **可复现** — 使用 `seed` 实现确定性生成
+
+## 快速示例
+
+### 图片编辑
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/images/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "flux-1-kontext-pro",
+    "prompt": "把背景换成日落沙滩",
+    "input_image": "https://example.com/photo.jpg",
+    "size": "1024x1024"
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/v1/images/generations",
+    headers={"Authorization": "Bearer YOUR_API_KEY"},
+    json={
+        "model": "flux-1-kontext-pro",
+        "prompt": "把背景换成日落沙滩",
+        "input_image": "https://example.com/photo.jpg",
+        "size": "1024x1024"
+    }
+)
+
+result = response.json()
+# result["data"][0]["b64_json"] 包含 Base64 编码的图片
+```
+
+</CodeGroup>
+
+### 文生图
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/images/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "flux-1-kontext-pro",
+    "prompt": "一只可爱的北极熊宝宝",
+    "size": "1024x1024"
+  }'
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | 固定为 `flux-1-kontext-pro` |
+| `prompt` | string | 是 | 图片描述或编辑指令 |
+| `input_image` | string | 否 | 参考图片的 Base64 编码或 URL。编辑模式时必填 |
+| `n` | integer | 否 | 生成张数（1–4），默认 `1` |
+| `size` | string | 否 | 输出尺寸，如 `1024x1024` |
+| `output_format` | string | 否 | `jpeg` 或 `png` |
+| `seed` | integer | 否 | 随机种子，用于复现 |
+
+## 响应字段
+
+| 字段 | 说明 |
+|---|---|
+| `data[].b64_json` | Base64 编码的图片数据 |
+| `created` | 创建时间戳 |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/blackforestlabs/flux-1-kontext-pro"
+>
+  查看 FLUX.1 Kontext [pro] 的交互式 API Playground。
+</Card>

@@ -239,6 +239,16 @@
                     ]
                   },
                   {
+                    "group": "Black Forest Labs",
+                    "icon": "/images/providers/bfl.svg",
+                    "pages": [
+                      "guides/model-api/blackforestlabs/flux-1-1-pro",
+                      "guides/model-api/blackforestlabs/flux-2-pro",
+                      "guides/model-api/blackforestlabs/flux-2-flex",
+                      "guides/model-api/blackforestlabs/flux-1-kontext-pro"
+                    ]
+                  },
+                  {
                     "group": "OpenAI",
                     "icon": "/images/providers/openai.svg",
                     "pages": [
@@ -484,6 +494,16 @@
                       "api-reference/model-api/kuaishou/kling-element-list",
                       "api-reference/model-api/kuaishou/kling-element-preset-list",
                       "api-reference/model-api/kuaishou/kling-element-delete"
+                    ]
+                  },
+                  {
+                    "group": "Black Forest Labs",
+                    "icon": "/images/providers/bfl.svg",
+                    "pages": [
+                      "api-reference/model-api/blackforestlabs/flux-1-1-pro",
+                      "api-reference/model-api/blackforestlabs/flux-2-pro",
+                      "api-reference/model-api/blackforestlabs/flux-2-flex",
+                      "api-reference/model-api/blackforestlabs/flux-1-kontext-pro"
                     ]
                   },
                   {
@@ -746,6 +766,16 @@
                     ]
                   },
                   {
+                    "group": "Black Forest Labs",
+                    "icon": "/images/providers/bfl.svg",
+                    "pages": [
+                      "zh/guides/model-api/blackforestlabs/flux-1-1-pro",
+                      "zh/guides/model-api/blackforestlabs/flux-2-pro",
+                      "zh/guides/model-api/blackforestlabs/flux-2-flex",
+                      "zh/guides/model-api/blackforestlabs/flux-1-kontext-pro"
+                    ]
+                  },
+                  {
                     "group": "OpenAI",
                     "icon": "/images/providers/openai.svg",
                     "pages": [
@@ -991,6 +1021,16 @@
                       "zh/api-reference/model-api/kuaishou/kling-element-list",
                       "zh/api-reference/model-api/kuaishou/kling-element-preset-list",
                       "zh/api-reference/model-api/kuaishou/kling-element-delete"
+                    ]
+                  },
+                  {
+                    "group": "Black Forest Labs",
+                    "icon": "/images/providers/bfl.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/blackforestlabs/flux-1-1-pro",
+                      "zh/api-reference/model-api/blackforestlabs/flux-2-pro",
+                      "zh/api-reference/model-api/blackforestlabs/flux-2-flex",
+                      "zh/api-reference/model-api/blackforestlabs/flux-1-kontext-pro"
                     ]
                   },
                   {
