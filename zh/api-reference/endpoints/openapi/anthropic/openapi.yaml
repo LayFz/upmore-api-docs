@@ -1,0 +1,278 @@
+openapi: 3.1.0
+info:
+  title: Anthropic Claude 兼容端点
+  description: 通过 AnyFast 调用 Anthropic Messages API 原生接口，支持所有 Claude 模型
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/messages:
+    post:
+      operationId: createMessage
+      summary: 创建消息
+      description: 发送结构化输入消息列表，模型将生成对话中的下一条消息。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - max_tokens
+                - messages
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - claude-sonnet-4-6
+                    - claude-sonnet-4-5-20250929
+                    - claude-sonnet-4-20250514
+                    - claude-opus-4-6
+                    - claude-opus-4-5-20251101
+                    - claude-opus-4-1-20250805
+                    - claude-opus-4-20250514
+                    - claude-haiku-4-5-20251001
+                    - claude-3-7-sonnet-20250219
+                    - claude-3-5-sonnet-20241022
+                  description: 用于补全的模型。
+                  example: claude-sonnet-4-6
+                messages:
+                  type: array
+                  minItems: 1
+                  description: 输入消息列表。每条消息包含角色和内容。
+                  items:
+                    type: object
+                    required:
+                      - role
+                      - content
+                    properties:
+                      role:
+                        type: string
+                        enum: [user, assistant]
+                        description: 消息作者的角色。
+                      content:
+                        oneOf:
+                          - type: string
+                          - type: array
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum: [text, image]
+                                text:
+                                  type: string
+                                source:
+                                  type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                    media_type:
+                                      type: string
+                                    data:
+                                      type: string
+                        description: 消息内容。可以是字符串或内容块数组。
+                  example:
+                    - role: user
+                      content: 你好，Claude！
+                max_tokens:
+                  type: integer
+                  minimum: 1
+                  description: 停止生成前的最大 token 数。
+                  example: 1024
+                system:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                          text:
+                            type: string
+                  description: 系统提示。为 Claude 提供上下文和指令。
+                metadata:
+                  type: object
+                  properties:
+                    user_id:
+                      type: string
+                      description: 与请求关联的用户外部标识符。
+                  description: 描述请求元数据的对象。
+                stop_sequences:
+                  type: array
+                  items:
+                    type: string
+                  description: 自定义文本序列，遇到时模型将停止生成。
+                temperature:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 1
+                  description: 注入响应的随机性。范围 0.0 到 1.0。
+                  example: 1
+                top_p:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  description: 使用核采样。建议使用 temperature 或 top_p 之一，不要同时使用。
+                top_k:
+                  type: integer
+                  minimum: 0
+                  description: 仅从每个后续 token 的前 K 个选项中采样。
+                stream:
+                  type: boolean
+                  default: false
+                  description: 是否使用服务器发送事件 (SSE) 增量流式传输响应。
+                tools:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - input_schema
+                    properties:
+                      name:
+                        type: string
+                        description: 工具名称。
+                      description:
+                        type: string
+                        description: 工具功能描述。
+                      input_schema:
+                        type: object
+                        description: 工具输入的 JSON Schema。
+                  description: 模型可使用的工具定义。
+                tool_choice:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum: [auto, any, tool]
+                      description: 模型如何使用提供的工具。
+                    name:
+                      type: string
+                      description: 要使用的工具名称（当 type 为 "tool" 时）。
+                  description: 控制模型如何使用提供的工具。
+                thinking:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum: [enabled, disabled]
+                      description: 是否启用扩展思考。
+                    budget_tokens:
+                      type: integer
+                      minimum: 1024
+                      description: 用于思考的最大 token 数。
+                  description: 扩展思考配置。启用后，模型会在回复前进行深度思考。
+      responses:
+        "200":
+          description: 消息创建成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        "400":
+          description: 请求无效
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: 超出速率限制
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Message:
+      type: object
+      required:
+        - id
+        - type
+        - role
+        - content
+        - model
+        - stop_reason
+        - usage
+      properties:
+        id:
+          type: string
+          example: msg_01XFDUDYJgAACzvnptvVoYEL
+        type:
+          type: string
+          example: message
+        role:
+          type: string
+          example: assistant
+        content:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: [text, thinking, tool_use]
+              text:
+                type: string
+              thinking:
+                type: string
+              id:
+                type: string
+              name:
+                type: string
+              input:
+                type: object
+          example:
+            - type: text
+              text: 你好！有什么我可以帮助你的吗？
+        model:
+          type: string
+          example: claude-sonnet-4-6
+        stop_reason:
+          type: string
+          enum: [end_turn, max_tokens, stop_sequence, tool_use, null]
+        stop_sequence:
+          type: string
+          nullable: true
+        usage:
+          type: object
+          properties:
+            input_tokens:
+              type: integer
+            output_tokens:
+              type: integer
+            cache_creation_input_tokens:
+              type: integer
+            cache_read_input_tokens:
+              type: integer
+
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+          example: error
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

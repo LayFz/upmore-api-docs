@@ -1,0 +1,272 @@
+openapi: 3.1.0
+info:
+  title: ChatGPT 兼容端点
+  description: 通过 AnyFast 调用 OpenAI 兼容的对话补全接口，支持所有对话模型
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/chat/completions:
+    post:
+      operationId: createChatCompletionCompatible
+      summary: 对话补全
+      description: 根据对话上下文生成模型回复。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - messages
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - claude-sonnet-4-6
+                    - claude-sonnet-4-5-20250929
+                    - claude-sonnet-4-20250514
+                    - claude-opus-4-6
+                    - claude-opus-4-5-20251101
+                    - claude-opus-4-1-20250805
+                    - claude-opus-4-20250514
+                    - claude-haiku-4-5-20251001
+                    - claude-3-7-sonnet-20250219
+                    - claude-3-5-sonnet-20241022
+                    - gpt-5-4
+                    - gpt-5-3-codex
+                    - gpt-5-2
+                    - gpt-5-2-chat
+                    - gpt-5-2-chat-latest
+                    - gpt-5-2-codex
+                    - gpt-5-1
+                    - gpt-5-1-chat
+                    - gpt-5-1-chat-latest
+                    - gpt-5-1-codex-mini
+                    - gpt-5
+                    - gpt-5-chat-latest
+                    - gpt-5-pro
+                    - gpt-5-codex
+                    - gpt-5-codex-high
+                    - gpt-5-codex-low
+                    - gpt-5-mini
+                    - gpt-5-nano
+                    - gpt-4o
+                    - gpt-4o-mini
+                    - gpt-4-1
+                    - gpt-4
+                    - deepseek-v3-2-speciale
+                    - deepseek-v3-2
+                    - deepseek-v3-2-exp
+                    - deepseek-v3-2-251201
+                    - deepseek-v3-1-terminus
+                    - deepseek-v3-1
+                    - deepseek-v3
+                    - qwen3-5-397b-a17b
+                    - qwen3-coder-next
+                    - qwen3-coder
+                    - qwen3-235b-a22b
+                    - qwen3-32b
+                    - qwen3-14b
+                    - qwen2-5-72b-instruct
+                    - doubao-seed-2.0-pro
+                    - doubao-seed-2.0-code
+                    - doubao-seed-2.0-lite
+                    - doubao-seed-2.0-mini
+                    - doubao-seed-1-8-251228
+                    - doubao-seed-1-6-251015
+                    - minimax-m2-5
+                    - minimax-m2-1
+                    - kimi-k2-5
+                    - gemini-3.1-pro-preview
+                    - gemini-3.1-flash-image-preview
+                    - gemini-3-pro-preview
+                    - gemini-3-flash-preview
+                    - gemini-2.5-pro
+                    - gemini-2.5-flash
+                    - gemini-2.0-flash
+                    - glm-4-7-251222
+                  description: 用于补全的模型 ID。
+                  example: claude-sonnet-4-6
+                messages:
+                  type: array
+                  minItems: 1
+                  description: 组成当前对话的消息列表。
+                  items:
+                    type: object
+                    required:
+                      - role
+                      - content
+                    properties:
+                      role:
+                        type: string
+                        enum: [system, user, assistant]
+                      content:
+                        oneOf:
+                          - type: string
+                          - type: array
+                            items:
+                              type: object
+                  example:
+                    - role: user
+                      content: 你好！
+                max_tokens:
+                  type: integer
+                  minimum: 1
+                  description: 对话补全中生成的最大 token 数。
+                temperature:
+                  type: number
+                  minimum: 0
+                  maximum: 2
+                  default: 1
+                  description: 采样温度，范围 0 到 2。值越高输出越随机，值越低越确定。
+                  example: 1
+                top_p:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  description: 核采样阈值，作为温度的替代方案。
+                frequency_penalty:
+                  type: number
+                  minimum: -2
+                  maximum: 2
+                  default: 0
+                  description: 根据新 token 在文本中的现有频率进行惩罚。
+                presence_penalty:
+                  type: number
+                  minimum: -2
+                  maximum: 2
+                  default: 0
+                  description: 根据新 token 是否已出现在文本中进行惩罚。
+                stream:
+                  type: boolean
+                  default: false
+                  description: 如果为 true，将通过服务器发送事件 (SSE) 流式发送部分消息。
+                stop:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: 最多 4 个序列，API 将在生成这些序列时停止继续生成。
+                n:
+                  type: integer
+                  minimum: 1
+                  default: 1
+                  description: 为每条输入消息生成多少个补全选项。
+                response_format:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum: [text, json_object]
+                  description: '指定模型必须输出的格式。设置为 {"type": "json_object"} 可启用 JSON 模式。'
+                tools:
+                  type: array
+                  items:
+                    type: object
+                  description: 模型可调用的工具列表。目前仅支持函数作为工具。
+                tool_choice:
+                  oneOf:
+                    - type: string
+                    - type: object
+                  description: 控制模型调用哪个（如果有的话）工具。
+                user:
+                  type: string
+                  description: 代表最终用户的唯一标识符。
+      responses:
+        "200":
+          description: 补全生成成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatCompletion"
+        "400":
+          description: 请求无效
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: 超出速率限制
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    ChatCompletion:
+      type: object
+      required:
+        - id
+        - object
+        - created
+        - model
+        - choices
+      properties:
+        id:
+          type: string
+          example: chatcmpl-abc123
+        object:
+          type: string
+          example: chat.completion
+        created:
+          type: integer
+          description: 补全创建时的 Unix 时间戳。
+        model:
+          type: string
+          example: claude-sonnet-4-6
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    example: assistant
+                  content:
+                    type: string
+                    example: 你好！有什么我可以帮助你的吗？
+              finish_reason:
+                type: string
+                enum: [stop, length, content_filter, tool_calls, null]
+        usage:
+          type: object
+          properties:
+            prompt_tokens:
+              type: integer
+            completion_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

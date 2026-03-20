@@ -41,6 +41,30 @@
                 ]
               },
               {
+                "group": "Native Compatible Endpoints",
+                "pages": [
+                  {
+                    "group": "ChatGPT",
+                    "pages": [
+                      "guides/endpoints/openai"
+                    ]
+                  },
+                  {
+                    "group": "Anthropic Claude",
+                    "pages": [
+                      "guides/endpoints/anthropic"
+                    ]
+                  },
+                  {
+                    "group": "Google Gemini",
+                    "pages": [
+                      "guides/endpoints/gemini-native",
+                      "guides/endpoints/gemini-chat"
+                    ]
+                  }
+                ]
+              },
+              {
                 "group": "Model APIs",
                 "pages": [
                   {
@@ -72,6 +96,12 @@
                     "group": "ByteDance",
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
+                      "guides/model-api/bytedance/seedance",
+                      "guides/model-api/bytedance/seedance-fast",
+                      "guides/model-api/bytedance/doubao-seed-2.0-pro",
+                      "guides/model-api/bytedance/doubao-seed-2.0-code",
+                      "guides/model-api/bytedance/doubao-seed-2.0-lite",
+                      "guides/model-api/bytedance/doubao-seed-2.0-mini",
                       "guides/model-api/bytedance/doubao-seed-1-8",
                       "guides/model-api/bytedance/doubao-seed-1-6-flash",
                       "guides/model-api/bytedance/doubao-seed-1-6",
@@ -258,6 +288,30 @@
                 ]
               },
               {
+                "group": "Native Compatible Endpoints",
+                "pages": [
+                  {
+                    "group": "ChatGPT",
+                    "pages": [
+                      "api-reference/endpoints/openai"
+                    ]
+                  },
+                  {
+                    "group": "Anthropic Claude",
+                    "pages": [
+                      "api-reference/endpoints/anthropic"
+                    ]
+                  },
+                  {
+                    "group": "Google Gemini",
+                    "pages": [
+                      "api-reference/endpoints/gemini-native",
+                      "api-reference/endpoints/gemini-chat"
+                    ]
+                  }
+                ]
+              },
+              {
                 "group": "Model APIs",
                 "pages": [
                   {
@@ -290,6 +344,12 @@
                     "group": "ByteDance",
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
+                      "api-reference/model-api/bytedance/seedance",
+                      "api-reference/model-api/bytedance/seedance-fast",
+                      "api-reference/model-api/bytedance/doubao-seed-2.0-pro",
+                      "api-reference/model-api/bytedance/doubao-seed-2.0-code",
+                      "api-reference/model-api/bytedance/doubao-seed-2.0-lite",
+                      "api-reference/model-api/bytedance/doubao-seed-2.0-mini",
                       "api-reference/model-api/bytedance/doubao-seed-1-8-251228",
                       "api-reference/model-api/bytedance/doubao-seed-1-6-flash-250828",
                       "api-reference/model-api/bytedance/doubao-seed-1-6-251015",
@@ -488,6 +548,30 @@
                 ]
               },
               {
+                "group": "原生兼容端点",
+                "pages": [
+                  {
+                    "group": "ChatGPT",
+                    "pages": [
+                      "zh/guides/endpoints/openai"
+                    ]
+                  },
+                  {
+                    "group": "Anthropic Claude",
+                    "pages": [
+                      "zh/guides/endpoints/anthropic"
+                    ]
+                  },
+                  {
+                    "group": "Google Gemini",
+                    "pages": [
+                      "zh/guides/endpoints/gemini-native",
+                      "zh/guides/endpoints/gemini-chat"
+                    ]
+                  }
+                ]
+              },
+              {
                 "group": "模型 API",
                 "pages": [
                   {
@@ -519,6 +603,12 @@
                     "group": "ByteDance",
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
+                      "zh/guides/model-api/bytedance/seedance",
+                      "zh/guides/model-api/bytedance/seedance-fast",
+                      "zh/guides/model-api/bytedance/doubao-seed-2.0-pro",
+                      "zh/guides/model-api/bytedance/doubao-seed-2.0-code",
+                      "zh/guides/model-api/bytedance/doubao-seed-2.0-lite",
+                      "zh/guides/model-api/bytedance/doubao-seed-2.0-mini",
                       "zh/guides/model-api/bytedance/doubao-seed-1-8",
                       "zh/guides/model-api/bytedance/doubao-seed-1-6-flash",
                       "zh/guides/model-api/bytedance/doubao-seed-1-6",
@@ -705,6 +795,30 @@
                 ]
               },
               {
+                "group": "原生兼容端点",
+                "pages": [
+                  {
+                    "group": "ChatGPT",
+                    "pages": [
+                      "zh/api-reference/endpoints/openai"
+                    ]
+                  },
+                  {
+                    "group": "Anthropic Claude",
+                    "pages": [
+                      "zh/api-reference/endpoints/anthropic"
+                    ]
+                  },
+                  {
+                    "group": "Google Gemini",
+                    "pages": [
+                      "zh/api-reference/endpoints/gemini-native",
+                      "zh/api-reference/endpoints/gemini-chat"
+                    ]
+                  }
+                ]
+              },
+              {
                 "group": "模型 API",
                 "pages": [
                   {
@@ -737,6 +851,12 @@
                     "group": "ByteDance",
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
+                      "zh/api-reference/model-api/bytedance/seedance",
+                      "zh/api-reference/model-api/bytedance/seedance-fast",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-2.0-pro",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-2.0-code",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-2.0-lite",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-2.0-mini",
                       "zh/api-reference/model-api/bytedance/doubao-seed-1-8-251228",
                       "zh/api-reference/model-api/bytedance/doubao-seed-1-6-flash-250828",
                       "zh/api-reference/model-api/bytedance/doubao-seed-1-6-251015",

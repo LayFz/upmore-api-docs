@@ -1,0 +1,91 @@
+---
+title: "原生格式"
+description: "通过官方 Google Generative AI SDK 使用 AnyFast 的原生 generateContent 端点访问 Gemini 模型。"
+---
+
+AnyFast 兼容 Google Gemini 原生 API。使用官方 Google Generative AI SDK，只需将端点更改为 AnyFast 即可。
+
+## 端点
+
+```
+POST https://www.anyfast.ai/v1beta/models/{model}:generateContent
+```
+
+## 认证
+
+将你的 AnyFast API 密钥作为 Bearer token 传入：
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1beta/models/gemini-2.5-pro:generateContent \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "role": "user",
+        "parts": [{ "text": "你好，Gemini！" }]
+      }
+    ]
+  }'
+```
+
+```python Python
+import google.generativeai as genai
+
+genai.configure(
+    api_key="YOUR_API_KEY",
+    transport="rest",
+    client_options={"api_endpoint": "https://www.anyfast.ai"}
+)
+
+model = genai.GenerativeModel("gemini-2.5-pro")
+response = model.generate_content("你好，Gemini！")
+print(response.text)
+```
+
+```javascript Node.js
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI("YOUR_API_KEY");
+// 配置使用 AnyFast 端点
+const model = genAI.getGenerativeModel(
+  { model: "gemini-2.5-pro" },
+  { baseUrl: "https://www.anyfast.ai" }
+);
+
+const result = await model.generateContent("你好，Gemini！");
+console.log(result.response.text());
+```
+
+</CodeGroup>
+
+## 支持的模型
+
+| 模型 | 描述 |
+|------|------|
+| gemini-3.1-pro-preview | 最新 Gemini 3.1 Pro |
+| gemini-3.1-flash-image-preview | Gemini 3.1 Flash 图片生成版 |
+| gemini-3.1-flash-lite-preview | Gemini 3.1 Flash Lite |
+| gemini-3-pro-preview | Gemini 3 Pro |
+| gemini-3-pro-image-preview | Gemini 3 Pro 图片生成版 |
+| gemini-3-flash-preview | Gemini 3 Flash |
+| gemini-2.5-pro | Gemini 2.5 Pro |
+| gemini-2.5-flash | Gemini 2.5 Flash |
+| gemini-2.5-flash-lite | Gemini 2.5 Flash Lite |
+| gemini-2.0-flash | Gemini 2.0 Flash |
+
+## 功能特性
+
+- **系统指令** — 使用 `systemInstruction` 提供上下文和指令
+- **函数调用** — 通过 `tools.functionDeclarations` 定义函数
+- **结构化输出** — 将 `generationConfig.responseMimeType` 设为 `"application/json"` 并配合 `responseSchema` 使用
+- **安全设置** — 通过 `safetySettings` 配置内容过滤
+- **多模态输入** — 通过内容块中的 `inlineData` 发送图片
