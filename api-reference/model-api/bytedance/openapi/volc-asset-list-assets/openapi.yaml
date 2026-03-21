@@ -1,0 +1,110 @@
+openapi: 3.1.0
+info:
+  title: "Volc Asset — List Assets"
+  description: "Query assets within asset groups via AnyFast API"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /volc/asset/ListAssets:
+    post:
+      operationId: listAssets
+      summary: List Assets
+      description: "Query assets with optional filters. This is a read-only operation and is not billed."
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model:
+                  type: string
+                  default: volc-asset
+                  description: "Model name. Default: `volc-asset`."
+                  example: volc-asset
+                Filter:
+                  type: object
+                  description: "Optional filter conditions."
+                  properties:
+                    Name:
+                      type: string
+                      description: "Fuzzy match by asset name."
+                      example: "test"
+                    GroupIds:
+                      type: array
+                      items:
+                        type: string
+                      description: "Filter by asset group ID list."
+                      example: ["group-20260320141746-zsf6b"]
+                    GroupType:
+                      type: string
+                      description: "Filter by group type."
+                      example: "AIGC"
+                PageNumber:
+                  type: integer
+                  default: 1
+                  description: "Page number. Default: `1`."
+                PageSize:
+                  type: integer
+                  default: 10
+                  description: "Items per page. Default: `10`."
+      responses:
+        "200":
+          description: Assets retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        Id:
+                          type: string
+                          example: "asset-20260320142452-2htjn"
+                        Name:
+                          type: string
+                          example: "test"
+                        URL:
+                          type: string
+                          description: "Asset file URL."
+                          example: "https://ark-media-asset.tos-cn-beijing.volces.com/..."
+                        AssetType:
+                          type: string
+                          example: "Image"
+                        GroupId:
+                          type: string
+                          example: "group-20260320141746-zsf6b"
+                        Status:
+                          type: string
+                          example: "Active"
+                        ProjectName:
+                          type: string
+                          example: "default"
+                        CreateTime:
+                          type: string
+                          example: "2026-03-20T14:24:52Z"
+                        UpdateTime:
+                          type: string
+                          example: "2026-03-20T14:25:01Z"
+                  PageNumber:
+                    type: integer
+                    example: 1
+                  PageSize:
+                    type: integer
+                    example: 1
+                  TotalCount:
+                    type: integer
+                    example: 2
+        "401":
+          description: Unauthorized
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

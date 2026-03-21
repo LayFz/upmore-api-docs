@@ -1,0 +1,125 @@
+openapi: 3.1.0
+info:
+  title: "火山素材 — 查询素材"
+  description: "通过 AnyFast API 查询素材"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /volc/asset/ListAssets:
+    post:
+      operationId: listAssets
+      summary: 查询素材
+      description: 查询素材列表，支持按名称、素材组 ID、素材组类型过滤。查询操作不计费。
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model:
+                  type: string
+                  default: volc-asset
+                  description: 模型名称。默认 `volc-asset`。
+                  example: volc-asset
+                Filter:
+                  type: object
+                  description: 过滤条件。
+                  properties:
+                    Name:
+                      type: string
+                      description: 按名称模糊匹配。
+                      example: "test"
+                    GroupIds:
+                      type: array
+                      items:
+                        type: string
+                      description: 按素材组 ID 列表过滤。
+                      example: ["group-20260320141746-zsf6b"]
+                    GroupType:
+                      type: string
+                      description: 按素材组类型过滤。
+                      example: "AIGC"
+                PageNumber:
+                  type: integer
+                  default: 1
+                  description: 页码，默认 `1`。
+                PageSize:
+                  type: integer
+                  default: 10
+                  description: 每页数量，默认 `10`。
+      responses:
+        "200":
+          description: 查询成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        Id:
+                          type: string
+                          example: "asset-20260320142452-2htjn"
+                        Name:
+                          type: string
+                          example: "test"
+                        URL:
+                          type: string
+                          description: 素材文件 URL。
+                          example: "https://ark-media-asset.tos-cn-beijing.volces.com/..."
+                        AssetType:
+                          type: string
+                          example: "Image"
+                        GroupId:
+                          type: string
+                          example: "group-20260320141746-zsf6b"
+                        Status:
+                          type: string
+                          example: "Active"
+                        ProjectName:
+                          type: string
+                          example: "default"
+                        CreateTime:
+                          type: string
+                          example: "2026-03-20T14:24:52Z"
+                        UpdateTime:
+                          type: string
+                          example: "2026-03-20T14:25:01Z"
+                  PageNumber:
+                    type: integer
+                    example: 1
+                  PageSize:
+                    type: integer
+                    example: 1
+                  TotalCount:
+                    type: integer
+                    example: 2
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

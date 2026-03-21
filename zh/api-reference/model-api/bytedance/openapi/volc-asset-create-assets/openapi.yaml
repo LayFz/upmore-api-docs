@@ -1,0 +1,89 @@
+openapi: 3.1.0
+info:
+  title: "火山素材 — 创建素材"
+  description: "通过 AnyFast API 上传素材到素材组"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /volc/asset/CreateAssets:
+    post:
+      operationId: createAssets
+      summary: 创建素材
+      description: 上传媒体素材到已有素材组。返回的素材 ID 可在 Seedance 请求中以 `Asset://<ID>` 格式使用。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - GroupId
+                - Name
+                - AssetType
+                - URL
+              properties:
+                model:
+                  type: string
+                  default: volc-asset
+                  description: 模型名称，用于计费。默认 `volc-asset`。
+                  example: volc-asset
+                GroupId:
+                  type: string
+                  description: 素材组 ID。
+                  example: "group-20260319072926-rrnmg"
+                Name:
+                  type: string
+                  description: 素材名称。
+                  example: "character-reference"
+                AssetType:
+                  type: string
+                  enum: [Image, Video, Audio]
+                  description: 素材类型。
+                  example: Image
+                URL:
+                  type: string
+                  description: 媒体文件的公开访问 URL。
+                  example: "https://example.com/image.jpg"
+      responses:
+        "200":
+          description: 素材创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Id:
+                    type: string
+                    description: 素材 ID。在 Seedance 请求中以 `Asset://<ID>` 格式引用。
+                    example: "asset-20260320120147-pqwhc"
+        "400":
+          description: 请求参数有误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

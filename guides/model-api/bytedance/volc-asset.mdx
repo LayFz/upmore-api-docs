@@ -1,0 +1,201 @@
+---
+title: "Volc Asset Management"
+description: "Manage media assets (images, videos, audio) for Seedance video generation via AnyFast API."
+---
+
+Volc Asset Management lets you upload and organize media resources for use with Seedance video generation. Once uploaded, assets are referenced by ID (`Asset://<ID>`) in Seedance requests instead of public URLs.
+
+## Why use Asset Management?
+
+- **Persistent storage** — Assets are stored on Volcengine and don't expire like temporary URLs
+- **Organized by groups** — Group related assets (e.g. per project or campaign)
+- **Data isolation** — Each API token sees only its own assets
+- **Direct integration** — Use `Asset://<ID>` directly in Seedance `image_url`, `video_url`, and `audio_url` fields
+
+## Workflow
+
+```
+1. Create an asset group       →  group ID
+2. Upload assets to the group  →  asset ID
+3. Use asset ID in Seedance    →  Asset://<asset-ID>
+```
+
+## Step 1: Create an asset group
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/volc/asset/CreateAssetGroup \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "Name": "my-project-assets"
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/volc/asset/CreateAssetGroup",
+    headers={"Authorization": "Bearer YOUR_API_KEY"},
+    json={"Name": "my-project-assets"}
+)
+
+group_id = response.json()["Id"]
+print(f"Group ID: {group_id}")
+# → group-20260320120601-hsw4s
+```
+
+</CodeGroup>
+
+## Step 2: Upload an asset
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/volc/asset/CreateAssets \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "GroupId": "group-20260320120601-hsw4s",
+    "Name": "character-reference",
+    "AssetType": "Image",
+    "URL": "https://example.com/character.jpg"
+  }'
+```
+
+```python Python
+response = requests.post(
+    "https://www.anyfast.ai/volc/asset/CreateAssets",
+    headers={"Authorization": "Bearer YOUR_API_KEY"},
+    json={
+        "GroupId": "group-20260320120601-hsw4s",
+        "Name": "character-reference",
+        "AssetType": "Image",
+        "URL": "https://example.com/character.jpg"
+    }
+)
+
+asset_id = response.json()["Id"]
+print(f"Asset ID: {asset_id}")
+# → asset-20260320120147-pqwhc
+```
+
+</CodeGroup>
+
+## Step 3: Use in Seedance
+
+Replace the URL in your Seedance request with `Asset://<asset-ID>`:
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "seedance",
+    "content": [
+      {
+        "type": "text",
+        "text": "A cat playing piano in a sunlit room"
+      },
+      {
+        "type": "image_url",
+        "image_url": {
+          "url": "Asset://asset-20260320120147-pqwhc"
+        },
+        "role": "reference_image"
+      }
+    ],
+    "generate_audio": true,
+    "resolution": "720p",
+    "ratio": "adaptive",
+    "duration": 5
+  }'
+```
+
+```python Python
+response = requests.post(
+    "https://www.anyfast.ai/v1/video/generations",
+    headers={"Authorization": "Bearer YOUR_API_KEY"},
+    json={
+        "model": "seedance",
+        "content": [
+            {"type": "text", "text": "A cat playing piano in a sunlit room"},
+            {
+                "type": "image_url",
+                "image_url": {"url": "Asset://asset-20260320120147-pqwhc"},
+                "role": "reference_image"
+            }
+        ],
+        "generate_audio": True,
+        "resolution": "720p",
+        "ratio": "adaptive",
+        "duration": 5
+    }
+)
+```
+
+</CodeGroup>
+
+## Query assets
+
+### List asset groups
+
+```bash cURL
+curl https://www.anyfast.ai/volc/asset/ListAssetGroups \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "Filter": {"Name": "my-project"},
+    "PageNumber": 1,
+    "PageSize": 10
+  }'
+```
+
+### List assets in a group
+
+```bash cURL
+curl https://www.anyfast.ai/volc/asset/ListAssets \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "Filter": {"GroupIds": ["group-20260320120601-hsw4s"]},
+    "PageNumber": 1,
+    "PageSize": 10
+  }'
+```
+
+## Billing
+
+| Operation | Billed |
+|-----------|--------|
+| CreateAssetGroup | Per request |
+| CreateAssets | Per request |
+| ListAssetGroups | Free |
+| ListAssets | Free |
+
+Billing is based on the `model` field (default: `volc-asset`).
+
+## Data isolation
+
+When using token-based access, the system automatically prefixes asset group names with `[u-{userID}]-[t-{tokenID}]`, providing user and token-level data isolation. Queries automatically filter to return only data accessible by the current token.
+
+## API Reference
+
+<CardGroup cols={2}>
+  <Card title="Create Asset Group" icon="folder-plus" href="/api-reference/model-api/bytedance/volc-asset-create-group">
+    Create a new asset group.
+  </Card>
+  <Card title="Create Asset" icon="upload" href="/api-reference/model-api/bytedance/volc-asset-create-assets">
+    Upload an asset to a group.
+  </Card>
+  <Card title="List Asset Groups" icon="folders" href="/api-reference/model-api/bytedance/volc-asset-list-groups">
+    Query asset groups.
+  </Card>
+  <Card title="List Assets" icon="images" href="/api-reference/model-api/bytedance/volc-asset-list-assets">
+    Query assets within groups.
+  </Card>
+</CardGroup>

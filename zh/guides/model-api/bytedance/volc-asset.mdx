@@ -1,0 +1,201 @@
+---
+title: "火山素材管理"
+description: "通过 AnyFast API 管理 Seedance 视频生成所需的媒体素材（图片、视频、音频）。"
+---
+
+火山素材管理让你可以上传和组织媒体资源，供 Seedance 视频生成使用。上传后，在 Seedance 请求中通过素材 ID（`Asset://<ID>`）引用素材，无需使用公开 URL。
+
+## 为什么使用素材管理？
+
+- **持久存储** — 素材存储在火山引擎，不会像临时 URL 那样过期
+- **分组管理** — 按项目或活动将相关素材归组
+- **数据隔离** — 每个 API 令牌只能看到自己的素材
+- **直接集成** — 在 Seedance 的 `image_url`、`video_url`、`audio_url` 字段中直接使用 `Asset://<ID>`
+
+## 工作流
+
+```
+1. 创建素材组       →  素材组 ID
+2. 上传素材到素材组  →  素材 ID
+3. 在 Seedance 中使用  →  Asset://<素材 ID>
+```
+
+## 第一步：创建素材组
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/volc/asset/CreateAssetGroup \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "Name": "my-project-assets"
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://www.anyfast.ai/volc/asset/CreateAssetGroup",
+    headers={"Authorization": "Bearer YOUR_API_KEY"},
+    json={"Name": "my-project-assets"}
+)
+
+group_id = response.json()["Id"]
+print(f"素材组 ID: {group_id}")
+# → group-20260320120601-hsw4s
+```
+
+</CodeGroup>
+
+## 第二步：上传素材
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/volc/asset/CreateAssets \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "GroupId": "group-20260320120601-hsw4s",
+    "Name": "character-reference",
+    "AssetType": "Image",
+    "URL": "https://example.com/character.jpg"
+  }'
+```
+
+```python Python
+response = requests.post(
+    "https://www.anyfast.ai/volc/asset/CreateAssets",
+    headers={"Authorization": "Bearer YOUR_API_KEY"},
+    json={
+        "GroupId": "group-20260320120601-hsw4s",
+        "Name": "character-reference",
+        "AssetType": "Image",
+        "URL": "https://example.com/character.jpg"
+    }
+)
+
+asset_id = response.json()["Id"]
+print(f"素材 ID: {asset_id}")
+# → asset-20260320120147-pqwhc
+```
+
+</CodeGroup>
+
+## 第三步：在 Seedance 中使用
+
+将 Seedance 请求中的 URL 替换为 `Asset://<素材 ID>`：
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "seedance",
+    "content": [
+      {
+        "type": "text",
+        "text": "一只猫在阳光明媚的房间里弹钢琴"
+      },
+      {
+        "type": "image_url",
+        "image_url": {
+          "url": "Asset://asset-20260320120147-pqwhc"
+        },
+        "role": "reference_image"
+      }
+    ],
+    "generate_audio": true,
+    "resolution": "720p",
+    "ratio": "adaptive",
+    "duration": 5
+  }'
+```
+
+```python Python
+response = requests.post(
+    "https://www.anyfast.ai/v1/video/generations",
+    headers={"Authorization": "Bearer YOUR_API_KEY"},
+    json={
+        "model": "seedance",
+        "content": [
+            {"type": "text", "text": "一只猫在阳光明媚的房间里弹钢琴"},
+            {
+                "type": "image_url",
+                "image_url": {"url": "Asset://asset-20260320120147-pqwhc"},
+                "role": "reference_image"
+            }
+        ],
+        "generate_audio": True,
+        "resolution": "720p",
+        "ratio": "adaptive",
+        "duration": 5
+    }
+)
+```
+
+</CodeGroup>
+
+## 查询素材
+
+### 查询素材组
+
+```bash cURL
+curl https://www.anyfast.ai/volc/asset/ListAssetGroups \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "Filter": {"Name": "my-project"},
+    "PageNumber": 1,
+    "PageSize": 10
+  }'
+```
+
+### 查询素材组内的素材
+
+```bash cURL
+curl https://www.anyfast.ai/volc/asset/ListAssets \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "Filter": {"GroupIds": ["group-20260320120601-hsw4s"]},
+    "PageNumber": 1,
+    "PageSize": 10
+  }'
+```
+
+## 计费说明
+
+| 操作 | 是否计费 |
+|------|----------|
+| CreateAssetGroup | 按次计费 |
+| CreateAssets | 按次计费 |
+| ListAssetGroups | 不计费 |
+| ListAssets | 不计费 |
+
+计费基于 `model` 字段指定的模型价格，默认模型为 `volc-asset`。
+
+## 数据隔离
+
+使用令牌访问时，系统自动为素材组名称添加 `[u-{用户ID}]-[t-{令牌ID}]` 前缀，实现用户和令牌级别的数据隔离。查询时自动过滤，仅返回当前令牌有权限的数据。
+
+## API 参考
+
+<CardGroup cols={2}>
+  <Card title="创建素材组" icon="folder-plus" href="/zh/api-reference/model-api/bytedance/volc-asset-create-group">
+    创建新的素材组。
+  </Card>
+  <Card title="创建素材" icon="upload" href="/zh/api-reference/model-api/bytedance/volc-asset-create-assets">
+    上传素材到素材组。
+  </Card>
+  <Card title="查询素材组" icon="folders" href="/zh/api-reference/model-api/bytedance/volc-asset-list-groups">
+    查询素材组列表。
+  </Card>
+  <Card title="查询素材" icon="images" href="/zh/api-reference/model-api/bytedance/volc-asset-list-assets">
+    查询素材组内的素材。
+  </Card>
+</CardGroup>

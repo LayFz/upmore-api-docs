@@ -123,6 +123,7 @@
                       "guides/model-api/bytedance/doubao-seedance-1-0-lite-t2v",
                       "guides/model-api/bytedance/doubao-seedance-1-0-lite-i2v",
                       "guides/model-api/bytedance/seedance-task-query",
+                      "guides/model-api/bytedance/volc-asset",
                       "guides/model-api/bytedance/glm-4-7"
                     ]
                   },
@@ -381,6 +382,10 @@
                       "api-reference/model-api/bytedance/doubao-seedance-1-0-lite-t2v-250428",
                       "api-reference/model-api/bytedance/doubao-seedance-1-0-lite-i2v-250428",
                       "api-reference/model-api/bytedance/seedance-task-query",
+                      "api-reference/model-api/bytedance/volc-asset-create-group",
+                      "api-reference/model-api/bytedance/volc-asset-create-assets",
+                      "api-reference/model-api/bytedance/volc-asset-list-groups",
+                      "api-reference/model-api/bytedance/volc-asset-list-assets",
                       "api-reference/model-api/bytedance/glm-4-7-251222"
                     ]
                   },
@@ -650,6 +655,7 @@
                       "zh/guides/model-api/bytedance/doubao-seedance-1-0-lite-t2v",
                       "zh/guides/model-api/bytedance/doubao-seedance-1-0-lite-i2v",
                       "zh/guides/model-api/bytedance/seedance-task-query",
+                      "zh/guides/model-api/bytedance/volc-asset",
                       "zh/guides/model-api/bytedance/glm-4-7"
                     ]
                   },
@@ -908,6 +914,10 @@
                       "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-lite-t2v-250428",
                       "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-lite-i2v-250428",
                       "zh/api-reference/model-api/bytedance/seedance-task-query",
+                      "zh/api-reference/model-api/bytedance/volc-asset-create-group",
+                      "zh/api-reference/model-api/bytedance/volc-asset-create-assets",
+                      "zh/api-reference/model-api/bytedance/volc-asset-list-groups",
+                      "zh/api-reference/model-api/bytedance/volc-asset-list-assets",
                       "zh/api-reference/model-api/bytedance/glm-4-7-251222"
                     ]
                   },
