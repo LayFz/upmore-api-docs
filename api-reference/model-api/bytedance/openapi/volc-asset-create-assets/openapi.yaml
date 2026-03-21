@@ -1,0 +1,70 @@
+openapi: 3.1.0
+info:
+  title: "Seedance Asset — Create Asset"
+  description: "Upload an asset (image, video, audio) to an asset group via AnyFast API"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /volc/asset/CreateAssets:
+    post:
+      operationId: createAssets
+      summary: Create Asset
+      description: "Upload a media asset to an existing asset group. The returned Asset ID can be used as `Asset://<ID>` in Seedance requests."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - GroupId
+                - Name
+                - AssetType
+                - URL
+              properties:
+                model:
+                  type: string
+                  default: volc-asset
+                  description: "Model name for billing. Default: `volc-asset`."
+                  example: volc-asset
+                GroupId:
+                  type: string
+                  description: "Asset group ID."
+                  example: "group-20260319072926-rrnmg"
+                Name:
+                  type: string
+                  description: "Asset name."
+                  example: "character-reference"
+                AssetType:
+                  type: string
+                  enum: [Image, Video, Audio]
+                  description: "Asset type."
+                  example: Image
+                URL:
+                  type: string
+                  description: "Public URL of the media file to upload."
+                  example: "https://example.com/image.jpg"
+      responses:
+        "200":
+          description: Asset created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Id:
+                    type: string
+                    description: "Asset ID. Use as `Asset://<ID>` in Seedance requests."
+                    example: "asset-20260320120147-pqwhc"
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
