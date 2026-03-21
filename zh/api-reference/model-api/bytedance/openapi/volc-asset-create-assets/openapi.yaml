@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: "火山素材 — 创建素材"
+  title: "Seedance 素材 — 创建素材"
   description: "通过 AnyFast API 上传素材到素材组"
   version: 1.0.0
 servers:

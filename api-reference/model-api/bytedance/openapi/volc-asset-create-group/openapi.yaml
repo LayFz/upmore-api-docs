@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: "Volc Asset — Create Asset Group"
+  title: "Seedance Asset — Create Asset Group"
   description: "Create an asset group for managing media resources used by Seedance via AnyFast API"
   version: 1.0.0
 servers:

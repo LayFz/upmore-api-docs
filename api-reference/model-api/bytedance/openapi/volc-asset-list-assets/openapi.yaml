@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: "Volc Asset — List Assets"
+  title: "Seedance Asset — List Assets"
   description: "Query assets within asset groups via AnyFast API"
   version: 1.0.0
 servers:
