@@ -51,10 +51,21 @@ print(f"素材组 ID: {group_id}")
 
 ## 第二步：上传素材
 
+支持两种方式：**JSON**（URL / Base64 / Data URI）和 **multipart 文件上传**。
+
+> `URL` 字段支持三种格式：
+> - 普通 URL：`https://example.com/image.jpg`
+> - Data URI：`data:image/png;base64,iVBOR...`
+> - 纯 Base64 字符串（自动识别，默认当作 PNG）
+>
+> Base64 / Data URI 会自动上传到对象存储并替换为真实 URL。
+
+### 方式一：JSON
+
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/volc/asset/CreateAssets \
+curl https://www.anyfast.ai/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -67,7 +78,7 @@ curl https://www.anyfast.ai/volc/asset/CreateAssets \
 
 ```python Python
 response = requests.post(
-    "https://www.anyfast.ai/volc/asset/CreateAssets",
+    "https://www.anyfast.ai/volc/asset/CreateAsset",
     headers={"Authorization": "Bearer YOUR_API_KEY"},
     json={
         "GroupId": "group-20260320120601-hsw4s",
@@ -83,6 +94,16 @@ print(f"素材 ID: {asset_id}")
 ```
 
 </CodeGroup>
+
+### 方式二：文件上传
+
+```bash cURL
+curl https://www.anyfast.ai/volc/asset/CreateAsset \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "file=@/path/to/image.jpg" \
+  -F "GroupId=group-20260320120601-hsw4s" \
+  -F "Name=character-reference"
+```
 
 ## 第三步：在 Seedance 中使用
 
@@ -173,7 +194,7 @@ curl https://www.anyfast.ai/volc/asset/ListAssets \
 | 操作 | 是否计费 |
 |------|----------|
 | CreateAssetGroup | 按次计费 |
-| CreateAssets | 按次计费 |
+| CreateAsset | 按次计费 |
 | ListAssetGroups | 不计费 |
 | ListAssets | 不计费 |
 
