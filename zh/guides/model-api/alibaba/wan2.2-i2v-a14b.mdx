@@ -1,0 +1,99 @@
+---
+title: "Wan2.2 I2V A14B"
+description: "通过 AnyFast API 调用阿里巴巴 Wan2.2 I2V A14B 图生视频模型。"
+---
+
+Wan2.2 I2V A14B 是通过 AnyFast 提供的图生视频模型。视频生成为**异步调用** — 提交任务后，通过 `GET /v1/video/generations/{task_id}` 轮询状态，直到 `status` 为 `succeeded`。
+
+## 核心能力
+
+- **图生视频** — 根据图片与文字提示生成视频
+- **时长控制** — 3–5 秒
+- **自定义分辨率** — 设置 `width` × `height`
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+# 第一步 — 创建任务
+curl https://www.anyfast.ai/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "wan2.2-i2v-a14b",
+    "prompt": "一只猫在弹钢琴",
+    "duration": 5,
+    "image": "https://example.com/cat.jpg"
+  }'
+
+# 第二步 — 轮询直到完成
+curl https://www.anyfast.ai/v1/video/generations/{TASK_ID} \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+```python Python
+import requests, time
+
+headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+# 第一步 — 创建任务
+resp = requests.post(
+    "https://www.anyfast.ai/v1/video/generations",
+    headers=headers,
+    json={
+        "model": "wan2.2-i2v-a14b",
+        "prompt": "一只猫在弹钢琴",
+        "duration": 5,
+        "image": "https://example.com/cat.jpg",
+    }
+)
+task_id = resp.json()["task_id"]
+
+# 第二步 — 轮询直到完成
+while True:
+    result = requests.get(
+        f"https://www.anyfast.ai/v1/video/generations/{task_id}",
+        headers=headers
+    ).json()
+    status = result["data"]["status"]
+    if status == "succeeded":
+        print(result["data"]["url"])
+        break
+    elif status == "failed":
+        print("失败：", result["data"]["error"])
+        break
+    time.sleep(3)
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | 固定为 `wan2.2-i2v-a14b` |
+| `prompt` | string | 是 | 视频描述文字 |
+| `image` | string | 是（i2v）| 参考图片 URL |
+| `duration` | number | 否 | 3–5 秒，默认 `5` |
+| `width` | integer | 否 | 输出视频宽度（像素） |
+| `height` | integer | 否 | 输出视频高度（像素） |
+| `seed` | integer | 否 | 随机种子，用于复现结果 |
+| `metadata` | object | 否 | 透传至上游 API 的扩展参数 |
+
+## 任务状态说明
+
+| 状态 | 说明 |
+|---|---|
+| `queued` | 排队等待中 |
+| `processing` | 视频生成中 |
+| `succeeded` | 完成 — `data.url` 为视频链接（有效期约 24 小时） |
+| `failed` | 失败 — `data.error` 包含错误信息 |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/alibaba/wan2.2-i2v-a14b"
+>
+  查看 Wan2.2 I2V A14B 的交互式 API Playground。
+</Card>

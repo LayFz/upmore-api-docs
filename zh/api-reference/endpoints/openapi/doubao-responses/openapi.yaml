@@ -1,0 +1,219 @@
+openapi: 3.1.0
+info:
+  title: 豆包兼容接口 — Responses
+  description: 通过 AnyFast 使用 Responses API 访问豆包模型
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/responses:
+    post:
+      operationId: createDoubaoResponse
+      summary: 创建响应
+      description: |
+        使用豆包模型创建响应。`input` 支持纯文本字符串或消息对象数组（多模态）。
+
+        多模态内容类型：`input_text`、`input_image`、`input_video`、`input_file`。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - input
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - doubao-seed-2.0-pro
+                    - doubao-seed-2.0-code
+                    - doubao-seed-2.0-lite
+                    - doubao-seed-2.0-mini
+                    - doubao-seed-1-8-251228
+                    - doubao-seed-1-6-flash-250828
+                    - doubao-seed-1-6-251015
+                    - doubao-seed-1-6-lite-251015
+                    - doubao-seed-1-6-vision-250815
+                    - glm-4-7-251222
+                  description: 使用的模型。
+                  example: doubao-seed-1-6-251015
+                input:
+                  type: array
+                  description: |
+                    输入消息，每项包含 `role` 和 `content`。简单文本也可直接传字符串。
+
+                    content 数组项类型：
+                    - `input_text`：`{"type": "input_text", "text": "..."}`
+                    - `input_image`：`{"type": "input_image", "image_url": "https://..."}`
+                    - `input_video`：`{"type": "input_video", "video_url": "https://...", "fps": 1}`
+                    - `input_file`：`{"type": "input_file", "file_url": "https://..."}`
+                  items:
+                    type: object
+                    required:
+                      - role
+                      - content
+                    properties:
+                      role:
+                        type: string
+                        enum: [user, assistant, system]
+                        description: 消息角色。
+                        example: user
+                      content:
+                        type: array
+                        description: "内容块数组。"
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              enum: [input_text, input_image, input_video, input_file]
+                              description: "内容类型。"
+                              example: input_text
+                            text:
+                              type: string
+                              description: "文本内容（`input_text`）。"
+                              example: "图片里有什么？"
+                            image_url:
+                              type: string
+                              description: "图片 URL 或 Base64 Data URI（`input_image`）。"
+                              example: "https://example.com/photo.jpg"
+                            video_url:
+                              type: string
+                              description: "视频 URL 或 Base64 Data URI（`input_video`）。"
+                            fps:
+                              type: number
+                              minimum: 0.2
+                              maximum: 5
+                              default: 1
+                              description: "视频抽帧率（`input_video`），默认 `1`。"
+                            file_url:
+                              type: string
+                              description: "文档 URL（`input_file`）。"
+                            file_data:
+                              type: string
+                              description: "Base64 编码文档 Data URI（`input_file`）。"
+                            filename:
+                              type: string
+                              description: "文件名，使用 `file_data` 时必填。"
+                  example:
+                    - role: user
+                      content:
+                        - type: input_image
+                          image_url: "https://ark-project.tos-cn-beijing.volces.com/doc_image/ark_demo_img_1.png"
+                        - type: input_text
+                          text: "图片里有什么？"
+                stream:
+                  type: boolean
+                  default: false
+                  description: 是否通过 SSE 流式返回。
+                temperature:
+                  type: number
+                  minimum: 0
+                  maximum: 2
+                  default: 1
+                  description: 采样温度。
+                top_p:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  description: 核采样参数。
+                max_output_tokens:
+                  type: integer
+                  minimum: 1
+                  description: 最大输出 token 数。
+                reasoning:
+                  type: object
+                  description: "推理配置。示例：`{\"effort\": \"high\"}`。"
+                  properties:
+                    effort:
+                      type: string
+                      enum: [minimal, low, medium, high]
+                      description: 推理强度，默认 medium。
+      responses:
+        "200":
+          description: 响应创建成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseObject"
+        "400":
+          description: 请求参数有误
+        "401":
+          description: 未授权
+        "429":
+          description: 请求过多
+
+components:
+  schemas:
+    ResponseObject:
+      type: object
+      properties:
+        id:
+          type: string
+          example: resp_021774236829912
+        object:
+          type: string
+          example: response
+        created_at:
+          type: integer
+        completed_at:
+          type: integer
+        model:
+          type: string
+          example: doubao-seed-1-6-251015
+        status:
+          type: string
+          enum: [completed, failed, in_progress, incomplete]
+          example: completed
+        output:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                example: message
+              role:
+                type: string
+                example: assistant
+              status:
+                type: string
+                example: completed
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      example: output_text
+                    text:
+                      type: string
+                      example: "图片里有3个模型：Doubao-Seed-1.8、DeepSeek-V3.2、GLM-4.7。"
+        usage:
+          type: object
+          properties:
+            input_tokens:
+              type: integer
+              example: 1355
+            output_tokens:
+              type: integer
+              example: 87
+            total_tokens:
+              type: integer
+              example: 1442
+            output_tokens_details:
+              type: object
+              properties:
+                reasoning_tokens:
+                  type: integer
+                  example: 53
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

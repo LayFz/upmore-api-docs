@@ -12,7 +12,7 @@ paths:
     post:
       operationId: createAsset
       summary: Create Asset
-      description: "Upload a media asset to an existing asset group. Supports JSON (URL / Base64 / Data URI) and multipart file upload. The returned Asset ID can be used as `Asset://<ID>` in Seedance requests."
+      description: "Upload an image asset to an existing asset group. Supports JSON (URL / Base64 / Data URI) and multipart file upload. The returned Asset ID can be used as `Asset://<ID>` in Seedance requests."
       requestBody:
         required: true
         content:
@@ -40,12 +40,12 @@ paths:
                   example: "character-reference"
                 AssetType:
                   type: string
-                  enum: [Image, Video, Audio]
+                  enum: [Image]
                   description: "Asset type."
                   example: Image
                 URL:
                   type: string
-                  description: "Media file URL, Data URI (`data:image/png;base64,...`), or raw Base64 string. Base64/Data URI are auto-uploaded to object storage."
+                  description: "Image URL, Data URI (`data:image/png;base64,...`), or raw Base64 string. Base64/Data URI are auto-uploaded to object storage."
                   example: "https://example.com/image.jpg"
           multipart/form-data:
             schema:
@@ -70,7 +70,7 @@ paths:
                   description: "Asset name. Defaults to filename without extension."
                 AssetType:
                   type: string
-                  enum: [Image, Video, Audio]
+                  enum: [Image]
                   default: Image
                   description: "Asset type. Default: `Image`."
       responses:
