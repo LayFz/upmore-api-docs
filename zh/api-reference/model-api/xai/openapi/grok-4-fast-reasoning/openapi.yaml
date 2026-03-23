@@ -1,0 +1,122 @@
+openapi: 3.1.0
+info:
+  title: "Grok 4 Fast Reasoning"
+  description: "通过 AnyFast API 调用 xAI Grok 4 Fast Reasoning 模型"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/chat/completions:
+    post:
+      operationId: creategrok/4/fast/reasoning
+      summary: 对话补全
+      description: 使用 Grok 4 Fast Reasoning 模型创建对话补全。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - messages
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - grok-4-fast-reasoning
+                  description: 模型 ID
+                  example: grok-4-fast-reasoning
+                messages:
+                  type: array
+                  minItems: 1
+                  description: 对话消息列表。
+                  items:
+                    type: object
+                    required:
+                      - role
+                      - content
+                    properties:
+                      role:
+                        type: string
+                        enum: [system, user, assistant]
+                      content:
+                        type: string
+                  example:
+                    - role: user
+                      content: 你好！
+                max_tokens:
+                  type: integer
+                  minimum: 1
+                  description: 生成的最大 token 数。
+                temperature:
+                  type: number
+                  minimum: 0
+                  maximum: 2
+                  default: 1
+                  description: 采样温度。
+                top_p:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  description: 核采样参数。
+                stream:
+                  type: boolean
+                  default: false
+                  description: 是否通过 SSE 流式返回。
+      responses:
+        "200":
+          description: 对话补全创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  object:
+                    type: string
+                    example: chat.completion
+                  created:
+                    type: integer
+                  model:
+                    type: string
+                    example: grok-4-fast-reasoning
+                  choices:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        index:
+                          type: integer
+                        message:
+                          type: object
+                          properties:
+                            role:
+                              type: string
+                              example: assistant
+                            content:
+                              type: string
+                        finish_reason:
+                          type: string
+                          enum: [stop, length]
+                  usage:
+                    type: object
+                    properties:
+                      prompt_tokens:
+                        type: integer
+                      completion_tokens:
+                        type: integer
+                      total_tokens:
+                        type: integer
+        "400":
+          description: 请求参数有误
+        "401":
+          description: 未授权
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

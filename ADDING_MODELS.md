@@ -122,15 +122,50 @@ Card 的 href 指向 API 参考页：
 
 ### 4. 添加提供商图标（新提供商）
 
-从 Simple Icons 下载 SVG 并将 `fill` 改为 `currentColor`：
+从 [LobeHub Icons](https://icons.lobehub.com/) 获取 SVG 图标，然后调整为统一规范格式。
+
+**步骤：**
+
+1. 从 CDN 下载 SVG（provider 名称即图标名，如 `openai`、`anthropic`、`grok`）：
 
 ```bash
-curl -sL "https://cdn.simpleicons.org/{provider}" \
+curl -sL "https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg/icons/{icon-name}.svg" \
   -o images/providers/{provider}.svg
-sed -i '' 's/fill="[^"]*"/fill="currentColor"/g' images/providers/{provider}.svg
 ```
 
-> 若 CDN 无法下载，手动编写 SVG 并确保 `fill="currentColor"`。
+2. 调整 SVG 为统一规范格式，**必须删除以下属性**（LobeHub 默认带的）：
+   - `height="..."` 和 `width="..."` — 删除，由外部容器控制大小
+   - `style="..."` — 删除
+   - `fill-rule="evenodd"` — 删除（除非路径渲染依赖它）
+
+3. **必须添加/保留**以下属性：
+   - `fill="currentColor"` — 继承主题颜色
+   - `role="img"` — 无障碍标记
+   - `viewBox="0 0 24 24"` — 保持 24x24 视口
+
+**最终规范格式**（所有 provider SVG 必须统一为此格式）：
+
+```xml
+<svg fill="currentColor" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>{Provider Name}</title>
+  <path d="..."/>
+</svg>
+```
+
+**示例对照**（以 xAI 为例）：
+
+```xml
+<!-- 下载的原始格式（❌ 不规范） -->
+<svg fill="currentColor" fill-rule="evenodd" height="56" viewBox="0 0 24 24" width="56"
+     xmlns="http://www.w3.org/2000/svg" style="flex: 0 0 auto; line-height: 1;">
+  <title>Grok</title><path d="..."/></svg>
+
+<!-- 调整后的规范格式（✅ 正确） -->
+<svg fill="currentColor" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>xAI</title><path d="..."/></svg>
+```
+
+> **注意：** LobeHub 图标名可能和 provider 名不同（如 xAI 的图标名是 `grok`）。在 https://icons.lobehub.com/ 搜索确认。若 LobeHub 没有，再尝试 Simple Icons CDN：`https://cdn.simpleicons.org/{provider}`。
 
 ### 5. 更新 docs.json
 

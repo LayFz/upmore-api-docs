@@ -195,6 +195,18 @@
                     ]
                   },
                   {
+                    "group": "xAI",
+                    "icon": "/images/providers/xai.svg",
+                    "pages": [
+                      "guides/model-api/xai/grok-3",
+                      "guides/model-api/xai/grok-3-mini",
+                      "guides/model-api/xai/grok-4-fast-reasoning",
+                      "guides/model-api/xai/grok-4-fast-non-reasoning",
+                      "guides/model-api/xai/grok-4-1-fast-reasoning",
+                      "guides/model-api/xai/grok-4-1-fast-non-reasoning"
+                    ]
+                  },
+                  {
                     "group": "Google",
                     "icon": "/images/providers/google.svg",
                     "pages": [
@@ -461,6 +473,18 @@
                     "icon": "/images/providers/moonshot.svg",
                     "pages": [
                       "api-reference/model-api/moonshot/kimi-k2-5"
+                    ]
+                  },
+                  {
+                    "group": "xAI",
+                    "icon": "/images/providers/xai.svg",
+                    "pages": [
+                      "api-reference/model-api/xai/grok-3",
+                      "api-reference/model-api/xai/grok-3-mini",
+                      "api-reference/model-api/xai/grok-4-fast-reasoning",
+                      "api-reference/model-api/xai/grok-4-fast-non-reasoning",
+                      "api-reference/model-api/xai/grok-4-1-fast-reasoning",
+                      "api-reference/model-api/xai/grok-4-1-fast-non-reasoning"
                     ]
                   },
                   {
@@ -740,6 +764,18 @@
                     ]
                   },
                   {
+                    "group": "xAI",
+                    "icon": "/images/providers/xai.svg",
+                    "pages": [
+                      "zh/guides/model-api/xai/grok-3",
+                      "zh/guides/model-api/xai/grok-3-mini",
+                      "zh/guides/model-api/xai/grok-4-fast-reasoning",
+                      "zh/guides/model-api/xai/grok-4-fast-non-reasoning",
+                      "zh/guides/model-api/xai/grok-4-1-fast-reasoning",
+                      "zh/guides/model-api/xai/grok-4-1-fast-non-reasoning"
+                    ]
+                  },
+                  {
                     "group": "Google",
                     "icon": "/images/providers/google.svg",
                     "pages": [
@@ -1006,6 +1042,18 @@
                     "icon": "/images/providers/moonshot.svg",
                     "pages": [
                       "zh/api-reference/model-api/moonshot/kimi-k2-5"
+                    ]
+                  },
+                  {
+                    "group": "xAI",
+                    "icon": "/images/providers/xai.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/xai/grok-3",
+                      "zh/api-reference/model-api/xai/grok-3-mini",
+                      "zh/api-reference/model-api/xai/grok-4-fast-reasoning",
+                      "zh/api-reference/model-api/xai/grok-4-fast-non-reasoning",
+                      "zh/api-reference/model-api/xai/grok-4-1-fast-reasoning",
+                      "zh/api-reference/model-api/xai/grok-4-1-fast-non-reasoning"
                     ]
                   },
                   {
