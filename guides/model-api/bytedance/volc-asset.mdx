@@ -51,10 +51,21 @@ print(f"Group ID: {group_id}")
 
 ## Step 2: Upload an asset
 
+Supports two methods: **JSON** (URL / Base64 / Data URI) and **multipart file upload**.
+
+> The `URL` field accepts three formats:
+> - Public URL: `https://example.com/image.jpg`
+> - Data URI: `data:image/png;base64,iVBOR...`
+> - Raw Base64 string (auto-detected, treated as PNG by default)
+>
+> Base64 / Data URI are automatically uploaded to object storage.
+
+### Method 1: JSON
+
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/volc/asset/CreateAssets \
+curl https://www.anyfast.ai/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -67,7 +78,7 @@ curl https://www.anyfast.ai/volc/asset/CreateAssets \
 
 ```python Python
 response = requests.post(
-    "https://www.anyfast.ai/volc/asset/CreateAssets",
+    "https://www.anyfast.ai/volc/asset/CreateAsset",
     headers={"Authorization": "Bearer YOUR_API_KEY"},
     json={
         "GroupId": "group-20260320120601-hsw4s",
@@ -83,6 +94,16 @@ print(f"Asset ID: {asset_id}")
 ```
 
 </CodeGroup>
+
+### Method 2: File upload
+
+```bash cURL
+curl https://www.anyfast.ai/volc/asset/CreateAsset \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "file=@/path/to/image.jpg" \
+  -F "GroupId=group-20260320120601-hsw4s" \
+  -F "Name=character-reference"
+```
 
 ## Step 3: Use in Seedance
 
@@ -173,7 +194,7 @@ curl https://www.anyfast.ai/volc/asset/ListAssets \
 | Operation | Billed |
 |-----------|--------|
 | CreateAssetGroup | Per request |
-| CreateAssets | Per request |
+| CreateAsset | Per request |
 | ListAssetGroups | Free |
 | ListAssets | Free |
 

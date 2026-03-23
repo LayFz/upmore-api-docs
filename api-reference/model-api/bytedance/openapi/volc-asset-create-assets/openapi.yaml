@@ -8,11 +8,11 @@ servers:
 security:
   - bearerAuth: []
 paths:
-  /volc/asset/CreateAssets:
+  /volc/asset/CreateAsset:
     post:
-      operationId: createAssets
+      operationId: createAsset
       summary: Create Asset
-      description: "Upload a media asset to an existing asset group. The returned Asset ID can be used as `Asset://<ID>` in Seedance requests."
+      description: "Upload a media asset to an existing asset group. Supports JSON (URL / Base64 / Data URI) and multipart file upload. The returned Asset ID can be used as `Asset://<ID>` in Seedance requests."
       requestBody:
         required: true
         content:
@@ -45,8 +45,34 @@ paths:
                   example: Image
                 URL:
                   type: string
-                  description: "Public URL of the media file to upload."
+                  description: "Media file URL, Data URI (`data:image/png;base64,...`), or raw Base64 string. Base64/Data URI are auto-uploaded to object storage."
                   example: "https://example.com/image.jpg"
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+                - GroupId
+              properties:
+                model:
+                  type: string
+                  default: volc-asset
+                  description: "Model name for billing. Default: `volc-asset`."
+                file:
+                  type: string
+                  format: binary
+                  description: "File to upload."
+                GroupId:
+                  type: string
+                  description: "Asset group ID."
+                Name:
+                  type: string
+                  description: "Asset name. Defaults to filename without extension."
+                AssetType:
+                  type: string
+                  enum: [Image, Video, Audio]
+                  default: Image
+                  description: "Asset type. Default: `Image`."
       responses:
         "200":
           description: Asset created successfully
