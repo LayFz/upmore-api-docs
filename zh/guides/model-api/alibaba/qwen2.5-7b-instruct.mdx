@@ -1,0 +1,89 @@
+---
+title: "Qwen2.5-7B-Instruct"
+description: "通过 AnyFast OpenAI 兼容接口调用Qwen2.5-7B-Instruct 对话模型（阿里巴巴渠道），快速、强大且易于集成。"
+---
+
+Qwen2.5-7B-Instruct 是通过 AnyFast 以 OpenAI 兼容接口提供的对话模型。
+
+## 核心能力
+
+- **OpenAI 兼容** — 可直接替换 OpenAI SDK，无需修改其他代码
+- **长上下文** — 支持大文档处理和多轮对话
+- **流式输出** — 通过 SSE 实现实时 Token 流式传输
+- **强推理能力** — 适合复杂的多步骤任务
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "qwen2.5-7b-instruct",
+    "messages": [
+      { "role": "user", "content": "用简单的语言解释量子纠缠。" }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+response = client.chat.completions.create(
+    model="qwen2.5-7b-instruct",
+    messages=[
+        {"role": "user", "content": "用简单的语言解释量子纠缠。"}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+```python 流式输出
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+stream = client.chat.completions.create(
+    model="qwen2.5-7b-instruct",
+    messages=[
+        {"role": "user", "content": "写一首关于大海的短诗。"}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    print(chunk.choices[0].delta.content or "", end="")
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | 固定为 `qwen2.5-7b-instruct` |
+| `messages` | array | 是 | `{{ role, content }}` 对象数组 |
+| `max_tokens` | integer | 否 | 最大生成 Token 数 |
+| `temperature` | float | 否 | `0`–`2`，控制随机性，默认 `1` |
+| `stream` | boolean | 否 | 开启 SSE 流式传输，默认 `false` |
+| `top_p` | float | 否 | 核采样阈值，默认 `1` |
+| `stop` | string / array | 否 | 触发停止生成的序列 |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/alibaba/qwen2.5-7b-instruct"
+>
+  查看 Qwen2.5-7B-Instruct 的交互式 API Playground。
+</Card>

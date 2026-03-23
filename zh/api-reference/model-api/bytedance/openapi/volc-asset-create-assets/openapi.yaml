@@ -12,7 +12,7 @@ paths:
     post:
       operationId: createAsset
       summary: 创建素材
-      description: 上传媒体素材到已有素材组。支持 JSON（URL / Base64 / Data URI）和 multipart 文件上传两种方式。返回的素材 ID 可在 Seedance 请求中以 `Asset://<ID>` 格式使用。
+      description: 上传图片素材到已有素材组。支持 JSON（URL / Base64 / Data URI）和 multipart 文件上传两种方式。返回的素材 ID 可在 Seedance 请求中以 `Asset://<ID>` 格式使用。
       requestBody:
         required: true
         content:
@@ -40,12 +40,12 @@ paths:
                   example: "character-reference"
                 AssetType:
                   type: string
-                  enum: [Image, Video, Audio]
+                  enum: [Image]
                   description: 素材类型。
                   example: Image
                 URL:
                   type: string
-                  description: 媒体文件 URL、Data URI（`data:image/png;base64,...`）或纯 Base64 字符串。Base64/Data URI 会自动上传到对象存储。
+                  description: 图片 URL、Data URI（`data:image/png;base64,...`）或纯 Base64 字符串。Base64/Data URI 会自动上传到对象存储。
                   example: "https://example.com/image.jpg"
           multipart/form-data:
             schema:
@@ -70,7 +70,7 @@ paths:
                   description: 素材名称，默认使用文件名（去掉扩展名）。
                 AssetType:
                   type: string
-                  enum: [Image, Video, Audio]
+                  enum: [Image]
                   default: Image
                   description: 素材类型，默认 `Image`。
       responses:

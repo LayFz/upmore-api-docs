@@ -1,0 +1,324 @@
+---
+title: "豆包兼容接口"
+description: "通过火山方舟 Ark SDK 使用 AnyFast 的 /v1/chat/completions 和 /v1/responses 端点访问豆包模型。"
+---
+
+AnyFast 兼容火山方舟 Ark Chat API。如果你已在使用 Ark SDK 或直接调用 Ark API，只需更改 base URL 即可切换到 AnyFast，无需重写代码。
+
+## 端点
+
+```
+POST https://www.anyfast.ai/v1/chat/completions
+POST https://www.anyfast.ai/v1/responses
+```
+
+## 认证
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## 支持的模型
+
+| 模型 | 描述 |
+|------|------|
+| doubao-seed-2.0-pro | 豆包 Seed 2.0 Pro — 最强能力 |
+| doubao-seed-2.0-code | 豆包 Seed 2.0 Code — 编程优化 |
+| doubao-seed-2.0-lite | 豆包 Seed 2.0 Lite — 平衡之选 |
+| doubao-seed-2.0-mini | 豆包 Seed 2.0 Mini — 快速轻量 |
+| doubao-seed-1-8-251228 | 豆包 Seed 1.8 |
+| doubao-seed-1-6-flash-250828 | 豆包 Seed 1.6 Flash — 极速推理 |
+| doubao-seed-1-6-251015 | 豆包 Seed 1.6 |
+| doubao-seed-1-6-lite-251015 | 豆包 Seed 1.6 Lite |
+| doubao-seed-1-6-vision-250815 | 豆包 Seed 1.6 Vision — 多模态 |
+| glm-4-7-251222 | GLM-4-7 |
+
+## 支持的输入类型
+
+| 内容 | Chat API `type` | Chat API 数据字段 | Responses API `type` | Responses API 数据字段 |
+|------|----------------|------------------|---------------------|----------------------|
+| 文本 | `text` | `text` | `input_text` | `text` |
+| 图片 | `image_url` | `image_url.url` | `input_image` | `image_url`（字符串） |
+| 视频 | `video_url` | `video_url.url` + `video_url.fps` | `input_video` | `video_url`（字符串）+ `fps` |
+| 文档 | — | — | `input_file` | `file_url` 或 `file_data` + `filename` |
+
+> 所有内容类型均支持 URL 和 Base64 Data URI 两种格式。
+
+## 功能特性
+
+- **流式输出** — 设置 `stream: true` 通过 SSE 实时流式传输 token
+- **函数调用** — 使用 `tools` 和 `tool_choice` 参数
+- **推理链** — 模型返回 `reasoning_content` 思维链内容
+- **图片理解** — 通过 `image_url` / `input_image` 发送图片
+- **视频理解** — 通过 `video_url` / `input_video` 发送视频，支持 `fps` 抽帧控制
+- **文档理解** — 通过 `input_file` 发送 PDF 等文档（仅 Responses API）
+- **多轮对话** — 在 `messages` / `input` 中包含完整的对话历史
+
+---
+
+## Chat Completions API
+
+### 文本对话
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-2.0-pro",
+    "messages": [
+      {"role": "user", "content": "你好！"}
+    ]
+  }'
+```
+
+```python Python
+from volcenginesdkarkruntime import Ark
+
+client = Ark(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+response = client.chat.completions.create(
+    model="doubao-seed-2.0-pro",
+    messages=[
+        {"role": "user", "content": "你好！"}
+    ]
+)
+print(response.choices[0].message.content)
+```
+
+```javascript Node.js
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: "YOUR_API_KEY",
+  baseURL: "https://www.anyfast.ai/v1",
+});
+
+const response = await client.chat.completions.create({
+  model: "doubao-seed-2.0-pro",
+  messages: [{ role: "user", content: "你好！" }],
+});
+console.log(response.choices[0].message.content);
+```
+
+</CodeGroup>
+
+### 图片理解（URL）
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-1-6-251015",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "image_url", "image_url": {"url": "https://example.com/photo.jpg"}},
+          {"type": "text", "text": "图片里有什么？"}
+        ]
+      }
+    ],
+    "max_tokens": 100
+  }'
+```
+
+### 图片理解（Base64）
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-1-6-251015",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "image_url", "image_url": {"url": "data:image/png;base64,{BASE64_IMAGE}"}},
+          {"type": "text", "text": "图片里有什么？"}
+        ]
+      }
+    ]
+  }'
+```
+
+### 视频理解（URL + fps）
+
+`fps` 参数控制每秒抽帧数，默认 `1`，范围 `0.2–5`。
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-1-6-251015",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "video_url", "video_url": {"url": "https://example.com/clip.mp4", "fps": 2}},
+          {"type": "text", "text": "视频中出现了哪些建筑？"}
+        ]
+      }
+    ],
+    "max_tokens": 200
+  }'
+```
+
+### 视频理解（Base64）
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-1-6-251015",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "video_url", "video_url": {"url": "data:video/mp4;base64,{BASE64_VIDEO}"}},
+          {"type": "text", "text": "视频里有什么？"}
+        ]
+      }
+    ]
+  }'
+```
+
+---
+
+## Responses API
+
+### 文本对话
+
+```bash cURL
+curl https://www.anyfast.ai/v1/responses \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-2.0-pro",
+    "input": "你好，用一句话介绍你自己"
+  }'
+```
+
+### 图片理解（URL）
+
+```bash cURL
+curl https://www.anyfast.ai/v1/responses \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-1-6-251015",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "input_image", "image_url": "https://example.com/photo.jpg"},
+          {"type": "input_text", "text": "图片里有什么？"}
+        ]
+      }
+    ]
+  }'
+```
+
+### 视频理解（URL + fps）
+
+```bash cURL
+curl https://www.anyfast.ai/v1/responses \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-1-6-251015",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "input_video", "video_url": "https://example.com/clip.mp4", "fps": 1},
+          {"type": "input_text", "text": "视频里有什么？"}
+        ]
+      }
+    ]
+  }'
+```
+
+### 文档理解（URL）
+
+> 文档理解仅支持 Responses API。
+
+```bash cURL
+curl https://www.anyfast.ai/v1/responses \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-2.0-lite",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "input_file", "file_url": "https://example.com/document.pdf"},
+          {"type": "input_text", "text": "按段落给出文档中的文字内容"}
+        ]
+      }
+    ]
+  }'
+```
+
+### 文档理解（Base64）
+
+```bash cURL
+curl https://www.anyfast.ai/v1/responses \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-2.0-lite",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "input_file", "file_data": "data:application/pdf;base64,{BASE64_PDF}", "filename": "document.pdf"},
+          {"type": "input_text", "text": "按段落给出文档中的文字内容"}
+        ]
+      }
+    ]
+  }'
+```
+
+---
+
+## fps 参数说明
+
+| fps 值 | 适用场景 |
+|--------|---------|
+| 0.2–0.5 | 画面变化不频繁，如静态监控 |
+| 1（默认） | 通用场景 |
+| 2–5 | 画面变化剧烈，如动作计数、体育赛事 |
+
+## 文件大小限制
+
+| 传入方式 | 图片限制 | 视频限制 | 文档限制 |
+|---------|---------|---------|---------|
+| URL | < 10 MB | < 50 MB | < 50 MB |
+| Base64 | < 10 MB（请求体 < 64 MB） | < 50 MB（请求体 < 64 MB） | < 50 MB（请求体 < 64 MB） |
+
+## 流式输出示例
+
+```python
+stream = client.chat.completions.create(
+    model="doubao-seed-2.0-pro",
+    messages=[
+        {"role": "user", "content": "写一首短诗"}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="")
+```

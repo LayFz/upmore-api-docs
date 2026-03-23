@@ -1,0 +1,324 @@
+---
+title: "ByteDance Doubao Compatible Endpoint"
+description: "Use the Volcengine Ark SDK to access Doubao models on AnyFast through /v1/chat/completions and /v1/responses endpoints."
+---
+
+AnyFast is compatible with the Volcengine Ark Chat API. If you're already using the Ark SDK or calling the Ark API directly, switching to AnyFast requires only a base URL change — no code rewrite needed.
+
+## Endpoints
+
+```
+POST https://www.anyfast.ai/v1/chat/completions
+POST https://www.anyfast.ai/v1/responses
+```
+
+## Authentication
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## Supported models
+
+| Model | Description |
+|-------|-------------|
+| doubao-seed-2.0-pro | Doubao Seed 2.0 Pro — most capable |
+| doubao-seed-2.0-code | Doubao Seed 2.0 Code — optimized for coding |
+| doubao-seed-2.0-lite | Doubao Seed 2.0 Lite — balanced |
+| doubao-seed-2.0-mini | Doubao Seed 2.0 Mini — fast and lightweight |
+| doubao-seed-1-8-251228 | Doubao Seed 1.8 |
+| doubao-seed-1-6-flash-250828 | Doubao Seed 1.6 Flash — fast inference |
+| doubao-seed-1-6-251015 | Doubao Seed 1.6 |
+| doubao-seed-1-6-lite-251015 | Doubao Seed 1.6 Lite |
+| doubao-seed-1-6-vision-250815 | Doubao Seed 1.6 Vision — multimodal |
+| glm-4-7-251222 | GLM-4-7 |
+
+## Supported input types
+
+| Content | Chat API `type` | Chat API data field | Responses API `type` | Responses API data field |
+|---------|----------------|---------------------|---------------------|------------------------|
+| Text | `text` | `text` | `input_text` | `text` |
+| Image | `image_url` | `image_url.url` | `input_image` | `image_url` (string) |
+| Video | `video_url` | `video_url.url` + `video_url.fps` | `input_video` | `video_url` (string) + `fps` |
+| Document | — | — | `input_file` | `file_url` or `file_data` + `filename` |
+
+> All content types support both URL and Base64 data URI formats.
+
+## Features
+
+- **Streaming** — Set `stream: true` for real-time token streaming via SSE
+- **Function calling** — Use the `tools` and `tool_choice` parameters
+- **Reasoning** — Models return `reasoning_content` with chain-of-thought
+- **Vision** — Send images via `image_url` / `input_image` content blocks
+- **Video understanding** — Send videos via `video_url` / `input_video` with optional `fps` control
+- **Document understanding** — Send PDF/documents via `input_file` (Responses API only)
+- **Multi-turn conversations** — Include full message history in `messages` / `input`
+
+---
+
+## Chat Completions API
+
+### Text
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-2.0-pro",
+    "messages": [
+      {"role": "user", "content": "Hello!"}
+    ]
+  }'
+```
+
+```python Python
+from volcenginesdkarkruntime import Ark
+
+client = Ark(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+response = client.chat.completions.create(
+    model="doubao-seed-2.0-pro",
+    messages=[
+        {"role": "user", "content": "Hello!"}
+    ]
+)
+print(response.choices[0].message.content)
+```
+
+```javascript Node.js
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: "YOUR_API_KEY",
+  baseURL: "https://www.anyfast.ai/v1",
+});
+
+const response = await client.chat.completions.create({
+  model: "doubao-seed-2.0-pro",
+  messages: [{ role: "user", content: "Hello!" }],
+});
+console.log(response.choices[0].message.content);
+```
+
+</CodeGroup>
+
+### Image (URL)
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-1-6-251015",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "image_url", "image_url": {"url": "https://example.com/photo.jpg"}},
+          {"type": "text", "text": "What is in this image?"}
+        ]
+      }
+    ],
+    "max_tokens": 100
+  }'
+```
+
+### Image (Base64)
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-1-6-251015",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "image_url", "image_url": {"url": "data:image/png;base64,{BASE64_IMAGE}"}},
+          {"type": "text", "text": "What is in this image?"}
+        ]
+      }
+    ]
+  }'
+```
+
+### Video (URL + fps)
+
+The `fps` parameter controls frame extraction rate (frames per second). Default: `1`, range: `0.2–5`.
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-1-6-251015",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "video_url", "video_url": {"url": "https://example.com/clip.mp4", "fps": 2}},
+          {"type": "text", "text": "What buildings appear in this video?"}
+        ]
+      }
+    ],
+    "max_tokens": 200
+  }'
+```
+
+### Video (Base64)
+
+```bash cURL
+curl https://www.anyfast.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-1-6-251015",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "video_url", "video_url": {"url": "data:video/mp4;base64,{BASE64_VIDEO}"}},
+          {"type": "text", "text": "What is in this video?"}
+        ]
+      }
+    ]
+  }'
+```
+
+---
+
+## Responses API
+
+### Text
+
+```bash cURL
+curl https://www.anyfast.ai/v1/responses \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-2.0-pro",
+    "input": "Hello!"
+  }'
+```
+
+### Image (URL)
+
+```bash cURL
+curl https://www.anyfast.ai/v1/responses \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-1-6-251015",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "input_image", "image_url": "https://example.com/photo.jpg"},
+          {"type": "input_text", "text": "What is in this image?"}
+        ]
+      }
+    ]
+  }'
+```
+
+### Video (URL + fps)
+
+```bash cURL
+curl https://www.anyfast.ai/v1/responses \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-1-6-251015",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "input_video", "video_url": "https://example.com/clip.mp4", "fps": 1},
+          {"type": "input_text", "text": "What is in this video?"}
+        ]
+      }
+    ]
+  }'
+```
+
+### Document (URL)
+
+> Document understanding is only available via the Responses API.
+
+```bash cURL
+curl https://www.anyfast.ai/v1/responses \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-2.0-lite",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "input_file", "file_url": "https://example.com/document.pdf"},
+          {"type": "input_text", "text": "Summarize this document"}
+        ]
+      }
+    ]
+  }'
+```
+
+### Document (Base64)
+
+```bash cURL
+curl https://www.anyfast.ai/v1/responses \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-seed-2.0-lite",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "input_file", "file_data": "data:application/pdf;base64,{BASE64_PDF}", "filename": "document.pdf"},
+          {"type": "input_text", "text": "Summarize this document"}
+        ]
+      }
+    ]
+  }'
+```
+
+---
+
+## fps parameter
+
+| fps | Use case |
+|-----|----------|
+| 0.2–0.5 | Static scenes, surveillance footage |
+| 1 (default) | General purpose |
+| 2–5 | Fast action, sports, motion counting |
+
+## File size limits
+
+| Method | Image | Video | Document |
+|--------|-------|-------|----------|
+| URL | < 10 MB | < 50 MB | < 50 MB |
+| Base64 | < 10 MB (body < 64 MB) | < 50 MB (body < 64 MB) | < 50 MB (body < 64 MB) |
+
+## Streaming example
+
+```python
+stream = client.chat.completions.create(
+    model="doubao-seed-2.0-pro",
+    messages=[
+        {"role": "user", "content": "Write a short poem"}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="")
+```

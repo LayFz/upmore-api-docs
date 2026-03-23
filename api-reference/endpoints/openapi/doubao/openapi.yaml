@@ -1,0 +1,205 @@
+openapi: 3.1.0
+info:
+  title: ByteDance Doubao Compatible Endpoint
+  description: Volcengine Ark Chat API compatible endpoint supporting Doubao models via AnyFast
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/chat/completions:
+    post:
+      operationId: createDoubaoCompletion
+      summary: Chat Completions
+      description: |
+        Create a chat completion using Doubao models. The `content` field accepts a plain string for text, or an array of content parts for multimodal input.
+
+        Multimodal content types: `text`, `image_url`, `video_url`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - messages
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - doubao-seed-2.0-pro
+                    - doubao-seed-2.0-code
+                    - doubao-seed-2.0-lite
+                    - doubao-seed-2.0-mini
+                    - doubao-seed-1-8-251228
+                    - doubao-seed-1-6-flash-250828
+                    - doubao-seed-1-6-251015
+                    - doubao-seed-1-6-lite-251015
+                    - doubao-seed-1-6-vision-250815
+                    - glm-4-7-251222
+                  description: The model to use.
+                  example: doubao-seed-1-6-251015
+                messages:
+                  type: array
+                  minItems: 1
+                  description: |
+                    Conversation messages. Each message has `role` and `content`.
+
+                    Content array item types:
+                    - `text`: `{"type": "text", "text": "..."}`
+                    - `image_url`: `{"type": "image_url", "image_url": {"url": "https://..."}}`
+                    - `video_url`: `{"type": "video_url", "video_url": {"url": "https://...", "fps": 2}}`
+                  items:
+                    type: object
+                    required:
+                      - role
+                      - content
+                    properties:
+                      role:
+                        type: string
+                        enum: [system, user, assistant, tool]
+                        description: The role of the message author.
+                        example: user
+                      content:
+                        type: array
+                        description: "Array of content parts."
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              enum: [text, image_url, video_url]
+                              description: "Content part type."
+                              example: text
+                            text:
+                              type: string
+                              description: "Text content (`text`)."
+                              example: "What is in this image?"
+                            image_url:
+                              type: object
+                              description: "Image reference (`image_url`)."
+                              properties:
+                                url:
+                                  type: string
+                                  description: "Image URL or Base64 data URI."
+                                  example: "https://ark-project.tos-cn-beijing.volces.com/doc_image/ark_demo_img_1.png"
+                            video_url:
+                              type: object
+                              description: "Video reference (`video_url`)."
+                              properties:
+                                url:
+                                  type: string
+                                  description: "Video URL or Base64 data URI (mp4/mov, max 50 MB)."
+                                fps:
+                                  type: number
+                                  minimum: 0.2
+                                  maximum: 5
+                                  default: 1
+                                  description: "Frame extraction rate. Default: `1`, range: `0.2–5`."
+                  example:
+                    - role: user
+                      content:
+                        - type: image_url
+                          image_url:
+                            url: "https://ark-project.tos-cn-beijing.volces.com/doc_image/ark_demo_img_1.png"
+                        - type: text
+                          text: "What is in this image?"
+                max_tokens:
+                  type: integer
+                  minimum: 1
+                  description: Maximum number of tokens to generate.
+                  example: 1024
+                temperature:
+                  type: number
+                  minimum: 0
+                  maximum: 2
+                  default: 1
+                  description: Sampling temperature.
+                  example: 1
+                top_p:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  description: Nucleus sampling parameter.
+                stream:
+                  type: boolean
+                  default: false
+                  description: Whether to stream via SSE.
+                stop:
+                  type: array
+                  items:
+                    type: string
+                  description: Up to 4 stop sequences.
+      responses:
+        "200":
+          description: Chat completion created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "chatcmpl-abc123"
+                  object:
+                    type: string
+                    example: "chat.completion"
+                  created:
+                    type: integer
+                    example: 1774236644
+                  model:
+                    type: string
+                    example: "doubao-seed-1-6-251015"
+                  choices:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        index:
+                          type: integer
+                        message:
+                          type: object
+                          properties:
+                            role:
+                              type: string
+                              example: "assistant"
+                            content:
+                              type: string
+                              example: "The image contains 3 models: Doubao-Seed-1.8, DeepSeek-V3.2, GLM-4.7."
+                            reasoning_content:
+                              type: string
+                              description: "Chain-of-thought reasoning (when available)."
+                        finish_reason:
+                          type: string
+                          enum: [stop, length, tool_calls]
+                  usage:
+                    type: object
+                    properties:
+                      prompt_tokens:
+                        type: integer
+                        example: 1355
+                      completion_tokens:
+                        type: integer
+                        example: 87
+                      total_tokens:
+                        type: integer
+                        example: 1442
+                      completion_tokens_details:
+                        type: object
+                        properties:
+                          reasoning_tokens:
+                            type: integer
+                            example: 53
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "429":
+          description: Rate limit exceeded
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
