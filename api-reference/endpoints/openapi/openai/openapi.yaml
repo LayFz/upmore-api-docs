@@ -84,6 +84,12 @@ paths:
                     - minimax-m2.5
                     - minimax-m2.1
                     - kimi-k2-5
+                    - grok-3
+                    - grok-3-mini
+                    - grok-4-fast-reasoning
+                    - grok-4-fast-non-reasoning
+                    - grok-4-1-fast-reasoning
+                    - grok-4-1-fast-non-reasoning
                     - gemini-3.1-pro-preview
                     - gemini-3.1-flash-image-preview
                     - gemini-3-pro-preview
