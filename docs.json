@@ -102,8 +102,8 @@
                     "group": "ByteDance",
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
-                      "guides/model-api/bytedance/seedance",
                       "guides/model-api/bytedance/seedance-fast",
+                      "guides/model-api/bytedance/seedance",
                       "guides/model-api/bytedance/doubao-seed-2.0-pro",
                       "guides/model-api/bytedance/doubao-seed-2.0-code",
                       "guides/model-api/bytedance/doubao-seed-2.0-lite",
@@ -380,8 +380,8 @@
                     "group": "ByteDance",
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
-                      "api-reference/model-api/bytedance/seedance",
                       "api-reference/model-api/bytedance/seedance-fast",
+                      "api-reference/model-api/bytedance/seedance",
                       "api-reference/model-api/bytedance/doubao-seed-2.0-pro",
                       "api-reference/model-api/bytedance/doubao-seed-2.0-code",
                       "api-reference/model-api/bytedance/doubao-seed-2.0-lite",
@@ -671,8 +671,8 @@
                     "group": "ByteDance",
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
-                      "zh/guides/model-api/bytedance/seedance",
                       "zh/guides/model-api/bytedance/seedance-fast",
+                      "zh/guides/model-api/bytedance/seedance",
                       "zh/guides/model-api/bytedance/doubao-seed-2.0-pro",
                       "zh/guides/model-api/bytedance/doubao-seed-2.0-code",
                       "zh/guides/model-api/bytedance/doubao-seed-2.0-lite",
@@ -949,8 +949,8 @@
                     "group": "ByteDance",
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
-                      "zh/api-reference/model-api/bytedance/seedance",
                       "zh/api-reference/model-api/bytedance/seedance-fast",
+                      "zh/api-reference/model-api/bytedance/seedance",
                       "zh/api-reference/model-api/bytedance/doubao-seed-2.0-pro",
                       "zh/api-reference/model-api/bytedance/doubao-seed-2.0-code",
                       "zh/api-reference/model-api/bytedance/doubao-seed-2.0-lite",
