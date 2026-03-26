@@ -26,10 +26,10 @@ icon: "circle-question"
   </Accordion>
 
   <Accordion title="支持哪些模型？">
-    AnyFast 支持来自 Anthropic、ByteDance 等多家提供商的模型。在[模型 API](/zh/guides/model-api/bytedance/seedance-2-0) 栏目中浏览完整列表。
+    AnyFast 支持来自 Anthropic、ByteDance 等多家提供商的模型。在[模型 API](/zh/guides/model-api/bytedance/seedance) 栏目中浏览完整列表。
   </Accordion>
 
-  <Accordion title="如何用 Seedance 2.0 生成视频？">
-    视频生成是异步流程。向 `POST /v1/videos/generations` 提交请求，然后轮询 `GET /v1/videos/generations/{task_id}` 直到状态变为 `completed`。查看 [Seedance 2.0 指南](/zh/guides/model-api/bytedance/seedance-2-0) 获取完整示例。
+  <Accordion title="如何用 Seedance 生成视频？">
+    视频生成是异步流程。向 `POST /v1/video/generations` 提交请求，然后轮询 `GET /v1/video/generations/{task_id}` 直到状态变为 `succeeded`。查看 [Seedance 指南](/zh/guides/model-api/bytedance/seedance) 获取完整示例。
   </Accordion>
 </AccordionGroup>
