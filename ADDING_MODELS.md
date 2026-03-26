@@ -65,7 +65,7 @@ paths:
             - {model-id}          # 实际调用时传入的模型名
 ```
 
-**视频生成模型模板**（参考 `api-reference/model-api/bytedance/seedance-2-0/openapi.yaml`）。
+**视频生成模型模板**（参考 `api-reference/model-api/bytedance/openapi/seedance/openapi.yaml`）。
 
 同理，在 `zh/api-reference/model-api/{provider}/openapi/{model-name}/` 下创建中文版 `openapi.yaml`，将 `summary` 和 `description` 等字段翻译为中文。
 

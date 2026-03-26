@@ -26,10 +26,10 @@ icon: "circle-question"
   </Accordion>
 
   <Accordion title="Which models are supported?">
-    AnyFast supports models from multiple providers including Anthropic, ByteDance, and more. Browse the full list in the [Model APIs](/guides/model-api/bytedance/seedance-2-0) section.
+    AnyFast supports models from multiple providers including Anthropic, ByteDance, and more. Browse the full list in the [Model APIs](/guides/model-api/bytedance/seedance) section.
   </Accordion>
 
-  <Accordion title="How do I generate a video with Seedance 2.0?">
-    Video generation is asynchronous. Submit a request to `POST /v1/videos/generations` and poll `GET /v1/videos/generations/{task_id}` until the status is `completed`. See the [Seedance 2.0 guide](/guides/model-api/bytedance/seedance-2-0) for a full example.
+  <Accordion title="How do I generate a video with Seedance?">
+    Video generation is asynchronous. Submit a request to `POST /v1/video/generations` and poll `GET /v1/video/generations/{task_id}` until the status is `succeeded`. See the [Seedance guide](/guides/model-api/bytedance/seedance) for a full example.
   </Accordion>
 </AccordionGroup>
