@@ -20,36 +20,138 @@ paths:
           schema:
             type: string
           description: "Task ID returned from the video generation request."
-          example: "gen-abc123"
+          example: "cgt-20260330154114-hlvvj"
       responses:
         "200":
           description: Task status retrieved
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    example: "gen-abc123"
-                  model:
-                    type: string
-                    example: "doubao-seedance-1-5-pro-251215"
-                  status:
-                    type: string
-                    enum: [processing, completed, failed]
-                    description: "Task status."
-                  video_url:
-                    type: string
-                    description: "URL of the generated video (available when completed)."
-                  created_at:
-                    type: integer
-                    example: 1773130665
+                $ref: '#/components/schemas/TaskQueryResponse'
         "401":
           description: Unauthorized
         "404":
           description: Task not found
 components:
+  schemas:
+    TaskQueryResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: "Response code."
+          example: "success"
+        message:
+          type: string
+          description: "Response message."
+          example: ""
+        data:
+          type: object
+          properties:
+            task_id:
+              type: string
+              description: "Task ID."
+              example: "cgt-20260330154114-hlvvj"
+            action:
+              type: string
+              description: "Generation action type."
+              example: "referenceGenerate"
+            status:
+              type: string
+              enum: [QUEUING, PROCESSING, SUCCESS, FAILED]
+              description: "Task status."
+              example: "SUCCESS"
+            fail_reason:
+              type: string
+              description: "Failure reason (when status is FAILED) or video URL (when status is SUCCESS)."
+              example: ""
+            submit_time:
+              type: integer
+              description: "Task submit timestamp (Unix seconds)."
+              example: 1774856474
+            start_time:
+              type: integer
+              description: "Task start timestamp (Unix seconds)."
+              example: 1774856477
+            finish_time:
+              type: integer
+              description: "Task finish timestamp (Unix seconds)."
+              example: 1774856865
+            progress:
+              type: string
+              description: "Task progress percentage."
+              example: "100%"
+            data:
+              type: object
+              description: "Task result data."
+              properties:
+                content:
+                  type: object
+                  properties:
+                    video_url:
+                      type: string
+                      description: "URL of the generated video (valid for 24 hours)."
+                      example: "https://example.com/generated-video.mp4"
+                created_at:
+                  type: integer
+                  description: "Creation timestamp (Unix seconds)."
+                  example: 1774856474
+                draft:
+                  type: boolean
+                  example: false
+                duration:
+                  type: integer
+                  description: "Video duration in seconds."
+                  example: 5
+                framespersecond:
+                  type: integer
+                  description: "Frames per second."
+                  example: 24
+                generate_audio:
+                  type: boolean
+                  description: "Whether audio was generated."
+                  example: true
+                id:
+                  type: string
+                  description: "Task ID."
+                  example: "cgt-20260330154114-hlvvj"
+                model:
+                  type: string
+                  description: "Model used for generation."
+                  example: "seedance"
+                ratio:
+                  type: string
+                  description: "Video aspect ratio."
+                  example: "1:1"
+                resolution:
+                  type: string
+                  description: "Video resolution."
+                  example: "480p"
+                seed:
+                  type: integer
+                  description: "Random seed used."
+                  example: 79195
+                service_tier:
+                  type: string
+                  example: "default"
+                status:
+                  type: string
+                  description: "Result status."
+                  example: "succeeded"
+                updated_at:
+                  type: integer
+                  description: "Last update timestamp (Unix seconds)."
+                  example: 1774856848
+                usage:
+                  type: object
+                  description: "Token usage."
+                  properties:
+                    completion_tokens:
+                      type: integer
+                      example: 48400
+                    total_tokens:
+                      type: integer
+                      example: 48400
   securitySchemes:
     bearerAuth:
       type: http
