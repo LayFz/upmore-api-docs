@@ -62,24 +62,50 @@ paths:
                       description: "Logo opacity (0-1)."
       responses:
         "200":
-          description: Task created
+          description: Image generated successfully
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                    example: "gen-abc123"
                   model:
                     type: string
-                    example: doubao-seedream-3-0-t2i-250415
-                  status:
-                    type: string
-                    example: processing
-                  created_at:
+                    description: "Model used for generation."
+                    example: "doubao-seedream-3-0-t2i-250415"
+                  created:
                     type: integer
-                    example: 1773130665
+                    description: "Creation timestamp (Unix seconds)."
+                    example: 1775029815
+                  data:
+                    type: array
+                    description: "Generated image list."
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: "URL of the generated image."
+                          example: "https://ark-content-generation-v2-cn-beijing.example.com/image.png"
+                        size:
+                          type: string
+                          description: "Image dimensions."
+                          example: "2048x2048"
+                  usage:
+                    type: object
+                    description: "Token usage."
+                    properties:
+                      generated_images:
+                        type: integer
+                        description: "Number of images generated."
+                        example: 1
+                      output_tokens:
+                        type: integer
+                        description: "Output tokens consumed."
+                        example: 16384
+                      total_tokens:
+                        type: integer
+                        description: "Total tokens consumed."
+                        example: 16384
         "401":
           description: Unauthorized
         "429":

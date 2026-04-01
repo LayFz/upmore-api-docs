@@ -62,24 +62,50 @@ paths:
                       description: "Logo 透明度（0-1）。"
       responses:
         "200":
-          description: 任务已创建
+          description: 图片生成成功
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                    example: "gen-abc123"
                   model:
                     type: string
-                    example: doubao-seedream-4-0-250828
-                  status:
-                    type: string
-                    example: processing
-                  created_at:
+                    description: "使用的模型。"
+                    example: "doubao-seedream-4-0-250828"
+                  created:
                     type: integer
-                    example: 1773130665
+                    description: "创建时间戳（Unix 秒）。"
+                    example: 1775029815
+                  data:
+                    type: array
+                    description: "生成的图片列表。"
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: "生成的图片 URL。"
+                          example: "https://ark-content-generation-v2-cn-beijing.example.com/image.png"
+                        size:
+                          type: string
+                          description: "图片尺寸。"
+                          example: "2048x2048"
+                  usage:
+                    type: object
+                    description: "Token 用量。"
+                    properties:
+                      generated_images:
+                        type: integer
+                        description: "生成的图片数量。"
+                        example: 1
+                      output_tokens:
+                        type: integer
+                        description: "输出 Token 消耗。"
+                        example: 16384
+                      total_tokens:
+                        type: integer
+                        description: "总 Token 消耗。"
+                        example: 16384
         "401":
           description: 未授权
         "429":
