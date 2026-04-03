@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: "Seedance 素材 — 查询素材组"
+  title: "Seedance 2.0 素材 — 查询素材组"
   description: "通过 AnyFast API 查询素材组"
   version: 1.0.0
 servers:

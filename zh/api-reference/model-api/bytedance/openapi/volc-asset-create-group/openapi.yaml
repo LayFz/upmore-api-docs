@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: "Seedance 素材 — 创建素材组"
+  title: "Seedance 2.0 素材 — 创建素材组"
   description: "通过 AnyFast API 创建素材组，用于管理 Seedance 使用的媒体资源"
   version: 1.0.0
 servers:
