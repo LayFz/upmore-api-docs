@@ -1,9 +1,9 @@
 ---
-title: "Seedance"
-description: "通过 AnyFast API 调用字节跳动 Seedance 视频生成模型，支持多模态参考、视频编辑、延长、有声视频、联网搜索增强。"
+title: "Seedance 2.0 Fast"
+description: "通过 AnyFast API 调用字节跳动 Seedance Fast 视频生成模型，支持多模态参考、视频编辑、延长、有声视频、联网搜索增强。"
 ---
 
-Seedance 是字节跳动最新的视频生成模型，通过 AnyFast API 提供。支持文生视频、图生视频、多模态参考输入、视频编辑、视频延长及同步音频生成。
+Seedance 2.0 Fast 是字节跳动最新的视频生成模型，通过 AnyFast API 提供。支持文生视频、图生视频、多模态参考输入、视频编辑、视频延长及同步音频生成。
 
 ## 核心能力
 
@@ -47,7 +47,7 @@ curl https://www.anyfast.ai/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "seedance",
+    "model": "seedance-fast",
     "content": [
       {
         "type": "text",
@@ -71,7 +71,7 @@ resp = requests.post(
     "https://www.anyfast.ai/v1/video/generations",
     headers=headers,
     json={
-        "model": "seedance",
+        "model": "seedance-fast",
         "content": [
             {"type": "text", "text": "一只猫在阳光明媚的房间里弹钢琴，电影级光影"}
         ],
@@ -107,7 +107,7 @@ curl https://www.anyfast.ai/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "seedance",
+    "model": "seedance-fast",
     "content": [
       {
         "type": "text",
@@ -142,7 +142,7 @@ curl https://www.anyfast.ai/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "seedance",
+    "model": "seedance-fast",
     "content": [
       {
         "type": "text",
@@ -172,7 +172,7 @@ curl https://www.anyfast.ai/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "seedance",
+    "model": "seedance-fast",
     "content": [
       {
         "type": "text",
@@ -190,7 +190,7 @@ curl https://www.anyfast.ai/v1/video/generations \
 
 | 参数 | 类型 | 必填 | 说明 |
 |---|---|---|---|
-| `model` | string | 是 | `seedance` |
+| `model` | string | 是 | `seedance-fast` |
 | `content` | array | 是 | 输入内容数组（text、image_url、video_url、audio_url） |
 | `content[].type` | string | 是 | `text`、`image_url`、`video_url` 或 `audio_url` |
 | `content[].text` | string | text 类型 | 文本提示词（建议中文 ≤500 字，英文 ≤1000 词） |
@@ -228,7 +228,7 @@ curl https://www.anyfast.ai/v1/video/generations \
 <Card
   title="API 参考"
   icon="code"
-  href="/zh/api-reference/model-api/bytedance/seedance"
+  href="/zh/api-reference/model-api/bytedance/seedance-2-0-fast"
 >
-  查看 Seedance 的交互式 API 文档。
+  查看 Seedance 2.0 Fast 的交互式 API 文档。
 </Card>

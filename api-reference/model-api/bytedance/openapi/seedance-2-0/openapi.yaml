@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: "Seedance"
-  description: "ByteDance's Seedance video generation model with text-to-video, image-to-video, multimodal reference, video editing, video extension, and web search."
+  title: "Seedance 2.0"
+  description: "ByteDance's Seedance 2.0 video generation model with text-to-video, image-to-video, multimodal reference, video editing, video extension, and web search."
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai

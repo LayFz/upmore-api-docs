@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: "Seedance 任务查询"
-  description: "通过 AnyFast API 查询 Seedance 视频生成任务的状态和结果"
+  description: "通过 AnyFast API 查询 Seedance 2.0 视频生成任务的状态和结果"
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -12,7 +12,7 @@ paths:
     get:
       operationId: getSeedanceTaskStatus
       summary: 查询视频生成任务
-      description: "通过任务 ID 查询 Seedance 视频生成任务的状态和结果。"
+      description: "通过任务 ID 查询 Seedance 2.0 视频生成任务的状态和结果。"
       parameters:
         - name: id
           in: path

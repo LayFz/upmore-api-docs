@@ -1,23 +1,23 @@
 ---
-title: "Seedance 素材管理"
+title: "Seedance 2.0 素材管理"
 description: "通过 AnyFast API 管理 Seedance 视频生成所需的图片素材。"
 ---
 
-Seedance 素材管理让你可以上传和组织图片素材，供 Seedance 视频生成使用。上传后，在 Seedance 请求中通过素材 ID（`Asset://<ID>`）引用素材，无需使用公开 URL。
+Seedance 2.0 素材管理让你可以上传和组织图片素材，供 Seedance 2.0 视频生成使用。上传后，在 Seedance 2.0 请求中通过素材 ID（`Asset://<ID>`）引用素材，无需使用公开 URL。
 
 ## 为什么使用素材管理？
 
 - **持久存储** — 素材存储在火山引擎，不会像临时 URL 那样过期
 - **分组管理** — 按项目或活动将相关素材归组
 - **数据隔离** — 每个 API 令牌只能看到自己的素材
-- **直接集成** — 在 Seedance 的 `image_url` 字段中直接使用 `Asset://<ID>`
+- **直接集成** — 在 Seedance 2.0 的 `image_url` 字段中直接使用 `Asset://<ID>`
 
 ## 工作流
 
 ```
 1. 创建素材组       →  素材组 ID
 2. 上传素材到素材组  →  素材 ID
-3. 在 Seedance 中使用  →  Asset://<素材 ID>
+3. 在 Seedance 2.0 中使用  →  Asset://<素材 ID>
 ```
 
 ## 第一步：创建素材组
@@ -112,7 +112,7 @@ curl https://www.anyfast.ai/volc/asset/CreateAsset \
   -F "Name=character-reference"
 ```
 
-## 第三步：在 Seedance 中使用
+## 第三步：在 Seedance 2.0 中使用
 
 将 Seedance 请求中的 URL 替换为 `Asset://<素材 ID>`：
 

@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: "Seedance Fast"
-  description: "通过 AnyFast API 调用字节跳动 Seedance Fast 视频生成模型，支持文生视频、图生视频、多模态参考、视频编辑、视频延长、联网搜索增强等能力"
+  title: "Seedance 2.0"
+  description: "通过 AnyFast API 调用字节跳动 Seedance 2.0 视频生成模型，支持文生视频、图生视频、多模态参考、视频编辑、视频延长、联网搜索增强等能力"
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -10,7 +10,7 @@ security:
 paths:
   /v1/video/generations:
     post:
-      operationId: createSeedanceFastZh
+      operationId: createSeedanceZh
       summary: 创建视频生成任务
       description: |
         创建异步视频生成任务。支持多种输入方式：
@@ -35,9 +35,9 @@ paths:
                 model:
                   type: string
                   enum:
-                    - seedance-fast
+                    - seedance
                   description: 模型 ID
-                  example: seedance-fast
+                  example: seedance
                 content:
                   type: array
                   description: |
@@ -168,7 +168,7 @@ paths:
                     example: video
                   model:
                     type: string
-                    example: seedance-fast
+                    example: seedance
                   status:
                     type: string
                     description: 初始为空

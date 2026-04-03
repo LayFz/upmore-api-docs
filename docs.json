@@ -102,8 +102,9 @@
                     "group": "ByteDance",
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
-                      "guides/model-api/bytedance/seedance-fast",
-                      "guides/model-api/bytedance/seedance",
+                      "guides/model-api/bytedance/seedance-task-query",
+                      "guides/model-api/bytedance/seedance-2-0-fast",
+                      "guides/model-api/bytedance/seedance-2-0",
                       "guides/model-api/bytedance/doubao-seed-2.0-pro",
                       "guides/model-api/bytedance/doubao-seed-2.0-code",
                       "guides/model-api/bytedance/doubao-seed-2.0-lite",
@@ -128,7 +129,6 @@
                       "guides/model-api/bytedance/doubao-seedance-1-0-pro-fast-i2v",
                       "guides/model-api/bytedance/doubao-seedance-1-0-lite-t2v",
                       "guides/model-api/bytedance/doubao-seedance-1-0-lite-i2v",
-                      "guides/model-api/bytedance/seedance-task-query",
                       "guides/model-api/bytedance/volc-asset",
                       "guides/model-api/bytedance/glm-4-7"
                     ]
@@ -380,8 +380,9 @@
                     "group": "ByteDance",
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
-                      "api-reference/model-api/bytedance/seedance-fast",
-                      "api-reference/model-api/bytedance/seedance",
+                      "api-reference/model-api/bytedance/seedance-task-query",
+                      "api-reference/model-api/bytedance/seedance-2-0-fast",
+                      "api-reference/model-api/bytedance/seedance-2-0",
                       "api-reference/model-api/bytedance/doubao-seed-2.0-pro",
                       "api-reference/model-api/bytedance/doubao-seed-2.0-code",
                       "api-reference/model-api/bytedance/doubao-seed-2.0-lite",
@@ -406,7 +407,6 @@
                       "api-reference/model-api/bytedance/doubao-seedance-1-0-pro-fast-251015-i2v",
                       "api-reference/model-api/bytedance/doubao-seedance-1-0-lite-t2v-250428",
                       "api-reference/model-api/bytedance/doubao-seedance-1-0-lite-i2v-250428",
-                      "api-reference/model-api/bytedance/seedance-task-query",
                       "api-reference/model-api/bytedance/volc-asset-create-group",
                       "api-reference/model-api/bytedance/volc-asset-create-assets",
                       "api-reference/model-api/bytedance/volc-asset-list-groups",
@@ -671,8 +671,9 @@
                     "group": "ByteDance",
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
-                      "zh/guides/model-api/bytedance/seedance-fast",
-                      "zh/guides/model-api/bytedance/seedance",
+                      "zh/guides/model-api/bytedance/seedance-task-query",
+                      "zh/guides/model-api/bytedance/seedance-2-0-fast",
+                      "zh/guides/model-api/bytedance/seedance-2-0",
                       "zh/guides/model-api/bytedance/doubao-seed-2.0-pro",
                       "zh/guides/model-api/bytedance/doubao-seed-2.0-code",
                       "zh/guides/model-api/bytedance/doubao-seed-2.0-lite",
@@ -697,7 +698,6 @@
                       "zh/guides/model-api/bytedance/doubao-seedance-1-0-pro-fast-i2v",
                       "zh/guides/model-api/bytedance/doubao-seedance-1-0-lite-t2v",
                       "zh/guides/model-api/bytedance/doubao-seedance-1-0-lite-i2v",
-                      "zh/guides/model-api/bytedance/seedance-task-query",
                       "zh/guides/model-api/bytedance/volc-asset",
                       "zh/guides/model-api/bytedance/glm-4-7"
                     ]
@@ -949,8 +949,9 @@
                     "group": "ByteDance",
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
-                      "zh/api-reference/model-api/bytedance/seedance-fast",
-                      "zh/api-reference/model-api/bytedance/seedance",
+                      "zh/api-reference/model-api/bytedance/seedance-task-query",
+                      "zh/api-reference/model-api/bytedance/seedance-2-0-fast",
+                      "zh/api-reference/model-api/bytedance/seedance-2-0",
                       "zh/api-reference/model-api/bytedance/doubao-seed-2.0-pro",
                       "zh/api-reference/model-api/bytedance/doubao-seed-2.0-code",
                       "zh/api-reference/model-api/bytedance/doubao-seed-2.0-lite",
@@ -975,7 +976,6 @@
                       "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-pro-fast-251015-i2v",
                       "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-lite-t2v-250428",
                       "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-lite-i2v-250428",
-                      "zh/api-reference/model-api/bytedance/seedance-task-query",
                       "zh/api-reference/model-api/bytedance/volc-asset-create-group",
                       "zh/api-reference/model-api/bytedance/volc-asset-create-assets",
                       "zh/api-reference/model-api/bytedance/volc-asset-list-groups",

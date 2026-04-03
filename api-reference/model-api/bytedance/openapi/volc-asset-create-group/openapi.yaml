@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: "Seedance Asset — Create Asset Group"
-  description: "Create an asset group for managing media resources used by Seedance via AnyFast API"
+  title: "Seedance 2.0 Asset — Create Asset Group"
+  description: "Create an asset group for managing media resources used by Seedance 2.0 via AnyFast API"
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -12,7 +12,7 @@ paths:
     post:
       operationId: createAssetGroup
       summary: Create Asset Group
-      description: "Create a new asset group to organize media resources (images, videos, audio) for use with Seedance video generation."
+      description: "Create a new asset group to organize media resources (images, videos, audio) for use with Seedance 2.0 video generation."
       requestBody:
         required: true
         content:

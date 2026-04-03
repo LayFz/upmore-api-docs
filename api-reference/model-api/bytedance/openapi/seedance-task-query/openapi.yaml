@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: "Seedance Task Query"
-  description: "Query the status and result of a Seedance video generation task via AnyFast API"
+  description: "Query the status and result of a Seedance 2.0 video generation task via AnyFast API"
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -12,7 +12,7 @@ paths:
     get:
       operationId: getSeedanceTaskStatus
       summary: Query Video Generation Task
-      description: "Retrieve the status and result of a Seedance video generation task by its ID."
+      description: "Retrieve the status and result of a Seedance 2.0 video generation task by its ID."
       parameters:
         - name: id
           in: path

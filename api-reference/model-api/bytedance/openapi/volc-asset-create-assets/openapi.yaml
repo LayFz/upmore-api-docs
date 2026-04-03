@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: "Seedance Asset — Create Asset"
+  title: "Seedance 2.0 Asset — Create Asset"
   description: "Upload an asset (image, video, audio) to an asset group via AnyFast API"
   version: 1.0.0
 servers:
@@ -12,7 +12,7 @@ paths:
     post:
       operationId: createAsset
       summary: Create Asset
-      description: "Upload an image asset to an existing asset group. Supports JSON (URL / Base64 / Data URI) and multipart file upload. The returned Asset ID can be used as `Asset://<ID>` in Seedance requests."
+      description: "Upload an image asset to an existing asset group. Supports JSON (URL / Base64 / Data URI) and multipart file upload. The returned Asset ID can be used as `Asset://<ID>` in Seedance 2.0 requests."
       requestBody:
         required: true
         content:
@@ -83,7 +83,7 @@ paths:
                 properties:
                   Id:
                     type: string
-                    description: "Asset ID. Use as `Asset://<ID>` in Seedance requests."
+                    description: "Asset ID. Use as `Asset://<ID>` in Seedance 2.0 requests."
                     example: "asset-20260320120147-pqwhc"
         "400":
           description: Invalid request
