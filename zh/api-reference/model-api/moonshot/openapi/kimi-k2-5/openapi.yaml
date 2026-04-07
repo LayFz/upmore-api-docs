@@ -26,9 +26,9 @@ paths:
                 model:
                   type: string
                   enum:
-                    - kimi-k2-5
+                    - kimi-k2.5
                   description: 模型 ID
-                  example: kimi-k2-5
+                  example: kimi-k2.5
                 messages:
                   type: array
                   minItems: 1
@@ -136,7 +136,7 @@ components:
           description: Unix 时间戳
         model:
           type: string
-          example: kimi-k2-5
+          example: kimi-k2.5
         choices:
           type: array
           items:
