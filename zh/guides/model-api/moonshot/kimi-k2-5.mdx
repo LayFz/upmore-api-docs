@@ -21,7 +21,7 @@ curl https://www.anyfast.ai/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "kimi-k2-5",
+    "model": "kimi-k2.5",
     "messages": [
       { "role": "user", "content": "用简单的语言解释量子纠缠。" }
     ]
@@ -37,7 +37,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="kimi-k2-5",
+    model="kimi-k2.5",
     messages=[
         {"role": "user", "content": "用简单的语言解释量子纠缠。"}
     ]
@@ -55,7 +55,7 @@ client = OpenAI(
 )
 
 stream = client.chat.completions.create(
-    model="kimi-k2-5",
+    model="kimi-k2.5",
     messages=[
         {"role": "user", "content": "写一首关于大海的短诗。"}
     ],
@@ -72,7 +72,7 @@ for chunk in stream:
 
 | 参数 | 类型 | 必填 | 说明 |
 |---|---|---|---|
-| `model` | string | 是 | 固定为 `kimi-k2-5` |
+| `model` | string | 是 | 固定为 `kimi-k2.5` |
 | `messages` | array | 是 | `{ role, content }` 对象数组 |
 | `max_tokens` | integer | 否 | 最大生成 Token 数 |
 | `temperature` | float | 否 | `0`–`2`，控制随机性，默认 `1` |
@@ -83,7 +83,7 @@ for chunk in stream:
 <Card
   title="API 参考"
   icon="code"
-  href="/zh/api-reference/model-api/moonshot/kimi-k2-5"
+  href="/zh/api-reference/model-api/moonshot/kimi-k2.5"
 >
   查看 Kimi-K2.5 的交互式 API Playground。
 </Card>

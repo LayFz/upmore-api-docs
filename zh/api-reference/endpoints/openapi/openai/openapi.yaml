@@ -83,7 +83,7 @@ paths:
                     - doubao-seed-1-6-vision-250815
                     - minimax-m2.5
                     - minimax-m2.1
-                    - kimi-k2-5
+                    - kimi-k2.5
                     - grok-3
                     - grok-3-mini
                     - grok-4-fast-reasoning
