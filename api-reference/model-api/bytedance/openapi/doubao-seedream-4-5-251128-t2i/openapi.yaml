@@ -35,8 +35,25 @@ paths:
                   example: "A girl and a cow doll happily riding a roller coaster in an amusement park"
                 size:
                   type: string
-                  description: "Output image size. Supported values vary by model."
-                  example: "1024x1024"
+                  enum:
+                    - "2048x2048"
+                    - "1728x2304"
+                    - "2304x1728"
+                    - "2848x1600"
+                    - "1600x2848"
+                    - "2496x1664"
+                    - "1664x2496"
+                    - "3136x1344"
+                    - "4096x4096"
+                    - "3520x4704"
+                    - "4704x3520"
+                    - "5504x3040"
+                    - "3040x5504"
+                    - "3328x4992"
+                    - "4992x3328"
+                    - "6240x2656"
+                  description: "Output image size."
+                  example: "2048x2048"
                 watermark:
                   type: boolean
                   default: false
