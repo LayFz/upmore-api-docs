@@ -1,23 +1,40 @@
 ---
 title: "Seedance 2.0 Asset Management"
-description: "Manage image assets for Seedance 2.0 video generation via AnyFast API."
+description: "Manage image, video, and audio assets for Seedance 2.0 video generation via AnyFast API."
 ---
 
-Seedance 2.0 Asset Management lets you upload and organize image assets for use with Seedance 2.0 video generation. Once uploaded, assets are referenced by ID (`Asset://<ID>`) in Seedance 2.0 requests instead of public URLs.
+Seedance 2.0 Asset Management lets you upload and organize media assets (images, videos, audio) for use with Seedance 2.0 video generation. Once uploaded, assets are referenced by ID (`Asset://<ID>`) in Seedance 2.0 requests instead of public URLs.
 
 ## Why use Asset Management?
 
 - **Persistent storage** — Assets are stored on Volcengine and don't expire like temporary URLs
+- **Multi-format support** — Upload images, videos, and audio files
 - **Organized by groups** — Group related assets (e.g. per project or campaign)
 - **Data isolation** — Each API token sees only its own assets
-- **Direct integration** — Use `Asset://<ID>` directly in Seedance 2.0 `image_url` fields
+- **Direct integration** — Use `Asset://<ID>` directly in Seedance 2.0 `image_url`, `video_url`, `audio_url` fields
+
+## Supported formats
+
+| Type | Formats | Limits |
+|------|---------|--------|
+| **Image** | JPG, PNG, GIF, WebP, BMP, TIFF, HEIC, HEIF | < 30 MB, 300–6000 px, aspect ratio 0.4–2.5 |
+| **Video** | MP4, MOV | < 50 MB, 2–15s, 480p/720p, 24–60 FPS |
+| **Audio** | MP3, WAV | < 15 MB, 2–15s |
+
+## Billing models
+
+| Model | Asset type | Description |
+|-------|-----------|-------------|
+| `volc-asset` | Image | Default — no need to specify for images |
+| `volc-asset-video` | Video | **Required** when uploading video |
+| `volc-asset-audio` | Audio | **Required** when uploading audio |
 
 ## Workflow
 
 ```
 1. Create an asset group       →  group ID
 2. Upload assets to the group  →  asset ID
-3. Use asset ID in Seedance    →  Asset://<asset-ID>
+3. Use asset ID in Seedance 2.0  →  Asset://<asset-ID>
 ```
 
 ## Step 1: Create an asset group
@@ -53,7 +70,7 @@ print(f"Group ID: {group_id}")
 
 </CodeGroup>
 
-## Step 2: Upload an asset
+## Step 2: Upload assets
 
 Supports two methods: **JSON** (URL / Base64 / Data URI) and **multipart file upload**.
 
@@ -64,7 +81,7 @@ Supports two methods: **JSON** (URL / Base64 / Data URI) and **multipart file up
 >
 > Base64 / Data URI are automatically uploaded to object storage.
 
-### Method 1: JSON
+### Upload image (JSON)
 
 <CodeGroup>
 
@@ -73,7 +90,6 @@ curl https://www.anyfast.ai/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "volc-asset",
     "GroupId": "group-20260320120601-hsw4s",
     "Name": "character-reference",
     "AssetType": "Image",
@@ -86,7 +102,6 @@ response = requests.post(
     "https://www.anyfast.ai/volc/asset/CreateAsset",
     headers={"Authorization": "Bearer YOUR_API_KEY"},
     json={
-        "model": "volc-asset",
         "GroupId": "group-20260320120601-hsw4s",
         "Name": "character-reference",
         "AssetType": "Image",
@@ -101,12 +116,45 @@ print(f"Asset ID: {asset_id}")
 
 </CodeGroup>
 
-### Method 2: File upload
+### Upload video (JSON)
+
+> Video uploads **must** specify `"model": "volc-asset-video"`.
 
 ```bash cURL
 curl https://www.anyfast.ai/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -F "model=volc-asset" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "volc-asset-video",
+    "GroupId": "group-20260320120601-hsw4s",
+    "Name": "reference-clip",
+    "AssetType": "Video",
+    "URL": "https://example.com/clip.mp4"
+  }'
+```
+
+### Upload audio (JSON)
+
+> Audio uploads **must** specify `"model": "volc-asset-audio"`.
+
+```bash cURL
+curl https://www.anyfast.ai/volc/asset/CreateAsset \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "volc-asset-audio",
+    "GroupId": "group-20260320120601-hsw4s",
+    "Name": "background-music",
+    "AssetType": "Audio",
+    "URL": "https://example.com/bgm.mp3"
+  }'
+```
+
+### File upload (multipart)
+
+```bash cURL
+curl https://www.anyfast.ai/volc/asset/CreateAsset \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -F "file=@/path/to/image.jpg" \
   -F "GroupId=group-20260320120601-hsw4s" \
   -F "Name=character-reference"
@@ -114,7 +162,7 @@ curl https://www.anyfast.ai/volc/asset/CreateAsset \
 
 ## Step 3: Use in Seedance 2.0
 
-Replace the URL in your Seedance request with `Asset://<asset-ID>`:
+Replace URLs in your Seedance 2.0 request with `Asset://<asset-ID>`:
 
 <CodeGroup>
 
@@ -135,6 +183,20 @@ curl https://www.anyfast.ai/v1/video/generations \
           "url": "Asset://asset-20260320120147-pqwhc"
         },
         "role": "reference_image"
+      },
+      {
+        "type": "video_url",
+        "video_url": {
+          "url": "Asset://asset-20260411140000-v1abc"
+        },
+        "role": "reference_video"
+      },
+      {
+        "type": "audio_url",
+        "audio_url": {
+          "url": "Asset://asset-20260411140000-a1xyz"
+        },
+        "role": "reference_audio"
       }
     ],
     "generate_audio": true,
@@ -156,6 +218,16 @@ response = requests.post(
                 "type": "image_url",
                 "image_url": {"url": "Asset://asset-20260320120147-pqwhc"},
                 "role": "reference_image"
+            },
+            {
+                "type": "video_url",
+                "video_url": {"url": "Asset://asset-20260411140000-v1abc"},
+                "role": "reference_video"
+            },
+            {
+                "type": "audio_url",
+                "audio_url": {"url": "Asset://asset-20260411140000-a1xyz"},
+                "role": "reference_audio"
             }
         ],
         "generate_audio": True,
@@ -204,14 +276,14 @@ curl https://www.anyfast.ai/volc/asset/ListAssets \
 
 ## Billing
 
-| Operation | Billed |
-|-----------|--------|
-| CreateAssetGroup | Per request |
-| CreateAsset | Per request |
-| ListAssetGroups | Free |
-| ListAssets | Free |
-
-Billing is based on the `model` field (default: `volc-asset`).
+| Operation | Model | Billed |
+|-----------|-------|--------|
+| CreateAssetGroup | `volc-asset` | Per request |
+| CreateAsset (image) | `volc-asset` | Per request |
+| CreateAsset (video) | `volc-asset-video` | Per request |
+| CreateAsset (audio) | `volc-asset-audio` | Per request |
+| ListAssetGroups | — | Free |
+| ListAssets | — | Free |
 
 ## Data isolation
 
@@ -224,7 +296,7 @@ When using token-based access, the system automatically prefixes asset group nam
     Create a new asset group.
   </Card>
   <Card title="Create Asset" icon="upload" href="/api-reference/model-api/bytedance/volc-asset-create-assets">
-    Upload an asset to a group.
+    Upload an asset (image, video, audio) to a group.
   </Card>
   <Card title="List Asset Groups" icon="folders" href="/api-reference/model-api/bytedance/volc-asset-list-groups">
     Query asset groups.
