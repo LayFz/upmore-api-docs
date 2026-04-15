@@ -12,7 +12,7 @@ paths:
     post:
       operationId: createAsset
       summary: Create Asset
-      description: "Upload an image asset to an existing asset group. Supports JSON (URL / Base64 / Data URI) and multipart file upload. The returned Asset ID can be used as `Asset://<ID>` in Seedance 2.0 requests."
+      description: "Upload an asset to an existing asset group. Supports Image, Video, and Audio types. Supports JSON (URL / Base64 / Data URI) and multipart file upload. The returned Asset ID can be used as `Asset://<ID>` in Seedance 2.0 requests."
       requestBody:
         required: true
         content:
@@ -21,14 +21,16 @@ paths:
               type: object
               required:
                 - GroupId
-                - Name
                 - AssetType
                 - URL
               properties:
                 model:
                   type: string
-                  default: volc-asset
-                  description: "Model name for billing. Default: `volc-asset`."
+                  enum:
+                    - volc-asset
+                    - volc-asset-video
+                    - volc-asset-audio
+                  description: "Billing model. `volc-asset` (default) for images, `volc-asset-video` for video (required), `volc-asset-audio` for audio (required)."
                   example: volc-asset
                 GroupId:
                   type: string
@@ -40,12 +42,12 @@ paths:
                   example: "character-reference"
                 AssetType:
                   type: string
-                  enum: [Image]
-                  description: "Asset type."
+                  enum: [Image, Video, Audio]
+                  description: "Asset type: `Image`, `Video`, or `Audio`."
                   example: Image
                 URL:
                   type: string
-                  description: "Image URL, Data URI (`data:image/png;base64,...`), or raw Base64 string. Base64/Data URI are auto-uploaded to object storage."
+                  description: "Asset URL, Data URI, or raw Base64 string. Base64/Data URI are auto-uploaded to object storage."
                   example: "https://example.com/image.jpg"
           multipart/form-data:
             schema:
@@ -56,8 +58,11 @@ paths:
               properties:
                 model:
                   type: string
-                  default: volc-asset
-                  description: "Model name for billing. Default: `volc-asset`."
+                  enum:
+                    - volc-asset
+                    - volc-asset-video
+                    - volc-asset-audio
+                  description: "Billing model. `volc-asset` (default) for images, `volc-asset-video` for video, `volc-asset-audio` for audio."
                 file:
                   type: string
                   format: binary
@@ -70,7 +75,7 @@ paths:
                   description: "Asset name. Defaults to filename without extension."
                 AssetType:
                   type: string
-                  enum: [Image]
+                  enum: [Image, Video, Audio]
                   default: Image
                   description: "Asset type. Default: `Image`."
       responses:

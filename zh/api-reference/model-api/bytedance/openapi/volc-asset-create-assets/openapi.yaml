@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: "Seedance 2.0 素材 — 创建素材"
-  description: "通过 AnyFast API 上传素材到素材组"
+  description: "通过 AnyFast API 上传素材（图片、视频、音频）到素材组"
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -12,7 +12,7 @@ paths:
     post:
       operationId: createAsset
       summary: 创建素材
-      description: 上传图片素材到已有素材组。支持 JSON（URL / Base64 / Data URI）和 multipart 文件上传两种方式。返回的素材 ID 可在 Seedance 请求中以 `Asset://<ID>` 格式使用。
+      description: 上传素材到已有素材组，支持图片、视频和音频。支持 JSON（URL / Base64 / Data URI）和 multipart 文件上传两种方式。返回的素材 ID 可在 Seedance 2.0 请求中以 `Asset://<ID>` 格式使用。
       requestBody:
         required: true
         content:
@@ -21,14 +21,16 @@ paths:
               type: object
               required:
                 - GroupId
-                - Name
                 - AssetType
                 - URL
               properties:
                 model:
                   type: string
-                  default: volc-asset
-                  description: 模型名称，用于计费。默认 `volc-asset`。
+                  enum:
+                    - volc-asset
+                    - volc-asset-video
+                    - volc-asset-audio
+                  description: '计费模型。图片默认 `volc-asset`，视频必须传 `volc-asset-video`，音频必须传 `volc-asset-audio`。'
                   example: volc-asset
                 GroupId:
                   type: string
@@ -40,12 +42,12 @@ paths:
                   example: "character-reference"
                 AssetType:
                   type: string
-                  enum: [Image]
-                  description: 素材类型。
+                  enum: [Image, Video, Audio]
+                  description: '素材类型：`Image`、`Video` 或 `Audio`。'
                   example: Image
                 URL:
                   type: string
-                  description: 图片 URL、Data URI（`data:image/png;base64,...`）或纯 Base64 字符串。Base64/Data URI 会自动上传到对象存储。
+                  description: 素材 URL、Data URI 或纯 Base64 字符串。Base64/Data URI 会自动上传到对象存储。
                   example: "https://example.com/image.jpg"
           multipart/form-data:
             schema:
@@ -56,8 +58,11 @@ paths:
               properties:
                 model:
                   type: string
-                  default: volc-asset
-                  description: 模型名称，用于计费。默认 `volc-asset`。
+                  enum:
+                    - volc-asset
+                    - volc-asset-video
+                    - volc-asset-audio
+                  description: '计费模型。图片默认 `volc-asset`，视频传 `volc-asset-video`，音频传 `volc-asset-audio`。'
                 file:
                   type: string
                   format: binary
@@ -70,9 +75,9 @@ paths:
                   description: 素材名称，默认使用文件名（去掉扩展名）。
                 AssetType:
                   type: string
-                  enum: [Image]
+                  enum: [Image, Video, Audio]
                   default: Image
-                  description: 素材类型，默认 `Image`。
+                  description: '素材类型，默认 `Image`。'
       responses:
         "200":
           description: 素材创建成功
@@ -83,7 +88,7 @@ paths:
                 properties:
                   Id:
                     type: string
-                    description: 素材 ID。在 Seedance 请求中以 `Asset://<ID>` 格式引用。
+                    description: 素材 ID。在 Seedance 2.0 请求中以 `Asset://<ID>` 格式引用。
                     example: "asset-20260320120147-pqwhc"
         "400":
           description: 请求参数有误
