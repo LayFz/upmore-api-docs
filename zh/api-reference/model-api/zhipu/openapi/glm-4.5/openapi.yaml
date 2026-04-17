@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: "GLM-4-7 (251222)"
-  description: "Zhipu AI's GLM-4-7 chat model via ByteDance via AnyFast OpenAI-compatible API"
+  title: GLM-4.5
+  description: Zhipu AI's GLM-4.5 chat model via AnyFast OpenAI-compatible API
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -10,7 +10,7 @@ security:
 paths:
   /v1/chat/completions:
     post:
-      operationId: createChatCompletionGlm47251222
+      operationId: createChatCompletionGlm45
       summary: Chat Completion
       description: Creates a model response for the given chat conversation.
       requestBody:
@@ -26,9 +26,9 @@ paths:
                 model:
                   type: string
                   enum:
-                    - glm-4-7-251222
+                    - glm-4.5
                   description: Model ID
-                  example: glm-4-7-251222
+                  example: glm-4.5
                 messages:
                   type: array
                   minItems: 1
@@ -136,7 +136,7 @@ components:
           description: Unix timestamp
         model:
           type: string
-          example: glm-4-7-251222
+          example: glm-4.5
         choices:
           type: array
           items:

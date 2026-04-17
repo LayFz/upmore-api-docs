@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: "GLM-4-7 (251222)"
-  description: "通过 AnyFast OpenAI 兼容接口调用智谱 GLM-4-7 对话模型（字节跳动渠道）"
+  title: GLM-4.5
+  description: Zhipu AI's GLM-4.5 chat model via AnyFast OpenAI-compatible API
   version: 1.0.0
 servers:
   - url: https://www.anyfast.ai
@@ -10,9 +10,9 @@ security:
 paths:
   /v1/chat/completions:
     post:
-      operationId: createChatCompletionGlm47251222
-      summary: 对话补全
-      description: 为给定的对话创建模型响应。
+      operationId: createChatCompletionGlm45
+      summary: Chat Completion
+      description: Creates a model response for the given chat conversation.
       requestBody:
         required: true
         content:
@@ -26,13 +26,13 @@ paths:
                 model:
                   type: string
                   enum:
-                    - glm-4-7-251222
-                  description: 模型 ID
-                  example: glm-4-7-251222
+                    - glm-4.5
+                  description: Model ID
+                  example: glm-4.5
                 messages:
                   type: array
                   minItems: 1
-                  description: 组成当前对话的消息列表。
+                  description: A list of messages comprising the conversation so far.
                   items:
                     type: object
                     required:
@@ -46,69 +46,69 @@ paths:
                         type: string
                   example:
                     - role: user
-                      content: 你好！
+                      content: Hello!
                 max_tokens:
                   type: integer
                   minimum: 1
                   maximum: 8192
                   default: 8192
-                  description: 最大生成 Token 数。
+                  description: The maximum number of tokens to generate.
                 temperature:
                   type: number
                   minimum: 0
                   maximum: 2
                   default: 1
-                  description: 采样温度，值越高输出越随机。
+                  description: Sampling temperature. Higher values make output more random.
                   example: 1
                 top_p:
                   type: number
                   minimum: 0
                   maximum: 1
-                  description: 核采样阈值。
+                  description: Nucleus sampling threshold.
                 frequency_penalty:
                   type: number
                   minimum: -2
                   maximum: 2
                   default: 0
-                  description: 根据词频惩罚重复 Token。
+                  description: Penalizes repeated tokens based on their frequency in the text so far.
                 presence_penalty:
                   type: number
                   minimum: -2
                   maximum: 2
                   default: 0
-                  description: 惩罚已出现过的 Token。
+                  description: Penalizes tokens that have already appeared in the text.
                 stream:
                   type: boolean
                   default: false
-                  description: 是否通过 SSE 流式返回部分消息。
+                  description: If true, stream partial message deltas using SSE.
                 stop:
                   oneOf:
                     - type: string
                     - type: array
                       items:
                         type: string
-                  description: 触发停止生成的序列。
+                  description: Sequences where the model will stop generating further tokens.
       responses:
         "200":
-          description: 补全生成成功
+          description: Completion generated successfully
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ChatCompletion"
         "400":
-          description: 请求无效
+          description: Invalid request
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         "401":
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
         "429":
-          description: 请求频率超限
+          description: Rate limit exceeded
           content:
             application/json:
               schema:
@@ -133,10 +133,10 @@ components:
           example: chat.completion
         created:
           type: integer
-          description: Unix 时间戳
+          description: Unix timestamp
         model:
           type: string
-          example: glm-4-7-251222
+          example: glm-4.5
         choices:
           type: array
           items:
@@ -152,7 +152,7 @@ components:
                     example: assistant
                   content:
                     type: string
-                    example: 你好！有什么可以帮你的吗？
+                    example: Hello! How can I help you today?
               finish_reason:
                 type: string
                 enum: [stop, length, content_filter, null]
