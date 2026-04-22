@@ -60,11 +60,6 @@ paths:
                   default: 1
                   description: Sampling temperature. Higher values make output more random.
                   example: 1
-                top_p:
-                  type: number
-                  minimum: 0
-                  maximum: 1
-                  description: Nucleus sampling threshold.
                 frequency_penalty:
                   type: number
                   minimum: -2
