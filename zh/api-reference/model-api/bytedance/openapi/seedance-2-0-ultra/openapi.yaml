@@ -128,11 +128,11 @@ paths:
                     输出宽高比。`adaptive` 根据输入自动选择最合适的宽高比。
                 duration:
                   type: integer
-                  minimum: -1
+                  minimum: 4
                   maximum: 15
                   default: 5
                   description: |
-                    视频时长（秒），整数，4–15。设置为 `-1` 由模型自动选择合适时长。
+                    视频时长（秒），整数，4–15。
                 tools:
                   type: array
                   description: 模型调用的工具。当前支持联网搜索（仅文生视频）。

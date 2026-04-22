@@ -128,11 +128,11 @@ paths:
                     Output aspect ratio. `adaptive` automatically selects the best ratio based on input.
                 duration:
                   type: integer
-                  minimum: -1
+                  minimum: 4
                   maximum: 15
                   default: 5
                   description: |
-                    Video duration in seconds (integer, 4–15). Set to `-1` for automatic duration selection by the model.
+                    Video duration in seconds (integer, 4–15).
                 tools:
                   type: array
                   description: Tools for the model to use. Currently supports web search (text-to-video only).
