@@ -105,6 +105,7 @@
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
                       "guides/model-api/bytedance/seedance-task-query",
+                      "guides/model-api/bytedance/seedance-2-0-ultra",
                       "guides/model-api/bytedance/seedance-2-0-fast",
                       "guides/model-api/bytedance/seedance-2-0",
                       "guides/model-api/bytedance/doubao-seed-2.0-pro",
@@ -394,6 +395,7 @@
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
                       "api-reference/model-api/bytedance/seedance-task-query",
+                      "api-reference/model-api/bytedance/seedance-2-0-ultra",
                       "api-reference/model-api/bytedance/seedance-2-0-fast",
                       "api-reference/model-api/bytedance/seedance-2-0",
                       "api-reference/model-api/bytedance/doubao-seed-2.0-pro",
@@ -696,6 +698,7 @@
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
                       "zh/guides/model-api/bytedance/seedance-task-query",
+                      "zh/guides/model-api/bytedance/seedance-2-0-ultra",
                       "zh/guides/model-api/bytedance/seedance-2-0-fast",
                       "zh/guides/model-api/bytedance/seedance-2-0",
                       "zh/guides/model-api/bytedance/doubao-seed-2.0-pro",
@@ -985,6 +988,7 @@
                     "icon": "/images/providers/bytedance.svg",
                     "pages": [
                       "zh/api-reference/model-api/bytedance/seedance-task-query",
+                      "zh/api-reference/model-api/bytedance/seedance-2-0-ultra",
                       "zh/api-reference/model-api/bytedance/seedance-2-0-fast",
                       "zh/api-reference/model-api/bytedance/seedance-2-0",
                       "zh/api-reference/model-api/bytedance/doubao-seed-2.0-pro",
