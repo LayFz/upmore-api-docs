@@ -1,0 +1,121 @@
+openapi: 3.1.0
+info:
+  title: "GPT Image 1.5"
+  description: "Generate images using GPT Image 1.5 via AnyFast API"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/generations:
+    post:
+      operationId: createGptImage15
+      summary: Generate Images
+      description: "Generate images from text prompts using the GPT Image 1.5 model."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - gpt-image-1.5
+                  description: "Model ID."
+                  example: gpt-image-1.5
+                prompt:
+                  type: string
+                  description: "Text description of the desired image."
+                  example: "A cute cat wearing a space suit floating in the galaxy"
+                n:
+                  type: integer
+                  minimum: 1
+                  maximum: 4
+                  default: 1
+                  description: "Number of images to generate."
+                  example: 1
+                size:
+                  type: string
+                  enum:
+                    - "1024x1024"
+                    - "1536x1024"
+                    - "1024x1536"
+                    - "auto"
+                  default: "auto"
+                  description: "Output image size."
+                  example: "1024x1024"
+                quality:
+                  type: string
+                  enum:
+                    - "low"
+                    - "medium"
+                    - "high"
+                  default: "medium"
+                  description: "Image quality."
+                  example: "high"
+                output_format:
+                  type: string
+                  enum:
+                    - "png"
+                    - "webp"
+                    - "jpeg"
+                  default: "png"
+                  description: "Output image format."
+                  example: "png"
+                background:
+                  type: string
+                  enum:
+                    - "transparent"
+                    - "opaque"
+                  default: "opaque"
+                  description: "Background setting. `transparent` for transparent background, `opaque` for opaque background."
+                  example: "opaque"
+                moderation:
+                  type: string
+                  enum:
+                    - "auto"
+                    - "low"
+                  default: "auto"
+                  description: "Content moderation level."
+                  example: "auto"
+                output_compression:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: "Compression level for jpeg and webp formats (0-100%)."
+                  example: 80
+      responses:
+        "200":
+          description: "Images generated successfully."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: "Array of generated images."
+                    items:
+                      type: object
+                      properties:
+                        b64_json:
+                          type: string
+                          description: "Base64-encoded image data."
+                        revised_prompt:
+                          type: string
+                          description: "The revised prompt used."
+        "400":
+          description: "Bad request. Invalid parameters."
+        "401":
+          description: "Unauthorized. Invalid or missing API key."
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

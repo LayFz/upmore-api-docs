@@ -1,0 +1,81 @@
+---
+title: "GPT Image 1"
+description: "OpenAI GPT Image 1 图像生成模型。通过文本提示生成和编辑图像。"
+---
+
+GPT Image 1 是 OpenAI 的自回归图像生成模型，通过 AnyFast API 提供服务。可从文本提示生成高质量图像，支持精准文字渲染和多风格生成。
+
+## 核心能力
+
+- **文生图** — 根据自然语言描述生成图像
+- **多风格** — 写实、插画、动漫、矢量、3D、数据可视化
+- **文字渲染** — 精准的排版效果，适用于海报、UI 模型和标签
+- **透明背景** — 支持生成透明背景图像
+- **批量生成** — 单次请求最多生成 4 张图片
+
+## 输出规格
+
+| 属性 | 值 |
+|------|---|
+| 尺寸 | 1024x1024、1536x1024、1024x1536、auto |
+| 质量 | low、medium、high |
+| 格式 | png、webp、jpeg |
+| 背景 | transparent、opaque |
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/images/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-image-1",
+    "prompt": "一只穿着太空服漂浮在银河中的可爱猫咪",
+    "size": "1024x1024",
+    "quality": "high"
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+response = client.images.generate(
+    model="gpt-image-1",
+    prompt="一只穿着太空服漂浮在银河中的可爱猫咪",
+    size="1024x1024",
+    quality="high"
+)
+
+print(response.data[0].b64_json[:100])
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 必须为 `gpt-image-1` |
+| `prompt` | string | 是 | 图像描述文本 |
+| `n` | integer | 否 | 生成图片数量（1–4），默认 `1` |
+| `size` | string | 否 | `1024x1024`、`1536x1024`、`1024x1536`、`auto`，默认 `auto` |
+| `quality` | string | 否 | `low`、`medium`、`high`，默认 `medium` |
+| `output_format` | string | 否 | `png`、`webp`、`jpeg`，默认 `png` |
+| `background` | string | 否 | `transparent` 或 `opaque`，默认 `opaque` |
+| `moderation` | string | 否 | `auto` 或 `low`，默认 `auto` |
+| `output_compression` | integer | 否 | jpeg/webp 格式的压缩级别（0–100） |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/openai/gpt-image-1"
+>
+  查看 GPT Image 1 的交互式 API 操场。
+</Card>
