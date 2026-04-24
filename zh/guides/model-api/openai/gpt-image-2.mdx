@@ -1,0 +1,81 @@
+---
+title: "GPT Image 2"
+description: "OpenAI GPT Image 2 图像生成模型。新一代自回归 + 推理混合架构，支持灵活分辨率最高 4K，文字渲染准确率接近完美。"
+---
+
+GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 AnyFast API 提供服务。基于自回归 + 推理混合架构，支持原生 2K 分辨率、接近完美的文字渲染能力（12+ 种语言约 99% 字符级准确率），以及出色的多物体场景构图。
+
+## 核心能力
+
+- **文生图** — 根据自然语言描述生成图像
+- **灵活分辨率** — 支持任意自定义尺寸，最高 4K（3840px），边长须为 16 的倍数
+- **精准文字渲染** — 12+ 种语言约 99% 字符级准确率
+- **多物体构图** — 复杂场景无遮挡或错位问题
+- **多风格** — 写实、插画、动漫、矢量、3D、数据可视化
+- **批量生成** — 单次请求最多生成 4 张图片
+
+## 输出规格
+
+| 属性 | 值 |
+|------|---|
+| 尺寸 | 灵活分辨率（如 1024x1024、2048x2048、3840x2160） |
+| 尺寸约束 | 边长：16 的倍数，宽高比 ≤ 3:1，总像素数 655,360–8,294,400 |
+| 质量 | low、medium、high |
+| 格式 | png、webp、jpeg |
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/images/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-image-2",
+    "prompt": "一座未来城市的日落天际线，天空中有飞行汽车",
+    "size": "2048x2048",
+    "quality": "high"
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+response = client.images.generate(
+    model="gpt-image-2",
+    prompt="一座未来城市的日落天际线，天空中有飞行汽车",
+    size="2048x2048",
+    quality="high"
+)
+
+print(response.data[0].b64_json[:100])
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 必须为 `gpt-image-2` |
+| `prompt` | string | 是 | 图像描述文本 |
+| `n` | integer | 否 | 生成图片数量（1–4），默认 `1` |
+| `size` | string | 否 | `{宽}x{高}` 格式，边长须为 16 的倍数，宽高比 ≤ 3:1，总像素数 655,360–8,294,400，最大单边 3,840px。默认 `1024x1024` |
+| `quality` | string | 否 | `low`、`medium`、`high`，默认 `medium` |
+| `output_format` | string | 否 | `png`、`webp`、`jpeg`，默认 `png` |
+| `moderation` | string | 否 | `auto` 或 `low`，默认 `auto` |
+| `output_compression` | integer | 否 | jpeg/webp 格式的压缩级别（0–100） |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/openai/gpt-image-2"
+>
+  查看 GPT Image 2 的交互式 API 操场。
+</Card>

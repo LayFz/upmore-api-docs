@@ -1,0 +1,81 @@
+---
+title: "GPT Image 2"
+description: "OpenAI GPT Image 2 image generation model. Next-generation autoregressive + reasoning hybrid model with flexible resolution up to 4K and near-perfect text rendering."
+---
+
+GPT Image 2 is OpenAI's next-generation image generation model, available through AnyFast API. Built on an autoregressive + reasoning hybrid architecture, it delivers native 2K resolution, near-perfect text rendering (~99% character-level accuracy across 12+ languages), and superior multi-object scene composition.
+
+## Key capabilities
+
+- **Text-to-Image** — Generate images from natural language descriptions
+- **Flexible resolution** — Any custom size up to 4K (3840px), edges must be multiples of 16
+- **Near-perfect text rendering** — ~99% character-level accuracy across 12+ languages
+- **Multi-object composition** — Complex scenes without occlusion or misplacement issues
+- **Multi-style** — Photorealism, illustration, anime, vector, 3D, data visualization
+- **Batch generation** — Generate up to 4 images per request
+
+## Output specifications
+
+| Property | Value |
+|----------|-------|
+| Sizes | Flexible resolution (e.g. 1024x1024, 2048x2048, 3840x2160) |
+| Size constraints | Edges: multiples of 16, aspect ratio ≤ 3:1, total pixels 655,360–8,294,400 |
+| Quality | low, medium, high |
+| Formats | png, webp, jpeg |
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/images/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-image-2",
+    "prompt": "A futuristic city skyline at sunset with flying cars",
+    "size": "2048x2048",
+    "quality": "high"
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.anyfast.ai/v1"
+)
+
+response = client.images.generate(
+    model="gpt-image-2",
+    prompt="A futuristic city skyline at sunset with flying cars",
+    size="2048x2048",
+    quality="high"
+)
+
+print(response.data[0].b64_json[:100])
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `model` | string | Yes | Must be `gpt-image-2` |
+| `prompt` | string | Yes | Text description of the desired image |
+| `n` | integer | No | Number of images to generate (1–4). Default: `1` |
+| `size` | string | No | `{width}x{height}` format. Edges must be multiples of 16, aspect ratio ≤ 3:1, total pixels 655,360–8,294,400, max edge 3,840px. Default: `1024x1024` |
+| `quality` | string | No | `low`, `medium`, `high`. Default: `medium` |
+| `output_format` | string | No | `png`, `webp`, `jpeg`. Default: `png` |
+| `moderation` | string | No | `auto` or `low`. Default: `auto` |
+| `output_compression` | integer | No | Compression level for jpeg/webp (0–100). |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/openai/gpt-image-2"
+>
+  View the interactive API playground for GPT Image 2.
+</Card>

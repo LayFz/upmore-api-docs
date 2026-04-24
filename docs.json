@@ -306,6 +306,7 @@
                       "guides/model-api/openai/gpt-4-1",
                       "guides/model-api/openai/gpt-4",
                       "guides/model-api/openai/sora-2",
+                      "guides/model-api/openai/gpt-image-2",
                       "guides/model-api/openai/gpt-image-1-5",
                       "guides/model-api/openai/gpt-image-1"
                     ]
@@ -603,6 +604,7 @@
                       "api-reference/model-api/openai/sora-2",
                       "api-reference/model-api/openai/sora-2-query",
                       "api-reference/model-api/openai/sora-2-download",
+                      "api-reference/model-api/openai/gpt-image-2",
                       "api-reference/model-api/openai/gpt-image-1-5",
                       "api-reference/model-api/openai/gpt-image-1"
                     ]
@@ -903,6 +905,7 @@
                       "zh/guides/model-api/openai/gpt-4-1",
                       "zh/guides/model-api/openai/gpt-4",
                       "zh/guides/model-api/openai/sora-2",
+                      "zh/guides/model-api/openai/gpt-image-2",
                       "zh/guides/model-api/openai/gpt-image-1-5",
                       "zh/guides/model-api/openai/gpt-image-1"
                     ]
@@ -1200,6 +1203,7 @@
                       "zh/api-reference/model-api/openai/sora-2",
                       "zh/api-reference/model-api/openai/sora-2-query",
                       "zh/api-reference/model-api/openai/sora-2-download",
+                      "zh/api-reference/model-api/openai/gpt-image-2",
                       "zh/api-reference/model-api/openai/gpt-image-1-5",
                       "zh/api-reference/model-api/openai/gpt-image-1"
                     ]
