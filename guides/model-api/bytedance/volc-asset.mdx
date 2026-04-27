@@ -3,7 +3,7 @@ title: "Seedance 2.0 Asset Management"
 description: "Manage image, video, and audio assets for Seedance 2.0 video generation via AnyFast API."
 ---
 
-Seedance 2.0 Asset Management lets you upload and organize media assets (images, videos, audio) for use with Seedance 2.0 video generation. Once uploaded, assets are referenced by ID (`Asset://<ID>`) in Seedance 2.0 requests instead of public URLs.
+Seedance 2.0 Asset Management lets you upload and organize media assets (images, videos, audio) for use with Seedance 2.0 video generation. Once uploaded, assets are referenced by ID (`asset://<ID>`) in Seedance 2.0 requests instead of public URLs.
 
 ## Why use Asset Management?
 
@@ -11,7 +11,7 @@ Seedance 2.0 Asset Management lets you upload and organize media assets (images,
 - **Multi-format support** — Upload images, videos, and audio files
 - **Organized by groups** — Group related assets (e.g. per project or campaign)
 - **Data isolation** — Each API token sees only its own assets
-- **Direct integration** — Use `Asset://<ID>` directly in Seedance 2.0 `image_url`, `video_url`, `audio_url` fields
+- **Direct integration** — Use `asset://<ID>` directly in Seedance 2.0 `image_url`, `video_url`, `audio_url` fields
 
 ## Supported formats
 
@@ -32,22 +32,25 @@ Seedance 2.0 Asset Management lets you upload and organize media assets (images,
 ## Workflow
 
 ```
-1. Create an asset group       →  group ID
-2. Upload assets to the group  →  asset ID
-3. Use asset ID in Seedance 2.0  →  Asset://<asset-ID>
+1. Create an Asset Group        →  Group ID
+2. Create an Asset in the Group →  Asset ID
+3. Generate a video with Asset  →  async task ID
+4. Poll for the result          →  pre-signed download URL
 ```
 
-## Step 1: Create an asset group
+## Step 1: Create an Asset Group
+
+First, create a Group to obtain a Group ID.
 
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/volc/asset/CreateAssetGroup \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
+curl --location --request POST 'https://www.anyfast.ai/volc/asset/CreateAssetGroup' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
     "model": "volc-asset",
-    "Name": "my-project-assets"
+    "Name": "your-custom-name"
   }'
 ```
 
@@ -59,41 +62,40 @@ response = requests.post(
     headers={"Authorization": "Bearer YOUR_API_KEY"},
     json={
         "model": "volc-asset",
-        "Name": "my-project-assets"
+        "Name": "your-custom-name"
     }
 )
 
 group_id = response.json()["Id"]
 print(f"Group ID: {group_id}")
-# → group-20260320120601-hsw4s
 ```
 
 </CodeGroup>
 
-## Step 2: Upload assets
+Expected response:
 
-Supports two methods: **JSON** (URL / Base64 / Data URI) and **multipart file upload**.
+```json
+{
+  "Id": "group-20260427160000-xxxxx"
+}
+```
 
-> The `URL` field accepts three formats:
-> - Public URL: `https://example.com/image.jpg`
-> - Data URI: `data:image/png;base64,iVBOR...`
-> - Raw Base64 string (auto-detected, treated as PNG by default)
->
-> Base64 / Data URI are automatically uploaded to object storage.
+## Step 2: Create an Asset within the Group
 
-### Upload image (JSON)
+Using the Group ID from Step 1, upload your image asset (e.g., a character reference face).
 
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/volc/asset/CreateAsset \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "GroupId": "group-20260320120601-hsw4s",
+curl --location --request POST 'https://www.anyfast.ai/volc/asset/CreateAsset' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "model": "volc-asset",
+    "GroupId": "group-20260427160000-xxxxx",
     "Name": "character-reference",
     "AssetType": "Image",
-    "URL": "https://example.com/character.jpg"
+    "URL": "https://example.com/example.png"
   }'
 ```
 
@@ -102,48 +104,63 @@ response = requests.post(
     "https://www.anyfast.ai/volc/asset/CreateAsset",
     headers={"Authorization": "Bearer YOUR_API_KEY"},
     json={
-        "GroupId": "group-20260320120601-hsw4s",
+        "model": "volc-asset",
+        "GroupId": "group-20260427160000-xxxxx",
         "Name": "character-reference",
         "AssetType": "Image",
-        "URL": "https://example.com/character.jpg"
+        "URL": "https://example.com/example.png"
     }
 )
 
 asset_id = response.json()["Id"]
 print(f"Asset ID: {asset_id}")
-# → asset-20260320120147-pqwhc
 ```
 
 </CodeGroup>
 
-### Upload video (JSON)
+Expected response:
 
-> Video uploads **must** specify `"model": "volc-asset-video"`.
+```json
+{
+  "Id": "asset-20260427160000-xxxxx"
+}
+```
+
+> The `URL` field accepts three formats:
+> - Public URL: `https://example.com/image.jpg`
+> - Data URI: `data:image/png;base64,iVBOR...`
+> - Raw Base64 string (auto-detected, treated as PNG by default)
+>
+> Base64 / Data URI are automatically uploaded to object storage.
+
+### Upload video
+
+> Video uploads **must** specify `"model": "volc-asset-video"` and `"AssetType": "Video"`.
 
 ```bash cURL
-curl https://www.anyfast.ai/volc/asset/CreateAsset \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
+curl --location --request POST 'https://www.anyfast.ai/volc/asset/CreateAsset' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
     "model": "volc-asset-video",
-    "GroupId": "group-20260320120601-hsw4s",
+    "GroupId": "group-20260427160000-xxxxx",
     "Name": "reference-clip",
     "AssetType": "Video",
     "URL": "https://example.com/clip.mp4"
   }'
 ```
 
-### Upload audio (JSON)
+### Upload audio
 
-> Audio uploads **must** specify `"model": "volc-asset-audio"`.
+> Audio uploads **must** specify `"model": "volc-asset-audio"` and `"AssetType": "Audio"`.
 
 ```bash cURL
-curl https://www.anyfast.ai/volc/asset/CreateAsset \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
+curl --location --request POST 'https://www.anyfast.ai/volc/asset/CreateAsset' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
     "model": "volc-asset-audio",
-    "GroupId": "group-20260320120601-hsw4s",
+    "GroupId": "group-20260427160000-xxxxx",
     "Name": "background-music",
     "AssetType": "Audio",
     "URL": "https://example.com/bgm.mp3"
@@ -153,21 +170,19 @@ curl https://www.anyfast.ai/volc/asset/CreateAsset \
 ### File upload (multipart)
 
 ```bash cURL
-curl https://www.anyfast.ai/volc/asset/CreateAsset \
+curl --location --request POST 'https://www.anyfast.ai/volc/asset/CreateAsset' \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F "file=@/path/to/image.jpg" \
-  -F "GroupId=group-20260320120601-hsw4s" \
+  -F "GroupId=group-20260427160000-xxxxx" \
   -F "Name=character-reference"
 ```
 
-## Step 3: Use in Seedance 2.0
+## Step 3: Generate a Video Using the Asset
 
-Replace URLs in your Seedance 2.0 request with `Asset://<asset-ID>`:
-
-<CodeGroup>
+Reference the Asset ID from Step 2 to generate a video.
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/video/generations \
+curl -X POST https://www.anyfast.ai/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -180,22 +195,59 @@ curl https://www.anyfast.ai/v1/video/generations \
       {
         "type": "image_url",
         "image_url": {
-          "url": "Asset://asset-20260320120147-pqwhc"
+          "url": "asset://asset-20260427160000-xxxxx"
         },
+        "role": "first_frame"
+      }
+    ],
+    "resolution": "720p",
+    "duration": 5
+  }'
+```
+
+The response will return an async task ID (prefixed with `asyn`).
+
+## Step 4: Poll for the Result
+
+Use the task ID to check the generation status.
+
+```bash cURL
+curl https://www.anyfast.ai/v1/video/generations/asynxxxx \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+Once complete, the response will contain a pre-signed S3 download link. Please note:
+
+- The download link **expires after 12 hours**.
+- If the task reaches 100% progress but returns an error, this typically means the output was flagged by the provider's content moderation (e.g., celebrity likeness or copyrighted IP). In this case, try modifying your prompt or using a different reference image.
+
+## Multi-modal example
+
+You can combine multiple asset types (image + video + audio) in a single Seedance 2.0 request:
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "seedance",
+    "content": [
+      {"type": "text", "text": "A cat playing piano in a sunlit room"},
+      {
+        "type": "image_url",
+        "image_url": {"url": "asset://asset-20260427160000-pqwhc"},
         "role": "reference_image"
       },
       {
         "type": "video_url",
-        "video_url": {
-          "url": "Asset://asset-20260411140000-v1abc"
-        },
+        "video_url": {"url": "asset://asset-20260427160000-v1abc"},
         "role": "reference_video"
       },
       {
         "type": "audio_url",
-        "audio_url": {
-          "url": "Asset://asset-20260411140000-a1xyz"
-        },
+        "audio_url": {"url": "asset://asset-20260427160000-a1xyz"},
         "role": "reference_audio"
       }
     ],
@@ -216,17 +268,17 @@ response = requests.post(
             {"type": "text", "text": "A cat playing piano in a sunlit room"},
             {
                 "type": "image_url",
-                "image_url": {"url": "Asset://asset-20260320120147-pqwhc"},
+                "image_url": {"url": "asset://asset-20260427160000-pqwhc"},
                 "role": "reference_image"
             },
             {
                 "type": "video_url",
-                "video_url": {"url": "Asset://asset-20260411140000-v1abc"},
+                "video_url": {"url": "asset://asset-20260427160000-v1abc"},
                 "role": "reference_video"
             },
             {
                 "type": "audio_url",
-                "audio_url": {"url": "Asset://asset-20260411140000-a1xyz"},
+                "audio_url": {"url": "asset://asset-20260427160000-a1xyz"},
                 "role": "reference_audio"
             }
         ],
@@ -266,7 +318,7 @@ curl https://www.anyfast.ai/volc/asset/ListAssets \
     "model": "volc-asset",
     "Filter": {
       "Name": "character",
-      "GroupIds": ["group-20260320120601-hsw4s"],
+      "GroupIds": ["group-20260427160000-xxxxx"],
       "GroupType": "AIGC"
     },
     "PageNumber": 1,
