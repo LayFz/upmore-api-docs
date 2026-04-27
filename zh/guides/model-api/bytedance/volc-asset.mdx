@@ -3,7 +3,7 @@ title: "Seedance 2.0 素材管理"
 description: "通过 AnyFast API 管理 Seedance 2.0 视频生成所需的图片、视频和音频素材。"
 ---
 
-Seedance 2.0 素材管理让你可以上传和组织媒体素材（图片、视频、音频），供 Seedance 2.0 视频生成使用。上传后，在 Seedance 2.0 请求中通过素材 ID（`Asset://<ID>`）引用素材，无需使用公开 URL。
+Seedance 2.0 素材管理让你可以上传和组织媒体素材（图片、视频、音频），供 Seedance 2.0 视频生成使用。上传后，在 Seedance 2.0 请求中通过素材 ID（`asset://<ID>`）引用素材，无需使用公开 URL。
 
 ## 为什么使用素材管理？
 
@@ -11,7 +11,7 @@ Seedance 2.0 素材管理让你可以上传和组织媒体素材（图片、视�
 - **多格式支持** — 支持上传图片、视频和音频文件
 - **分组管理** — 按项目或活动将相关素材归组
 - **数据隔离** — 每个 API 令牌只能看到自己的素材
-- **直接集成** — 在 Seedance 2.0 的 `image_url`、`video_url`、`audio_url` 字段中直接使用 `Asset://<ID>`
+- **直接集成** — 在 Seedance 2.0 的 `image_url`、`video_url`、`audio_url` 字段中直接使用 `asset://<ID>`
 
 ## 支持的格式
 
@@ -32,22 +32,25 @@ Seedance 2.0 素材管理让你可以上传和组织媒体素材（图片、视�
 ## 工作流
 
 ```
-1. 创建素材组       →  素材组 ID
-2. 上传素材到素材组  →  素材 ID
-3. 在 Seedance 2.0 中使用  →  Asset://<素材 ID>
+1. 创建素材组              →  素材组 ID
+2. 在素材组中创建素材       →  素材 ID
+3. 使用素材生成视频         →  异步任务 ID
+4. 轮询获取结果             →  预签名下载链接
 ```
 
 ## 第一步：创建素材组
 
+首先创建一个素材组以获取素材组 ID。
+
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/volc/asset/CreateAssetGroup \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
+curl --location --request POST 'https://www.anyfast.ai/volc/asset/CreateAssetGroup' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
     "model": "volc-asset",
-    "Name": "my-project-assets"
+    "Name": "your-custom-name"
   }'
 ```
 
@@ -59,41 +62,40 @@ response = requests.post(
     headers={"Authorization": "Bearer YOUR_API_KEY"},
     json={
         "model": "volc-asset",
-        "Name": "my-project-assets"
+        "Name": "your-custom-name"
     }
 )
 
 group_id = response.json()["Id"]
 print(f"素材组 ID: {group_id}")
-# → group-20260320120601-hsw4s
 ```
 
 </CodeGroup>
 
-## 第二步：上传素材
+预期响应：
 
-支持两种方式：**JSON**（URL / Base64 / Data URI）和 **multipart 文件上传**。
+```json
+{
+  "Id": "group-20260427160000-xxxxx"
+}
+```
 
-> `URL` 字段支持三种格式：
-> - 普通 URL：`https://example.com/image.jpg`
-> - Data URI：`data:image/png;base64,iVBOR...`
-> - 纯 Base64 字符串（自动识别，默认当作 PNG）
->
-> Base64 / Data URI 会自动上传到对象存储并替换为真实 URL。
+## 第二步：在素材组中创建素材
 
-### 上传图片（JSON）
+使用第一步获取的素材组 ID 上传素材（如角色参考图）。
 
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/volc/asset/CreateAsset \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "GroupId": "group-20260320120601-hsw4s",
+curl --location --request POST 'https://www.anyfast.ai/volc/asset/CreateAsset' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "model": "volc-asset",
+    "GroupId": "group-20260427160000-xxxxx",
     "Name": "character-reference",
     "AssetType": "Image",
-    "URL": "https://example.com/character.jpg"
+    "URL": "https://example.com/example.png"
   }'
 ```
 
@@ -102,48 +104,63 @@ response = requests.post(
     "https://www.anyfast.ai/volc/asset/CreateAsset",
     headers={"Authorization": "Bearer YOUR_API_KEY"},
     json={
-        "GroupId": "group-20260320120601-hsw4s",
+        "model": "volc-asset",
+        "GroupId": "group-20260427160000-xxxxx",
         "Name": "character-reference",
         "AssetType": "Image",
-        "URL": "https://example.com/character.jpg"
+        "URL": "https://example.com/example.png"
     }
 )
 
 asset_id = response.json()["Id"]
 print(f"素材 ID: {asset_id}")
-# → asset-20260320120147-pqwhc
 ```
 
 </CodeGroup>
 
-### 上传视频（JSON）
+预期响应：
 
-> 上传视频时**必须**指定 `"model": "volc-asset-video"`。
+```json
+{
+  "Id": "asset-20260427160000-xxxxx"
+}
+```
+
+> `URL` 字段支持三种格式：
+> - 普通 URL：`https://example.com/image.jpg`
+> - Data URI：`data:image/png;base64,iVBOR...`
+> - 纯 Base64 字符串（自动识别，默认当作 PNG）
+>
+> Base64 / Data URI 会自动上传到对象存储并替换为真实 URL。
+
+### 上传视频
+
+> 上传视频时**必须**指定 `"model": "volc-asset-video"` 和 `"AssetType": "Video"`。
 
 ```bash cURL
-curl https://www.anyfast.ai/volc/asset/CreateAsset \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
+curl --location --request POST 'https://www.anyfast.ai/volc/asset/CreateAsset' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
     "model": "volc-asset-video",
-    "GroupId": "group-20260320120601-hsw4s",
+    "GroupId": "group-20260427160000-xxxxx",
     "Name": "reference-clip",
     "AssetType": "Video",
     "URL": "https://example.com/clip.mp4"
   }'
 ```
 
-### 上传音频（JSON）
+### 上传音频
 
-> 上传音频时**必须**指定 `"model": "volc-asset-audio"`。
+> 上传音频时**必须**指定 `"model": "volc-asset-audio"` 和 `"AssetType": "Audio"`。
 
 ```bash cURL
-curl https://www.anyfast.ai/volc/asset/CreateAsset \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
+curl --location --request POST 'https://www.anyfast.ai/volc/asset/CreateAsset' \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
     "model": "volc-asset-audio",
-    "GroupId": "group-20260320120601-hsw4s",
+    "GroupId": "group-20260427160000-xxxxx",
     "Name": "background-music",
     "AssetType": "Audio",
     "URL": "https://example.com/bgm.mp3"
@@ -153,21 +170,19 @@ curl https://www.anyfast.ai/volc/asset/CreateAsset \
 ### 文件上传（multipart）
 
 ```bash cURL
-curl https://www.anyfast.ai/volc/asset/CreateAsset \
+curl --location --request POST 'https://www.anyfast.ai/volc/asset/CreateAsset' \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F "file=@/path/to/image.jpg" \
-  -F "GroupId=group-20260320120601-hsw4s" \
+  -F "GroupId=group-20260427160000-xxxxx" \
   -F "Name=character-reference"
 ```
 
-## 第三步：在 Seedance 2.0 中使用
+## 第三步：使用素材生成视频
 
-将 Seedance 2.0 请求中的 URL 替换为 `Asset://<素材 ID>`：
-
-<CodeGroup>
+引用第二步获取的素材 ID 生成视频。
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/video/generations \
+curl -X POST https://www.anyfast.ai/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -180,22 +195,59 @@ curl https://www.anyfast.ai/v1/video/generations \
       {
         "type": "image_url",
         "image_url": {
-          "url": "Asset://asset-20260320120147-pqwhc"
+          "url": "asset://asset-20260427160000-xxxxx"
         },
+        "role": "first_frame"
+      }
+    ],
+    "resolution": "720p",
+    "duration": 5
+  }'
+```
+
+响应将返回一个异步任务 ID（以 `asyn` 为前缀）。
+
+## 第四步：轮询获取结果
+
+使用任务 ID 检查生成状态。
+
+```bash cURL
+curl https://www.anyfast.ai/v1/video/generations/asynxxxx \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+完成后，响应将包含一个预签名的 S3 下载链接。请注意：
+
+- 下载链接**12 小时后过期**。
+- 如果任务进度达到 100% 但返回错误，通常表示输出被服务方内容审核拦截（例如名人肖像或受版权保护的 IP）。这种情况下请尝试修改提示词或更换参考图。
+
+## 多模态示例
+
+你可以在单次 Seedance 2.0 请求中组合多种素材类型（图片 + 视频 + 音频）：
+
+<CodeGroup>
+
+```bash cURL
+curl https://www.anyfast.ai/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "seedance",
+    "content": [
+      {"type": "text", "text": "一只猫在阳光明媚的房间里弹钢琴"},
+      {
+        "type": "image_url",
+        "image_url": {"url": "asset://asset-20260427160000-pqwhc"},
         "role": "reference_image"
       },
       {
         "type": "video_url",
-        "video_url": {
-          "url": "Asset://asset-20260411140000-v1abc"
-        },
+        "video_url": {"url": "asset://asset-20260427160000-v1abc"},
         "role": "reference_video"
       },
       {
         "type": "audio_url",
-        "audio_url": {
-          "url": "Asset://asset-20260411140000-a1xyz"
-        },
+        "audio_url": {"url": "asset://asset-20260427160000-a1xyz"},
         "role": "reference_audio"
       }
     ],
@@ -216,17 +268,17 @@ response = requests.post(
             {"type": "text", "text": "一只猫在阳光明媚的房间里弹钢琴"},
             {
                 "type": "image_url",
-                "image_url": {"url": "Asset://asset-20260320120147-pqwhc"},
+                "image_url": {"url": "asset://asset-20260427160000-pqwhc"},
                 "role": "reference_image"
             },
             {
                 "type": "video_url",
-                "video_url": {"url": "Asset://asset-20260411140000-v1abc"},
+                "video_url": {"url": "asset://asset-20260427160000-v1abc"},
                 "role": "reference_video"
             },
             {
                 "type": "audio_url",
-                "audio_url": {"url": "Asset://asset-20260411140000-a1xyz"},
+                "audio_url": {"url": "asset://asset-20260427160000-a1xyz"},
                 "role": "reference_audio"
             }
         ],
@@ -266,7 +318,7 @@ curl https://www.anyfast.ai/volc/asset/ListAssets \
     "model": "volc-asset",
     "Filter": {
       "Name": "character",
-      "GroupIds": ["group-20260320120601-hsw4s"],
+      "GroupIds": ["group-20260427160000-xxxxx"],
       "GroupType": "AIGC"
     },
     "PageNumber": 1,
