@@ -1,0 +1,114 @@
+openapi: 3.1.0
+info:
+  title: "HappyHorse 1.0 I2V"
+  description: "Alibaba DashScope HappyHorse 1.0 image-to-video generation via AnyFast API"
+  version: 1.0.0
+servers:
+  - url: https://www.anyfast.ai
+security:
+  - bearerAuth: []
+paths:
+  /v1/video/generations:
+    post:
+      operationId: createHappyhorse10I2v
+      summary: Create Image-to-Video Task
+      description: >
+        Submit an image-to-video generation task using a single first-frame image.
+        Returns a `task_id` immediately. Poll `GET /v1/video/generations/{task_id}` for the result.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+                - image
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - happyhorse-1.0-i2v
+                  description: "Model ID."
+                  example: happyhorse-1.0-i2v
+                prompt:
+                  type: string
+                  description: "Text description of the desired motion."
+                  example: "Camera slowly zooms in, the scene comes to life"
+                image:
+                  type: string
+                  description: "First-frame image URL. Use `images: [...]` array form if you prefer — only the first item is used."
+                  example: "https://example.com/first-frame.png"
+                resolution:
+                  type: string
+                  enum: ["720P", "1080P"]
+                  default: "1080P"
+                  description: "Video resolution."
+                  example: "720P"
+                ratio:
+                  type: string
+                  enum: ["16:9", "9:16", "1:1", "4:3", "3:4"]
+                  default: "16:9"
+                  description: "Aspect ratio."
+                  example: "16:9"
+                duration:
+                  type: integer
+                  minimum: 3
+                  maximum: 15
+                  default: 5
+                  description: "Video duration in seconds."
+                  example: 5
+                watermark:
+                  type: boolean
+                  default: true
+                  description: "Whether to add the bottom-right \"Happy Horse\" watermark."
+                  example: false
+                seed:
+                  type: integer
+                  minimum: 0
+                  maximum: 2147483647
+                  description: "Random seed for reproducibility."
+                parameters:
+                  type: object
+                  description: "Optional alternative location for the same parameters (DashScope-native style)."
+      responses:
+        "200":
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "asyntask_jwgfhsG0m2aDjLmiiELRf74eoWmss6ya"
+                  task_id:
+                    type: string
+                    example: "asyntask_jwgfhsG0m2aDjLmiiELRf74eoWmss6ya"
+                  object:
+                    type: string
+                    example: video
+                  model:
+                    type: string
+                    example: happyhorse-1.0-i2v
+                  status:
+                    type: string
+                    example: queued
+                  progress:
+                    type: integer
+                    example: 0
+                  created_at:
+                    type: integer
+                    example: 1777343862
+        "400":
+          description: Invalid request
+        "401":
+          description: Unauthorized
+        "429":
+          description: Rate limit exceeded
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

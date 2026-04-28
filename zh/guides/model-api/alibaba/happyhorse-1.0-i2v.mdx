@@ -1,0 +1,103 @@
+---
+title: "HappyHorse 1.0 I2V"
+description: "阿里 DashScope HappyHorse 1.0 图生视频模型。基于单张首帧图通过异步任务接口生成视频。"
+---
+
+HappyHorse 1.0 I2V 把单张首帧图动起来生成短视频。使用**异步任务接口**——提交任务后轮询直至完成。
+
+## 核心能力
+
+- **图生视频** — 用一张图作为首帧，文本描述驱动运动
+- **分辨率** — 720P / 1080P
+- **宽高比** — 16:9、9:16、1:1、4:3、3:4
+- **时长** — 3-15 秒
+- **水印控制** — 可选关闭右下角水印
+
+## 工作流
+
+```
+1. POST /v1/video/generations  →  task_id
+2. GET  /v1/video/generations/{task_id}  →  轮询直至 SUCCESS / FAILURE
+3. 读取 data.result_url  （有效期 24 小时）
+```
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://www.anyfast.ai/v1/video/generations \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "happyhorse-1.0-i2v",
+    "prompt": "镜头缓缓拉近，画面动起来",
+    "image": "https://example.com/first-frame.png",
+    "parameters": {
+      "resolution": "720P",
+      "duration": 5,
+      "watermark": false
+    }
+  }'
+```
+
+```python Python
+import requests, time
+
+headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+resp = requests.post(
+    "https://www.anyfast.ai/v1/video/generations",
+    headers=headers,
+    json={
+        "model": "happyhorse-1.0-i2v",
+        "prompt": "镜头缓缓拉近，画面动起来",
+        "image": "https://example.com/first-frame.png",
+        "parameters": {"resolution": "720P", "duration": 5, "watermark": False}
+    }
+)
+task_id = resp.json()["task_id"]
+
+while True:
+    r = requests.get(
+        f"https://www.anyfast.ai/v1/video/generations/{task_id}",
+        headers=headers,
+    ).json()
+    if r["data"]["status"] == "SUCCESS":
+        print(r["data"]["result_url"])
+        break
+    if r["data"]["status"] == "FAILURE":
+        print(r["data"]["fail_reason"])
+        break
+    time.sleep(15)
+```
+
+</CodeGroup>
+
+> `image` 字段为单张 URL。也可使用 `images: [...]` 数组形式（仅取第一张作为首帧）。
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | 必须为 `happyhorse-1.0-i2v` |
+| `prompt` | string | 是 | 对运动效果的描述 |
+| `image` | string | 是 | 首帧图 URL |
+| `resolution` | string | 否 | `720P` / `1080P`，默认 `1080P` |
+| `ratio` | string | 否 | `16:9`、`9:16`、`1:1`、`4:3`、`3:4`，默认 `16:9` |
+| `duration` | integer | 否 | 视频时长 3-15 秒，默认 `5` |
+| `watermark` | boolean | 否 | 默认 `true`，设为 `false` 关闭水印 |
+| `seed` | integer | 否 | 随机种子 `[0, 2147483647]` |
+
+## 计费
+
+按 **分辨率档位 × 用户请求时长** 计费，预扣金额即最终金额。失败任务自动退费。
+
+<CardGroup cols={2}>
+  <Card title="API 参考" icon="code" href="/zh/api-reference/model-api/alibaba/happyhorse-1.0-i2v">
+    HappyHorse 1.0 I2V 交互式 Playground。
+  </Card>
+  <Card title="任务查询" icon="magnifying-glass" href="/zh/guides/model-api/alibaba/happyhorse-task-query">
+    轮询任务状态并获取最终视频 URL。
+  </Card>
+</CardGroup>
