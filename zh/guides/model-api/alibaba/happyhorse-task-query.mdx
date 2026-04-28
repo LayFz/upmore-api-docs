@@ -61,7 +61,7 @@ while True:
 | `data.action` | string | 任务子类型：`generate` / `firstTailGenerate` / `referenceGenerate` / `omniGenerate` |
 | `data.status` | string | 任务状态（见上表）|
 | `data.result_url` | string | 预签名下载 URL，**有效期 24 小时**。失败任务此字段省略 |
-| `data.fail_reason` | string | 失败时为错误信息。*历史兼容*：成功时该字段会被复制为 `result_url` 的值，兼容老客户端 |
+| `data.fail_reason` | string | `status = FAILURE` 时为错误信息；成功时为空字符串 |
 | `data.submit_time` | int64 | 提交时间戳（Unix 秒）|
 | `data.start_time` | int64 | 上游开始时间戳；未开始为 `0` |
 | `data.finish_time` | int64 | 完成时间戳 |
@@ -96,7 +96,7 @@ while True:
     "action": "generate",
     "status": "SUCCESS",
     "result_url": "https://dashscope-a717.oss-accelerate.aliyuncs.com/.../xxx_refiner.mp4?Expires=...",
-    "fail_reason": "https://dashscope-a717.oss-accelerate.aliyuncs.com/.../xxx_refiner.mp4?Expires=...",
+    "fail_reason": "",
     "submit_time": 1777343862,
     "start_time": 1777343866,
     "finish_time": 1777343961,

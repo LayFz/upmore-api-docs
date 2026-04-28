@@ -56,7 +56,7 @@ paths:
                         example: "https://dashscope-a717.oss-accelerate.aliyuncs.com/.../xxx_refiner.mp4?Expires=..."
                       fail_reason:
                         type: string
-                        description: "Error message on failure. *Backward compat:* on success, copied from `result_url` for legacy clients."
+                        description: "Error message when `status = FAILURE`. Empty string on success."
                         example: ""
                       submit_time:
                         type: integer
