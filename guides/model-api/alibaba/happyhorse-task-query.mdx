@@ -61,7 +61,7 @@ Total generation time is typically 1–5 minutes. The `result_url` is valid for 
 | `data.action` | string | Sub-type: `generate` / `firstTailGenerate` / `referenceGenerate` / `omniGenerate` |
 | `data.status` | string | Task status (see table above) |
 | `data.result_url` | string | Pre-signed download URL, **valid 24 hours**. Omitted on failure |
-| `data.fail_reason` | string | Error message when `status = FAILURE`; empty string on success |
+| `data.fail_reason` | string | On success: copies `result_url` (backward compat for legacy clients). On failure: error message |
 | `data.submit_time` | int64 | Submit timestamp (Unix seconds) |
 | `data.start_time` | int64 | Upstream start timestamp; `0` if not started |
 | `data.finish_time` | int64 | Finish timestamp |
@@ -95,8 +95,8 @@ Total generation time is typically 1–5 minutes. The `result_url` is valid for 
     "task_id": "asyntask_jwgfhsG0m2aDjLmiiELRf74eoWmss6ya",
     "action": "generate",
     "status": "SUCCESS",
+    "fail_reason": "https://dashscope-a717.oss-accelerate.aliyuncs.com/.../xxx_refiner.mp4?Expires=...",
     "result_url": "https://dashscope-a717.oss-accelerate.aliyuncs.com/.../xxx_refiner.mp4?Expires=...",
-    "fail_reason": "",
     "submit_time": 1777343862,
     "start_time": 1777343866,
     "finish_time": 1777343961,
