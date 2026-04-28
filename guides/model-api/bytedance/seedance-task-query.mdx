@@ -5,45 +5,184 @@ description: "Query the status and result of ByteDance Seedance video generation
 
 After creating a Seedance 2.0 video generation task, use this endpoint to poll its status and retrieve the result when completed.
 
+## Endpoint
+
+```
+GET /v1/video/generations/{task_id}
+```
+
 ## Quick example
 
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/video/generations/gen-abc123 \
+curl https://www.anyfast.ai/v1/video/generations/asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
 ```python Python
-import requests
+import requests, time
 
-response = requests.get(
-    "https://www.anyfast.ai/v1/video/generations/gen-abc123",
-    headers={"Authorization": "Bearer YOUR_API_KEY"}
-)
-
-result = response.json()
-print(f"Status: {result['status']}")
-if result['status'] == 'completed':
-    print(f"Video URL: {result['video_url']}")
+task_id = "asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E"
+while True:
+    r = requests.get(
+        f"https://www.anyfast.ai/v1/video/generations/{task_id}",
+        headers={"Authorization": "Bearer YOUR_API_KEY"}
+    ).json()
+    status = r["data"]["status"]
+    if status == "SUCCESS":
+        print("Video URL:", r["data"]["result_url"])
+        break
+    if status == "FAILURE":
+        print("Failed:", r["data"]["fail_reason"])
+        break
+    time.sleep(15)
 ```
 
 </CodeGroup>
 
-## Parameters
+## Status values
 
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-| `id` | string (path) | Yes | Task ID from the video generation response |
+| `data.status` | Meaning | Action |
+|---|---|---|
+| `NOT_START` | Task accepted, not yet queued | Keep polling |
+| `QUEUED` | Queued | Keep polling |
+| `IN_PROGRESS` | Processing (`progress` advances from 50%) | Keep polling, ~15s interval |
+| `SUCCESS` | Done | Read `data.result_url` |
+| `FAILURE` | Failed | Read `data.fail_reason`; quota auto-refunded |
 
-## Response
+Total generation time is typically 1–5 minutes. The `result_url` is valid for **24 hours** — download or transfer it immediately.
+
+## Top-level response fields
 
 | Field | Type | Description |
 |---|---|---|
-| `id` | string | Task ID |
-| `model` | string | Model used |
-| `status` | string | `processing`, `completed`, or `failed` |
-| `video_url` | string | Generated video URL (when completed) |
+| `data.task_id` | string | Platform task ID (format `asyntask_xxx`) |
+| `data.action` | string | Sub-type: `generate`, `referenceGenerate`, `firstTailGenerate`, `omniGenerate` |
+| `data.status` | string | Task status (see table above) |
+| `data.result_url` | string | Pre-signed download URL, **valid 24 hours**. Omitted on failure |
+| `data.original_result_url` | string | **Ultra tasks only.** Upstream original (pre-enhancement) URL |
+| `data.fail_reason` | string | Error message on failure. *Backward compat:* on success, copied from `result_url` for legacy clients |
+| `data.submit_time` | int64 | Submit timestamp (Unix seconds) |
+| `data.start_time` | int64 | Upstream start timestamp; `0` if not started |
+| `data.finish_time` | int64 | Finish timestamp |
+| `data.progress` | string | Progress text, e.g. `"50%"`, `"100%"` |
+| `data.request_id` | string | Request trace ID |
+| `data.data` | object | Upstream raw output (see below) |
+
+## `data.data` — upstream raw output
+
+| Field | Description |
+|---|---|
+| `content.video_url` | Generated video URL (same as outer `result_url` for non-ultra) |
+| `id` | Upstream task ID |
+| `model` | Upstream model ID |
+| `duration` | Video duration (seconds) |
+| `ratio` | Aspect ratio |
+| `resolution` | Upstream raw resolution. **For ultra tasks** this is the lower upstream resolution; the final user-facing resolution is in `super_resolution` |
+| `super_resolution` | **Ultra only.** Final resolution after super-resolution (e.g. `720p`, `2k`) |
+| `framespersecond` | FPS |
+| `generate_audio` | Whether audio was generated |
+| `seed` | Random seed used |
+| `status` | Upstream status (`succeeded`, `failed`, `running`, ...) |
+| `usage.completion_tokens` | Upstream raw completion tokens |
+| `usage.total_tokens` | Upstream raw total tokens |
+| `usage.super_resolution_tokens` | **Ultra only.** Tokens after super-resolution coefficient — actual billed tokens |
+
+## Success response (standard)
+
+```json
+{
+  "code": "success",
+  "message": "",
+  "data": {
+    "task_id": "asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E",
+    "action": "generate",
+    "status": "SUCCESS",
+    "result_url": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?...",
+    "fail_reason": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?...",
+    "submit_time": 1777288506,
+    "start_time": 1777288508,
+    "finish_time": 1777288800,
+    "progress": "100%",
+    "request_id": "20260427111505260254000NBdvZFoP",
+    "data": {
+      "content": {"video_url": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?..."},
+      "id": "cgt-20260427191505-9j2q7",
+      "model": "doubao-seedance-2-0-260128",
+      "duration": 5,
+      "ratio": "16:9",
+      "resolution": "720p",
+      "framespersecond": 24,
+      "generate_audio": true,
+      "seed": 4304,
+      "status": "succeeded",
+      "usage": {"completion_tokens": 108900, "total_tokens": 108900}
+    }
+  }
+}
+```
+
+## Success response (ultra / super-resolution)
+
+Ultra models (e.g. `seedance-turbo`) use a two-stage pipeline (upstream low-res → MediaKit super-resolution). Extra fields:
+
+```json
+{
+  "code": "success",
+  "message": "",
+  "data": {
+    "task_id": "asyntask_2cEAvaCpERzvSo7wfCCPZmNlGx8cjnu4",
+    "action": "generate",
+    "status": "SUCCESS",
+    "result_url": "https://...vod.cn-north-1.volcvideo.com/...?preview=1&auth_key=...",
+    "original_result_url": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?...",
+    "fail_reason": "https://...vod.cn-north-1.volcvideo.com/...?preview=1&auth_key=...",
+    "submit_time": 1777288507,
+    "start_time": 1777288509,
+    "finish_time": 1777288834,
+    "progress": "100%",
+    "request_id": "20260427111507187625000wErxKeB6",
+    "data": {
+      "content": {"video_url": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?..."},
+      "id": "cgt-20260427191507-f5n97",
+      "duration": 5,
+      "ratio": "16:9",
+      "resolution": "480p",
+      "super_resolution": "720p",
+      "usage": {
+        "completion_tokens": 50638,
+        "total_tokens": 50638,
+        "super_resolution_tokens": 114441
+      }
+    }
+  }
+}
+```
+
+> Note: `data.resolution = "480p"` is the upstream raw value (the system downsizes the user's 720p request to 480p upstream to save cost). `data.super_resolution = "720p"` is the user-facing final resolution.
+
+## Failure response
+
+```json
+{
+  "code": "success",
+  "message": "",
+  "data": {
+    "task_id": "asyntask_xxx",
+    "action": "generate",
+    "status": "FAILURE",
+    "fail_reason": "task failed, code: InvalidParameter, message: img_url must be set for image to video method",
+    "submit_time": 1775802896,
+    "start_time": 0,
+    "finish_time": 1775802902,
+    "progress": "100%",
+    "request_id": "..."
+  }
+}
+```
+
+The platform **automatically refunds** any pre-deducted quota for failed tasks — no caller action needed.
 
 <Card
   title="API Reference"
