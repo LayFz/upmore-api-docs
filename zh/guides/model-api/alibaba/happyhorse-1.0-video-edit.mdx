@@ -1,0 +1,99 @@
+---
+title: "HappyHorse 1.0 Video Edit"
+description: "阿里 DashScope HappyHorse 1.0 视频编辑模型。使用参考图编辑输入视频。"
+---
+
+HappyHorse 1.0 Video Edit 基于参考图与文本提示对输入视频进行编辑。使用**异步任务接口**——提交任务后轮询直至完成。
+
+> ⚠️ **必须使用 native 格式。** 因为 video-edit 同时需要"视频 + 参考图"，框架统一字段无法表达，**必须**使用 DashScope 原生风格的请求体（`input.media[]` 数组）。
+
+## 核心能力
+
+- **视频编辑** — 修改已有视频中的物体、服饰或场景
+- **分辨率** — 720P / 1080P
+- **水印控制** — 可选关闭右下角水印
+
+> ⚠️ 输出视频时长由**输入视频长度**决定，`duration` 参数对 video-edit 不一定生效。
+
+## 工作流
+
+```
+1. POST /v1/video/generations  →  task_id   （必须用 input.media[] 格式）
+2. GET  /v1/video/generations/{task_id}  →  轮询直至 SUCCESS / FAILURE
+3. 读取 data.result_url  （有效期 24 小时）
+```
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://www.anyfast.ai/v1/video/generations \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "happyhorse-1.0-video-edit",
+    "input": {
+      "prompt": "让视频中的角色穿上图片中的条纹毛衣",
+      "media": [
+        {"type": "video", "url": "https://example.com/source.mp4"},
+        {"type": "reference_image", "url": "https://example.com/cloth.webp"}
+      ]
+    },
+    "parameters": {
+      "resolution": "720P",
+      "watermark": false
+    }
+  }'
+```
+
+```python Python
+import requests
+
+headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+resp = requests.post(
+    "https://www.anyfast.ai/v1/video/generations",
+    headers=headers,
+    json={
+        "model": "happyhorse-1.0-video-edit",
+        "input": {
+            "prompt": "让视频中的角色穿上图片中的条纹毛衣",
+            "media": [
+                {"type": "video", "url": "https://example.com/source.mp4"},
+                {"type": "reference_image", "url": "https://example.com/cloth.webp"},
+            ],
+        },
+        "parameters": {"resolution": "720P", "watermark": False}
+    }
+)
+task_id = resp.json()["task_id"]
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | 必须为 `happyhorse-1.0-video-edit` |
+| `input.prompt` | string | 是 | 编辑描述文本 |
+| `input.media` | array | 是 | 恰好 2 个元素：1 个 `video` + 1 个 `reference_image` |
+| `input.media[].type` | string | 是 | `video` 或 `reference_image` |
+| `input.media[].url` | string | 是 | 视频或参考图的公开 URL |
+| `parameters.resolution` | string | 否 | `720P` / `1080P`，默认 `1080P` |
+| `parameters.watermark` | boolean | 否 | 默认 `true`，设为 `false` 关闭水印 |
+| `parameters.seed` | integer | 否 | 随机种子 `[0, 2147483647]` |
+
+## 计费
+
+按 **分辨率档位 × 计费时长** 计费。不传 `duration` 时默认按 5 秒计。失败任务自动退费。
+
+<CardGroup cols={2}>
+  <Card title="API 参考" icon="code" href="/zh/api-reference/model-api/alibaba/happyhorse-1.0-video-edit">
+    HappyHorse 1.0 Video Edit 交互式 Playground。
+  </Card>
+  <Card title="任务查询" icon="magnifying-glass" href="/zh/guides/model-api/alibaba/happyhorse-task-query">
+    轮询任务状态并获取最终视频 URL。
+  </Card>
+</CardGroup>

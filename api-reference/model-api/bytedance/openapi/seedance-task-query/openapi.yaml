@@ -19,8 +19,8 @@ paths:
           required: true
           schema:
             type: string
-          description: "Task ID returned from the video generation request."
-          example: "cgt-20260330154114-hlvvj"
+          description: "Task ID returned from the video generation request (format: `asyntask_xxx`)."
+          example: "asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E"
       responses:
         "200":
           description: Task status retrieved
@@ -50,58 +50,69 @@ components:
           properties:
             task_id:
               type: string
-              description: "Task ID."
-              example: "cgt-20260330154114-hlvvj"
+              description: "Platform task ID."
+              example: "asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E"
             action:
               type: string
-              description: "Generation action type."
-              example: "referenceGenerate"
+              description: "Generation action type, e.g. `generate`, `referenceGenerate`."
+              example: "generate"
             status:
               type: string
-              enum: [QUEUING, PROCESSING, SUCCESS, FAILED]
-              description: "Task status."
+              enum: [NOT_START, QUEUED, IN_PROGRESS, SUCCESS, FAILURE]
+              description: "Task status. `NOT_START` / `QUEUED` / `IN_PROGRESS` — keep polling. `SUCCESS` — read `result_url`. `FAILURE` — read `fail_reason`; quota auto-refunded."
               example: "SUCCESS"
+            result_url:
+              type: string
+              description: "Pre-signed video download URL (valid 24 hours). Omitted on failure."
+              example: "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?..."
+            original_result_url:
+              type: string
+              description: "**Ultra/super-resolution tasks only.** Upstream original (pre-enhancement) video URL."
+              example: "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?..."
             fail_reason:
               type: string
-              description: "Failure reason (when status is FAILED) or video URL (when status is SUCCESS)."
+              description: "Error message when `status = FAILURE`. **Backward compat**: when `status = SUCCESS`, this is copied from `result_url` for legacy clients (will be removed after deprecation window)."
               example: ""
             submit_time:
               type: integer
               description: "Task submit timestamp (Unix seconds)."
-              example: 1774856474
+              example: 1777288506
             start_time:
               type: integer
-              description: "Task start timestamp (Unix seconds)."
-              example: 1774856477
+              description: "Task start timestamp (Unix seconds). `0` if not started yet."
+              example: 1777288508
             finish_time:
               type: integer
               description: "Task finish timestamp (Unix seconds)."
-              example: 1774856865
+              example: 1777288800
             progress:
               type: string
               description: "Task progress percentage."
               example: "100%"
+            request_id:
+              type: string
+              description: "Request trace ID for support / debugging."
+              example: "20260427111505260254000NBdvZFoP"
             data:
               type: object
-              description: "Task result data."
+              description: "Upstream raw output. Field set varies by model."
               properties:
                 content:
                   type: object
                   properties:
                     video_url:
                       type: string
-                      description: "URL of the generated video (valid for 24 hours)."
-                      example: "https://example.com/generated-video.mp4"
+                      description: "Generated video URL (same as outer `result_url` for non-ultra)."
+                      example: "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?..."
                 created_at:
                   type: integer
-                  description: "Creation timestamp (Unix seconds)."
-                  example: 1774856474
+                  example: 1777288506
                 draft:
                   type: boolean
                   example: false
                 duration:
                   type: integer
-                  description: "Video duration in seconds."
+                  description: "Video duration (seconds)."
                   example: 5
                 framespersecond:
                   type: integer
@@ -113,45 +124,53 @@ components:
                   example: true
                 id:
                   type: string
-                  description: "Task ID."
-                  example: "cgt-20260330154114-hlvvj"
+                  description: "Upstream task ID."
+                  example: "cgt-20260427191505-9j2q7"
                 model:
                   type: string
-                  description: "Model used for generation."
-                  example: "seedance"
+                  description: "Upstream model ID."
+                  example: "doubao-seedance-2-0-260128"
                 ratio:
                   type: string
                   description: "Video aspect ratio."
-                  example: "1:1"
+                  example: "16:9"
                 resolution:
                   type: string
-                  description: "Video resolution."
-                  example: "480p"
+                  description: "Upstream raw resolution. **For ultra tasks** this is the lower upstream resolution (e.g. `480p`); the user-facing final resolution lives in `super_resolution`."
+                  example: "720p"
+                super_resolution:
+                  type: string
+                  description: "**Ultra tasks only.** User-facing final resolution after super-resolution enhancement (e.g. `720p`, `2k`)."
+                  example: "720p"
                 seed:
                   type: integer
-                  description: "Random seed used."
-                  example: 79195
+                  example: 4304
                 service_tier:
                   type: string
                   example: "default"
                 status:
                   type: string
-                  description: "Result status."
+                  description: "Upstream status: `succeeded`, `failed`, `running`, etc."
                   example: "succeeded"
                 updated_at:
                   type: integer
-                  description: "Last update timestamp (Unix seconds)."
-                  example: 1774856848
+                  example: 1777288796
                 usage:
                   type: object
-                  description: "Token usage."
+                  description: "Token usage. Ultra tasks include `super_resolution_tokens`."
                   properties:
                     completion_tokens:
                       type: integer
-                      example: 48400
+                      description: "Upstream raw completion tokens."
+                      example: 108900
                     total_tokens:
                       type: integer
-                      example: 48400
+                      description: "Upstream raw total tokens."
+                      example: 108900
+                    super_resolution_tokens:
+                      type: integer
+                      description: "**Ultra tasks only.** Tokens after applying the super-resolution coefficient — corresponds to the actual billed token count."
+                      example: 245025
   securitySchemes:
     bearerAuth:
       type: http
