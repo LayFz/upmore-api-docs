@@ -85,8 +85,7 @@
                       "guides/model-api/bytedance/seedance-2-0",
                       "guides/model-api/bytedance/seedance-2-0-fast",
                       "guides/model-api/bytedance/doubao-seedance-2-0-mini",
-                      "guides/model-api/bytedance/seedance-task-query",
-                      "guides/model-api/bytedance/volc-asset"
+                      "guides/model-api/bytedance/seedance-task-query"
                     ]
                   },
                   {
@@ -203,8 +202,7 @@
                       "zh/guides/model-api/bytedance/seedance-2-0",
                       "zh/guides/model-api/bytedance/seedance-2-0-fast",
                       "zh/guides/model-api/bytedance/doubao-seedance-2-0-mini",
-                      "zh/guides/model-api/bytedance/seedance-task-query",
-                      "zh/guides/model-api/bytedance/volc-asset"
+                      "zh/guides/model-api/bytedance/seedance-task-query"
                     ]
                   },
                   {
@@ -284,7 +282,7 @@
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://api.upmore.net/console/token"
+      "href": "https://api.upmore.net/keys"
     }
   },
   "contextual": {
