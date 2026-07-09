@@ -1,19 +1,19 @@
 ---
 title: "Native Format"
-description: "Use the official Google Generative AI SDK to access Gemini models on AnyFast through the native generateContent endpoint."
+description: "Use the official Google Generative AI SDK to access Gemini models on Upmore through the native generateContent endpoint."
 ---
 
-AnyFast is compatible with the Google Gemini native API. Use the official Google Generative AI SDK — just change the endpoint to AnyFast.
+Upmore is compatible with the Google Gemini native API. Use the official Google Generative AI SDK — just change the endpoint to Upmore.
 
 ## Endpoint
 
 ```
-POST https://www.anyfast.ai/v1beta/models/{model}:generateContent
+POST https://api.upmore.net/v1beta/models/{model}:generateContent
 ```
 
 ## Authentication
 
-Include your AnyFast API key as a Bearer token:
+Include your Upmore API key as a Bearer token:
 
 ```
 Authorization: Bearer YOUR_API_KEY
@@ -24,7 +24,7 @@ Authorization: Bearer YOUR_API_KEY
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1beta/models/gemini-2.5-pro:generateContent \
+curl https://api.upmore.net/v1beta/models/gemini-2.5-pro:generateContent \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -43,7 +43,7 @@ import google.generativeai as genai
 genai.configure(
     api_key="YOUR_API_KEY",
     transport="rest",
-    client_options={"api_endpoint": "https://www.anyfast.ai"}
+    client_options={"api_endpoint": "https://api.upmore.net"}
 )
 
 model = genai.GenerativeModel("gemini-2.5-pro")
@@ -55,10 +55,10 @@ print(response.text)
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI("YOUR_API_KEY");
-// Configure to use AnyFast endpoint
+// Configure to use Upmore endpoint
 const model = genAI.getGenerativeModel(
   { model: "gemini-2.5-pro" },
-  { baseUrl: "https://www.anyfast.ai" }
+  { baseUrl: "https://api.upmore.net" }
 );
 
 const result = await model.generateContent("Hello, Gemini!");

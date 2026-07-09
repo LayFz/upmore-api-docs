@@ -1,27 +1,27 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "AnyFast",
-  "description": "AnyFast API documentation — unified access to AI models from Anthropic, ByteDance, OpenAI, and more.",
+  "name": "Upmore",
+  "description": "Upmore API documentation — unified access to AI models from Anthropic, ByteDance, OpenAI, and more.",
   "seo": {
     "indexHiddenPages": false,
     "metatags": {
-      "og:image": "https://docs.anyfast.ai/images/layfz/social-media-cover.jpg",
-      "og:site_name": "AnyFast Docs",
+      "og:image": "https://docs.upmore.net/images/layfz/social-media-cover.jpg",
+      "og:site_name": "Upmore Docs",
       "twitter:card": "summary_large_image",
-      "twitter:site": "@anyfast_ai",
-      "twitter:image": "https://docs.anyfast.ai/images/layfz/social-media-cover.jpg"
+      "twitter:site": "@upmore",
+      "twitter:image": "https://docs.upmore.net/images/layfz/social-media-cover.jpg"
     }
   },
   "metadata": {
-    "og:site_name": "AnyFast Docs",
+    "og:site_name": "Upmore Docs",
     "twitter:card": "summary_large_image",
-    "twitter:site": "@anyfast_ai"
+    "twitter:site": "@upmore"
   },
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#F08121",
+    "light": "#F6953C",
+    "dark": "#D96C00"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -1250,7 +1250,7 @@
       "anchors": [
         {
           "anchor": "Documentation",
-          "href": "https://docs.anyfast.ai",
+          "href": "https://docs.upmore.net",
           "icon": "book-open-cover"
         }
       ]
@@ -1259,14 +1259,14 @@
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg",
-    "href": "https://www.anyfast.ai"
+    "href": "https://api.upmore.net"
   },
   "navbar": {
     "links": [],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://www.anyfast.ai/console/token"
+      "href": "https://api.upmore.net/console/token"
     }
   },
   "contextual": {

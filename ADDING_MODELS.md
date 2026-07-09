@@ -46,10 +46,10 @@ api-reference/model-api/{provider}/{model-name}/
 openapi: 3.1.0
 info:
   title: {Model Display Name}
-  description: {Provider} {Model} via AnyFast OpenAI-compatible API
+  description: {Provider} {Model} via Upmore OpenAI-compatible API
   version: 1.0.0
 servers:
-  - url: https://www.anyfast.ai   # 注意：带 www
+  - url: https://api.upmore.net   # 注意：带 www
 security:
   - bearerAuth: []
 paths:
@@ -254,7 +254,7 @@ openapi: '/api-reference/model-api/openai/openapi/gpt-4o/openapi.yaml POST /v1/c
 
 ## 注意事项
 
-- **base URL 统一用** `https://www.anyfast.ai`（`anyfast.ai` 会 301 重定向导致 Authorization header 丢失）
+- **base URL 统一用** `https://api.upmore.net`（`upmore.net` 会 301 重定向导致 Authorization header 丢失）
 - **openapi.yaml 放在 `openapi/` 子目录**，避免与同名 MDX 文件产生 Mintlify 命名冲突（`foo.mdx` + `foo/` 同级会导致生产环境 playground 不渲染）
 - **MDX 里 `openapi` 路径必须以 `/` 开头**（如 `/api-reference/model-api/openai/openapi/gpt-4/openapi.yaml POST /v1/chat/completions`），否则生产环境无法解析路径，playground 空白
 - **中文 spec 单独维护**，`summary`、`description`、`example` 中的自然语言翻译为中文，参数名（`model`、`messages` 等）保持英文

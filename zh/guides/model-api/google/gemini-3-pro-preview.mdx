@@ -3,7 +3,7 @@ title: "Gemini 3 Pro Preview"
 description: "通过 Gemini API 调用 Google Gemini 3 Pro Preview。支持思考模式的先进推理能力。"
 ---
 
-Gemini 3 Pro Preview 是 Google 的先进语言模型，通过 AnyFast 以原生 Gemini API 提供服务。擅长复杂推理、编程、写作和分析任务，支持思考模式。
+Gemini 3 Pro Preview 是 Google 的先进语言模型，通过 Upmore 以原生 Gemini API 提供服务。擅长复杂推理、编程、写作和分析任务，支持思考模式。
 
 ## 核心能力
 
@@ -17,7 +17,7 @@ Gemini 3 Pro Preview 是 Google 的先进语言模型，通过 AnyFast 以原生
 <CodeGroup>
 
 ```bash cURL
-curl "https://www.anyfast.ai/v1beta/models/gemini-3-pro-preview:generateContent?key=YOUR_API_KEY" \
+curl "https://api.upmore.net/v1beta/models/gemini-3-pro-preview:generateContent?key=YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "contents": [
@@ -36,7 +36,7 @@ curl "https://www.anyfast.ai/v1beta/models/gemini-3-pro-preview:generateContent?
 ```python Python
 import requests
 
-url = "https://www.anyfast.ai/v1beta/models/gemini-3-pro-preview:generateContent"
+url = "https://api.upmore.net/v1beta/models/gemini-3-pro-preview:generateContent"
 params = {"key": "YOUR_API_KEY"}
 data = {
     "contents": [

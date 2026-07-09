@@ -1,19 +1,19 @@
 ---
 title: "原生格式"
-description: "通过官方 Google Generative AI SDK 使用 AnyFast 的原生 generateContent 端点访问 Gemini 模型。"
+description: "通过官方 Google Generative AI SDK 使用 Upmore 的原生 generateContent 端点访问 Gemini 模型。"
 ---
 
-AnyFast 兼容 Google Gemini 原生 API。使用官方 Google Generative AI SDK，只需将端点更改为 AnyFast 即可。
+Upmore 兼容 Google Gemini 原生 API。使用官方 Google Generative AI SDK，只需将端点更改为 Upmore 即可。
 
 ## 端点
 
 ```
-POST https://www.anyfast.ai/v1beta/models/{model}:generateContent
+POST https://api.upmore.net/v1beta/models/{model}:generateContent
 ```
 
 ## 认证
 
-将你的 AnyFast API 密钥作为 Bearer token 传入：
+将你的 Upmore API 密钥作为 Bearer token 传入：
 
 ```
 Authorization: Bearer YOUR_API_KEY
@@ -24,7 +24,7 @@ Authorization: Bearer YOUR_API_KEY
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1beta/models/gemini-2.5-pro:generateContent \
+curl https://api.upmore.net/v1beta/models/gemini-2.5-pro:generateContent \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -43,7 +43,7 @@ import google.generativeai as genai
 genai.configure(
     api_key="YOUR_API_KEY",
     transport="rest",
-    client_options={"api_endpoint": "https://www.anyfast.ai"}
+    client_options={"api_endpoint": "https://api.upmore.net"}
 )
 
 model = genai.GenerativeModel("gemini-2.5-pro")
@@ -55,10 +55,10 @@ print(response.text)
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI("YOUR_API_KEY");
-// 配置使用 AnyFast 端点
+// 配置使用 Upmore 端点
 const model = genAI.getGenerativeModel(
   { model: "gemini-2.5-pro" },
-  { baseUrl: "https://www.anyfast.ai" }
+  { baseUrl: "https://api.upmore.net" }
 );
 
 const result = await model.generateContent("你好，Gemini！");

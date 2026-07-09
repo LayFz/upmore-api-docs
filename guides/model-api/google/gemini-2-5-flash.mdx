@@ -3,7 +3,7 @@ title: "Gemini 2.5 Flash"
 description: "Google's Gemini 2.5 Flash with Google Search grounding via Gemini API."
 ---
 
-Gemini 2.5 Flash is Google's fast and efficient model with Google Search integration, available through AnyFast via the native Gemini API. It can ground responses with real-time search results.
+Gemini 2.5 Flash is Google's fast and efficient model with Google Search integration, available through Upmore via the native Gemini API. It can ground responses with real-time search results.
 
 ## Key capabilities
 
@@ -17,7 +17,7 @@ Gemini 2.5 Flash is Google's fast and efficient model with Google Search integra
 <CodeGroup>
 
 ```bash cURL
-curl "https://www.anyfast.ai/v1beta/models/gemini-2.5-flash:generateContent?key=YOUR_API_KEY" \
+curl "https://api.upmore.net/v1beta/models/gemini-2.5-flash:generateContent?key=YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "contents": [
@@ -33,7 +33,7 @@ curl "https://www.anyfast.ai/v1beta/models/gemini-2.5-flash:generateContent?key=
 ```python Python
 import requests
 
-url = "https://www.anyfast.ai/v1beta/models/gemini-2.5-flash:generateContent"
+url = "https://api.upmore.net/v1beta/models/gemini-2.5-flash:generateContent"
 params = {"key": "YOUR_API_KEY"}
 data = {
     "contents": [

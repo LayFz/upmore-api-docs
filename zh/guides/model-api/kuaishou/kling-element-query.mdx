@@ -10,7 +10,7 @@ description: "通过 task_id 查询自定义主体创建任务的状态和结果
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/kling/v1/general/advanced-custom-elements/863121016086724692 \
+curl https://api.upmore.net/kling/v1/general/advanced-custom-elements/863121016086724692 \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
@@ -22,7 +22,7 @@ task_id = "863121016086724692"
 
 while True:
     response = requests.get(
-        f"https://www.anyfast.ai/kling/v1/general/advanced-custom-elements/{task_id}",
+        f"https://api.upmore.net/kling/v1/general/advanced-custom-elements/{task_id}",
         headers={"Authorization": "Bearer YOUR_API_KEY"}
     )
     result = response.json()

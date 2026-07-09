@@ -3,7 +3,7 @@ title: "Seedream 4.0 文生图"
 description: "字节跳动 Seedream 4.0 文生图模型，从文本提示词生成图片。"
 ---
 
-Seedream 4.0 文生图是字节跳动 Seedream 系列的文生图模型，通过 AnyFast API 提供服务。
+Seedream 4.0 文生图是字节跳动 Seedream 系列的文生图模型，通过 Upmore API 提供服务。
 
 ## 核心能力
 
@@ -16,7 +16,7 @@ Seedream 4.0 文生图是字节跳动 Seedream 系列的文生图模型，通过
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/images/generations \
+curl https://api.upmore.net/v1/images/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -31,7 +31,7 @@ curl https://www.anyfast.ai/v1/images/generations \
 import requests
 
 response = requests.post(
-    "https://www.anyfast.ai/v1/images/generations",
+    "https://api.upmore.net/v1/images/generations",
     headers={
         "Authorization": "Bearer YOUR_API_KEY",
         "Content-Type": "application/json"

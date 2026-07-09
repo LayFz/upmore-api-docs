@@ -3,7 +3,7 @@ title: "Kling 1.6 mi2v"
 description: "Kuaishou's Kling 1.6 multi-image-to-video model. Generate videos from up to 4 reference images with a single prompt."
 ---
 
-Kling 1.6 mi2v is a multi-image-to-video generation model from Kuaishou's Kling series, available through AnyFast API. Upload up to 4 reference images and combine them with a text prompt to generate a cohesive video featuring all the referenced subjects.
+Kling 1.6 mi2v is a multi-image-to-video generation model from Kuaishou's Kling series, available through Upmore API. Upload up to 4 reference images and combine them with a text prompt to generate a cohesive video featuring all the referenced subjects.
 
 ## Key capabilities
 
@@ -18,7 +18,7 @@ Kling 1.6 mi2v is a multi-image-to-video generation model from Kuaishou's Kling 
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/kling/v1/videos/multi-image2video \
+curl https://api.upmore.net/kling/v1/videos/multi-image2video \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -38,7 +38,7 @@ curl https://www.anyfast.ai/kling/v1/videos/multi-image2video \
 import requests
 
 response = requests.post(
-    "https://www.anyfast.ai/kling/v1/videos/multi-image2video",
+    "https://api.upmore.net/kling/v1/videos/multi-image2video",
     headers={
         "Authorization": "Bearer YOUR_API_KEY",
         "Content-Type": "application/json"

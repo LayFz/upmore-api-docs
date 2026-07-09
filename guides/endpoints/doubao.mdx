@@ -1,15 +1,15 @@
 ---
 title: "ByteDance Doubao Compatible Endpoint"
-description: "Use the Volcengine Ark SDK to access Doubao models on AnyFast through /v1/chat/completions and /v1/responses endpoints."
+description: "Use the Volcengine Ark SDK to access Doubao models on Upmore through /v1/chat/completions and /v1/responses endpoints."
 ---
 
-AnyFast is compatible with the Volcengine Ark Chat API. If you're already using the Ark SDK or calling the Ark API directly, switching to AnyFast requires only a base URL change — no code rewrite needed.
+Upmore is compatible with the Volcengine Ark Chat API. If you're already using the Ark SDK or calling the Ark API directly, switching to Upmore requires only a base URL change — no code rewrite needed.
 
 ## Endpoints
 
 ```
-POST https://www.anyfast.ai/v1/chat/completions
-POST https://www.anyfast.ai/v1/responses
+POST https://api.upmore.net/v1/chat/completions
+POST https://api.upmore.net/v1/responses
 ```
 
 ## Authentication
@@ -63,7 +63,7 @@ Authorization: Bearer YOUR_API_KEY
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -79,7 +79,7 @@ from volcenginesdkarkruntime import Ark
 
 client = Ark(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -96,7 +96,7 @@ import OpenAI from "openai";
 
 const client = new OpenAI({
   apiKey: "YOUR_API_KEY",
-  baseURL: "https://www.anyfast.ai/v1",
+  baseURL: "https://api.upmore.net/v1",
 });
 
 const response = await client.chat.completions.create({
@@ -111,7 +111,7 @@ console.log(response.choices[0].message.content);
 ### Image (URL)
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -132,7 +132,7 @@ curl https://www.anyfast.ai/v1/chat/completions \
 ### Image (Base64)
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -154,7 +154,7 @@ curl https://www.anyfast.ai/v1/chat/completions \
 The `fps` parameter controls frame extraction rate (frames per second). Default: `1`, range: `0.2–5`.
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -175,7 +175,7 @@ curl https://www.anyfast.ai/v1/chat/completions \
 ### Video (Base64)
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -199,7 +199,7 @@ curl https://www.anyfast.ai/v1/chat/completions \
 ### Text
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/responses \
+curl https://api.upmore.net/v1/responses \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -211,7 +211,7 @@ curl https://www.anyfast.ai/v1/responses \
 ### Image (URL)
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/responses \
+curl https://api.upmore.net/v1/responses \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -231,7 +231,7 @@ curl https://www.anyfast.ai/v1/responses \
 ### Video (URL + fps)
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/responses \
+curl https://api.upmore.net/v1/responses \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -253,7 +253,7 @@ curl https://www.anyfast.ai/v1/responses \
 > Document understanding is only available via the Responses API.
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/responses \
+curl https://api.upmore.net/v1/responses \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -273,7 +273,7 @@ curl https://www.anyfast.ai/v1/responses \
 ### Document (Base64)
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/responses \
+curl https://api.upmore.net/v1/responses \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

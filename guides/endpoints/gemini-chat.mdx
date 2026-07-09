@@ -1,19 +1,19 @@
 ---
 title: "Chat Compatible Format"
-description: "Access Gemini models on AnyFast using the OpenAI-compatible chat completions format."
+description: "Access Gemini models on Upmore using the OpenAI-compatible chat completions format."
 ---
 
-AnyFast also provides Gemini models through the OpenAI-compatible `/v1/chat/completions` endpoint. Use the OpenAI SDK with Gemini model names — no Google SDK required.
+Upmore also provides Gemini models through the OpenAI-compatible `/v1/chat/completions` endpoint. Use the OpenAI SDK with Gemini model names — no Google SDK required.
 
 ## Endpoint
 
 ```
-POST https://www.anyfast.ai/v1/chat/completions
+POST https://api.upmore.net/v1/chat/completions
 ```
 
 ## Authentication
 
-Include your AnyFast API key as a Bearer token:
+Include your Upmore API key as a Bearer token:
 
 ```
 Authorization: Bearer YOUR_API_KEY
@@ -24,7 +24,7 @@ Authorization: Bearer YOUR_API_KEY
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -40,7 +40,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -57,7 +57,7 @@ import OpenAI from "openai";
 
 const client = new OpenAI({
   apiKey: "YOUR_API_KEY",
-  baseURL: "https://www.anyfast.ai/v1",
+  baseURL: "https://api.upmore.net/v1",
 });
 
 const response = await client.chat.completions.create({

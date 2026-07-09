@@ -3,7 +3,7 @@ title: "Sora 2"
 description: "OpenAI Sora 2 video generation model. Generate videos from text prompts and reference images."
 ---
 
-Sora 2 is OpenAI's video generation model, available through AnyFast API. It supports text-to-video, image-to-video (first frame reference), and video remix.
+Sora 2 is OpenAI's video generation model, available through Upmore API. It supports text-to-video, image-to-video (first frame reference), and video remix.
 
 ## Key capabilities
 
@@ -28,7 +28,7 @@ The Sora 2 API is asynchronous. Follow these steps:
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/videos \
+curl https://api.upmore.net/v1/videos \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F "model=sora-2" \
   -F "prompt=A cat walking through a sunflower field at golden sunset" \
@@ -40,7 +40,7 @@ curl https://www.anyfast.ai/v1/videos \
 import requests
 
 response = requests.post(
-    "https://www.anyfast.ai/v1/videos",
+    "https://api.upmore.net/v1/videos",
     headers={"Authorization": "Bearer YOUR_API_KEY"},
     data={
         "model": "sora-2",
@@ -61,13 +61,13 @@ print(f"Task ID: {task['id']}")
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/videos/video_69b131ea03548190925a6a06febf993b \
+curl https://api.upmore.net/v1/videos/video_69b131ea03548190925a6a06febf993b \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
 ```python Python
 status = requests.get(
-    f"https://www.anyfast.ai/v1/videos/{task['id']}",
+    f"https://api.upmore.net/v1/videos/{task['id']}",
     headers={"Authorization": "Bearer YOUR_API_KEY"}
 ).json()
 
@@ -81,13 +81,13 @@ print(f"Status: {status['status']}, Progress: {status['progress']}")
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/videos/video_69b131ea03548190925a6a06febf993b/content \
+curl https://api.upmore.net/v1/videos/video_69b131ea03548190925a6a06febf993b/content \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
 ```python Python
 result = requests.get(
-    f"https://www.anyfast.ai/v1/videos/{task['id']}/content",
+    f"https://api.upmore.net/v1/videos/{task['id']}/content",
     headers={"Authorization": "Bearer YOUR_API_KEY"}
 ).json()
 

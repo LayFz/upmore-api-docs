@@ -3,7 +3,7 @@ title: "Gemini 3 Pro Preview (Stream)"
 description: "通过 Gemini API 调用 Google Gemini 3 Pro Preview 流式输出。支持 SSE 实时 Token 流式传输。"
 ---
 
-Gemini 3 Pro Preview (Stream) 提供基于 Google Gemini 3 Pro Preview 模型的流式文本生成服务，通过 AnyFast 代理访问。响应通过 Server-Sent Events (SSE) 实时传输。
+Gemini 3 Pro Preview (Stream) 提供基于 Google Gemini 3 Pro Preview 模型的流式文本生成服务，通过 Upmore 代理访问。响应通过 Server-Sent Events (SSE) 实时传输。
 
 ## 核心能力
 
@@ -17,7 +17,7 @@ Gemini 3 Pro Preview (Stream) 提供基于 Google Gemini 3 Pro Preview 模型的
 <CodeGroup>
 
 ```bash cURL
-curl "https://www.anyfast.ai/v1beta/models/gemini-3-pro-preview:streamGenerateContent?key=YOUR_API_KEY&alt=sse" \
+curl "https://api.upmore.net/v1beta/models/gemini-3-pro-preview:streamGenerateContent?key=YOUR_API_KEY&alt=sse" \
   -H "Content-Type: application/json" \
   -d '{
     "contents": [
@@ -40,7 +40,7 @@ curl "https://www.anyfast.ai/v1beta/models/gemini-3-pro-preview:streamGenerateCo
 ```python Python
 import requests
 
-url = "https://www.anyfast.ai/v1beta/models/gemini-3-pro-preview:streamGenerateContent"
+url = "https://api.upmore.net/v1beta/models/gemini-3-pro-preview:streamGenerateContent"
 params = {"key": "YOUR_API_KEY", "alt": "sse"}
 data = {
     "contents": [

@@ -1,9 +1,9 @@
 ---
 title: "Wan2.2 I2V A14B"
-description: "Wan2.2 I2V A14B video generation model via Alibaba via AnyFast API."
+description: "Wan2.2 I2V A14B video generation model via Alibaba via Upmore API."
 ---
 
-Wan2.2 I2V A14B is an image-to-video generation model available through AnyFast. Video generation is **asynchronous** — submit a task and poll `GET /v1/video/generations/{task_id}` until `status` is `succeeded`.
+Wan2.2 I2V A14B is an image-to-video generation model available through Upmore. Video generation is **asynchronous** — submit a task and poll `GET /v1/video/generations/{task_id}` until `status` is `succeeded`.
 
 ## Key capabilities
 
@@ -18,7 +18,7 @@ Wan2.2 I2V A14B is an image-to-video generation model available through AnyFast.
 
 ```bash cURL
 # Step 1 — create task
-curl https://www.anyfast.ai/v1/video/generations \
+curl https://api.upmore.net/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -29,7 +29,7 @@ curl https://www.anyfast.ai/v1/video/generations \
   }'
 
 # Step 2 — poll until succeeded
-curl https://www.anyfast.ai/v1/video/generations/{TASK_ID} \
+curl https://api.upmore.net/v1/video/generations/{TASK_ID} \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
@@ -40,7 +40,7 @@ headers = {"Authorization": "Bearer YOUR_API_KEY"}
 
 # Step 1 — create task
 resp = requests.post(
-    "https://www.anyfast.ai/v1/video/generations",
+    "https://api.upmore.net/v1/video/generations",
     headers=headers,
     json={
         "model": "wan2.2-i2v-a14b",
@@ -54,7 +54,7 @@ task_id = resp.json()["task_id"]
 # Step 2 — poll until done
 while True:
     result = requests.get(
-        f"https://www.anyfast.ai/v1/video/generations/{task_id}",
+        f"https://api.upmore.net/v1/video/generations/{task_id}",
         headers=headers
     ).json()
     status = result["data"]["status"]

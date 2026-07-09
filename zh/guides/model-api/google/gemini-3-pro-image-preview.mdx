@@ -3,7 +3,7 @@ title: "Gemini 3 Pro Image Preview"
 description: "通过 Gemini API 调用 Google Gemini 3 Pro Image Preview 进行 AI 图片生成与编辑。"
 ---
 
-Gemini 3 Pro Image Preview 是 Google 的图片生成模型，通过 AnyFast 以原生 Gemini API 提供服务。支持文字生成图片，也可传入参考图片进行图片编辑。
+Gemini 3 Pro Image Preview 是 Google 的图片生成模型，通过 Upmore 以原生 Gemini API 提供服务。支持文字生成图片，也可传入参考图片进行图片编辑。
 
 ## 核心能力
 
@@ -18,7 +18,7 @@ Gemini 3 Pro Image Preview 是 Google 的图片生成模型，通过 AnyFast 以
 <CodeGroup>
 
 ```bash cURL
-curl "https://www.anyfast.ai/v1beta/models/gemini-3-pro-image-preview:generateContent?key=YOUR_API_KEY" \
+curl "https://api.upmore.net/v1beta/models/gemini-3-pro-image-preview:generateContent?key=YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "contents": [
@@ -42,7 +42,7 @@ curl "https://www.anyfast.ai/v1beta/models/gemini-3-pro-image-preview:generateCo
 ```python Python
 import requests, base64
 
-url = "https://www.anyfast.ai/v1beta/models/gemini-3-pro-image-preview:generateContent"
+url = "https://api.upmore.net/v1beta/models/gemini-3-pro-image-preview:generateContent"
 response = requests.post(url, params={"key": "YOUR_API_KEY"}, json={
     "contents": [
         {
@@ -78,7 +78,7 @@ for part in response.json()["candidates"][0]["content"]["parts"]:
 # BASE64=$(base64 -i your_photo.jpg)
 #
 # 然后发送请求：
-curl "https://www.anyfast.ai/v1beta/models/gemini-3-pro-image-preview:generateContent?key=YOUR_API_KEY" \
+curl "https://api.upmore.net/v1beta/models/gemini-3-pro-image-preview:generateContent?key=YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "contents": [
@@ -114,7 +114,7 @@ import requests, base64
 with open("your_photo.jpg", "rb") as f:
     image_b64 = base64.b64encode(f.read()).decode("utf-8")
 
-url = "https://www.anyfast.ai/v1beta/models/gemini-3-pro-image-preview:generateContent"
+url = "https://api.upmore.net/v1beta/models/gemini-3-pro-image-preview:generateContent"
 response = requests.post(url, params={"key": "YOUR_API_KEY"}, json={
     "contents": [
         {

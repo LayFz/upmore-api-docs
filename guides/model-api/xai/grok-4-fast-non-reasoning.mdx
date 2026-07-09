@@ -1,9 +1,9 @@
 ---
 title: "Grok 4 Fast Non-Reasoning"
-description: "Grok 4 Fast Non-Reasoning by xAI via AnyFast OpenAI-compatible API. Grok 4 without reasoning."
+description: "Grok 4 Fast Non-Reasoning by xAI via Upmore OpenAI-compatible API. Grok 4 without reasoning."
 ---
 
-Grok 4 Fast Non-Reasoning is available through AnyFast via an OpenAI-compatible interface. Grok 4 without reasoning.
+Grok 4 Fast Non-Reasoning is available through Upmore via an OpenAI-compatible interface. Grok 4 without reasoning.
 
 ## Key capabilities
 
@@ -16,7 +16,7 @@ Grok 4 Fast Non-Reasoning is available through AnyFast via an OpenAI-compatible 
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -32,7 +32,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(

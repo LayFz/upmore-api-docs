@@ -3,7 +3,7 @@ title: "GPT-5.1"
 description: "OpenAI's GPT-5.1 — improved multimodal model building on GPT-5."
 ---
 
-GPT-5.1 is available through AnyFast via an OpenAI-compatible interface.
+GPT-5.1 is available through Upmore via an OpenAI-compatible interface.
 
 ## Key capabilities
 
@@ -17,7 +17,7 @@ GPT-5.1 is available through AnyFast via an OpenAI-compatible interface.
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -33,7 +33,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -51,7 +51,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 stream = client.chat.completions.create(

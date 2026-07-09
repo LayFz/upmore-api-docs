@@ -3,7 +3,7 @@ title: "GPT-5.2 Codex"
 description: "OpenAI's GPT-5.2 Codex — code-optimized GPT-5.2 variant."
 ---
 
-GPT-5.2 Codex is available through AnyFast via the OpenAI Responses API (`/v1/responses`).
+GPT-5.2 Codex is available through Upmore via the OpenAI Responses API (`/v1/responses`).
 
 ## Key capabilities
 
@@ -18,7 +18,7 @@ GPT-5.2 Codex is available through AnyFast via the OpenAI Responses API (`/v1/re
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/responses \
+curl https://api.upmore.net/v1/responses \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -43,7 +43,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.responses.create(
@@ -64,7 +64,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 stream = client.responses.create(

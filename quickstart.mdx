@@ -1,20 +1,20 @@
 ---
 title: "Quickstart"
-description: "Start making API calls to AnyFast in minutes."
+description: "Start making API calls to Upmore in minutes."
 icon: "rocket"
 ---
 
-AnyFast provides a unified API to access AI models from multiple providers — including chat, image generation, and video generation. This guide gets you up and running with your first API call.
+Upmore provides a unified API to access AI models from multiple providers — including chat, image generation, and video generation. This guide gets you up and running with your first API call.
 
 ## Get started in three steps
 
 ### Step 1: Create an account
 
-Sign up at [anyfast.ai](https://www.anyfast.ai) to create your account.
+Sign up at [upmore.net](https://api.upmore.net) to create your account.
 
 ### Step 2: Get your API key
 
-Head to the [Console](https://www.anyfast.ai/console/token) to generate your API key. Keep it safe — you'll use it to authenticate every request.
+Head to the [Console](https://api.upmore.net/console/token) to generate your API key. Keep it safe — you'll use it to authenticate every request.
 
 <Tip>
   Newly created tokens default to **Direct → Aggregate** group priority.
@@ -27,7 +27,7 @@ Use your API key to call a chat model. The example below uses Claude 3.5 Sonnet 
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -46,7 +46,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -64,7 +64,7 @@ import OpenAI from "openai";
 
 const client = new OpenAI({
   apiKey: "YOUR_API_KEY",
-  baseURL: "https://www.anyfast.ai/v1",
+  baseURL: "https://api.upmore.net/v1",
 });
 
 const response = await client.chat.completions.create({
@@ -78,7 +78,7 @@ console.log(response.choices[0].message.content);
 </CodeGroup>
 
 <Warning>
-  **Configure your channel first.** Each model maps to a specific channel. You must enable the corresponding channel in the console before your API calls will succeed. Go to the [Console](https://www.anyfast.ai/console) to check your channel settings.
+  **Configure your channel first.** Each model maps to a specific channel. You must enable the corresponding channel in the console before your API calls will succeed. Go to the [Console](https://api.upmore.net/console) to check your channel settings.
 </Warning>
 
 ## Next steps

@@ -1,9 +1,9 @@
 ---
 title: "Kimi-K2.5"
-description: "Kimi-K2.5 chat model via MoonShot via AnyFast OpenAI-compatible API. Fast, capable, and easy to integrate."
+description: "Kimi-K2.5 chat model via MoonShot via Upmore OpenAI-compatible API. Fast, capable, and easy to integrate."
 ---
 
-Kimi-K2.5 is a chat model by MoonShot (月之暗面), available through AnyFast via an OpenAI-compatible interface.
+Kimi-K2.5 is a chat model by MoonShot (月之暗面), available through Upmore via an OpenAI-compatible interface.
 
 ## Key capabilities
 
@@ -17,7 +17,7 @@ Kimi-K2.5 is a chat model by MoonShot (月之暗面), available through AnyFast 
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -33,7 +33,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -51,7 +51,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 stream = client.chat.completions.create(

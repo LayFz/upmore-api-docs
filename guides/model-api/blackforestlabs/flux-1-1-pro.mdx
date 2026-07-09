@@ -1,9 +1,9 @@
 ---
 title: "FLUX.1.1 [pro]"
-description: "FLUX.1.1 [pro] text-to-image model by Black Forest Labs via AnyFast API."
+description: "FLUX.1.1 [pro] text-to-image model by Black Forest Labs via Upmore API."
 ---
 
-FLUX.1.1 [pro] is a high-quality text-to-image generation model from Black Forest Labs, available through AnyFast. The API is **synchronous** — it returns the generated image directly as base64-encoded data.
+FLUX.1.1 [pro] is a high-quality text-to-image generation model from Black Forest Labs, available through Upmore. The API is **synchronous** — it returns the generated image directly as base64-encoded data.
 
 ## Key capabilities
 
@@ -17,7 +17,7 @@ FLUX.1.1 [pro] is a high-quality text-to-image generation model from Black Fores
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/images/generations \
+curl https://api.upmore.net/v1/images/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -31,7 +31,7 @@ curl https://www.anyfast.ai/v1/images/generations \
 import requests
 
 response = requests.post(
-    "https://www.anyfast.ai/v1/images/generations",
+    "https://api.upmore.net/v1/images/generations",
     headers={"Authorization": "Bearer YOUR_API_KEY"},
     json={
         "model": "flux-1-1-pro",

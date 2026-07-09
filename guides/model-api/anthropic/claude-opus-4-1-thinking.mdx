@@ -3,7 +3,7 @@ title: "Claude Opus 4.1 Thinking"
 description: "Anthropic's Claude Opus 4.1 with extended thinking enabled. The ultimate reasoning model for the most complex problems."
 ---
 
-Claude Opus 4.1 Thinking is the extended thinking variant of Claude Opus 4.1, available through AnyFast via an OpenAI-compatible interface. It combines Opus's unmatched intelligence with step-by-step internal reasoning enabled by default, delivering the highest accuracy available on the most demanding tasks including advanced mathematics, scientific research, and complex architectural decisions.
+Claude Opus 4.1 Thinking is the extended thinking variant of Claude Opus 4.1, available through Upmore via an OpenAI-compatible interface. It combines Opus's unmatched intelligence with step-by-step internal reasoning enabled by default, delivering the highest accuracy available on the most demanding tasks including advanced mathematics, scientific research, and complex architectural decisions.
 
 ## Key capabilities
 
@@ -19,7 +19,7 @@ Claude Opus 4.1 Thinking is the extended thinking variant of Claude Opus 4.1, av
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/messages \
+curl https://api.upmore.net/v1/messages \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -35,7 +35,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -53,7 +53,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 stream = client.chat.completions.create(

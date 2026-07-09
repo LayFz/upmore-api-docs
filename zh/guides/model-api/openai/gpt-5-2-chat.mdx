@@ -3,7 +3,7 @@ title: "GPT-5.2 Chat"
 description: "OpenAI GPT-5.2 Chat — GPT-5.2 对话优化版本。"
 ---
 
-GPT-5.2 Chat 通过 AnyFast 以 OpenAI Responses API (`/v1/responses`) 提供服务。
+GPT-5.2 Chat 通过 Upmore 以 OpenAI Responses API (`/v1/responses`) 提供服务。
 
 ## 核心能力
 
@@ -18,7 +18,7 @@ GPT-5.2 Chat 通过 AnyFast 以 OpenAI Responses API (`/v1/responses`) 提供服
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/responses \
+curl https://api.upmore.net/v1/responses \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -43,7 +43,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.responses.create(
@@ -64,7 +64,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 stream = client.responses.create(

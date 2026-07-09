@@ -3,7 +3,7 @@ title: "Gemini 3 Pro Preview"
 description: "Google's Gemini 3 Pro Preview via Gemini API. Advanced reasoning with thinking mode."
 ---
 
-Gemini 3 Pro Preview is Google's advanced language model, available through AnyFast via the native Gemini API. It excels at complex reasoning, coding, writing, and analysis with thinking capabilities.
+Gemini 3 Pro Preview is Google's advanced language model, available through Upmore via the native Gemini API. It excels at complex reasoning, coding, writing, and analysis with thinking capabilities.
 
 ## Key capabilities
 
@@ -17,7 +17,7 @@ Gemini 3 Pro Preview is Google's advanced language model, available through AnyF
 <CodeGroup>
 
 ```bash cURL
-curl "https://www.anyfast.ai/v1beta/models/gemini-3-pro-preview:generateContent?key=YOUR_API_KEY" \
+curl "https://api.upmore.net/v1beta/models/gemini-3-pro-preview:generateContent?key=YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "contents": [
@@ -36,7 +36,7 @@ curl "https://www.anyfast.ai/v1beta/models/gemini-3-pro-preview:generateContent?
 ```python Python
 import requests
 
-url = "https://www.anyfast.ai/v1beta/models/gemini-3-pro-preview:generateContent"
+url = "https://api.upmore.net/v1beta/models/gemini-3-pro-preview:generateContent"
 params = {"key": "YOUR_API_KEY"}
 data = {
     "contents": [

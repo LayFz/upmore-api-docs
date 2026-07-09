@@ -3,7 +3,7 @@ title: "Kling V3 Omni"
 description: "Kuaishou's Kling V3 Omni video generation model. Create videos from text, images, and video references with multi-shot storyboarding."
 ---
 
-Kling V3 Omni is Kuaishou's latest video generation model, available through AnyFast API. The Omni model can achieve various capabilities through prompts combined with elements, images, videos, and other content — supporting text-to-video, image-to-video, video editing, multi-shot storyboarding, and synchronized sound generation.
+Kling V3 Omni is Kuaishou's latest video generation model, available through Upmore API. The Omni model can achieve various capabilities through prompts combined with elements, images, videos, and other content — supporting text-to-video, image-to-video, video editing, multi-shot storyboarding, and synchronized sound generation.
 
 ## Key capabilities
 
@@ -20,7 +20,7 @@ Kling V3 Omni is Kuaishou's latest video generation model, available through Any
 <CodeGroup>
 
 ```bash cURL — Text to Video
-curl https://www.anyfast.ai/kling/v1/videos/omni-video \
+curl https://api.upmore.net/kling/v1/videos/omni-video \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -36,7 +36,7 @@ curl https://www.anyfast.ai/kling/v1/videos/omni-video \
 import requests
 
 response = requests.post(
-    "https://www.anyfast.ai/kling/v1/videos/omni-video",
+    "https://api.upmore.net/kling/v1/videos/omni-video",
     headers={
         "Authorization": "Bearer YOUR_API_KEY",
         "Content-Type": "application/json"
@@ -58,7 +58,7 @@ print(f"Task ID: {task['task_id']}")
 import requests
 
 response = requests.post(
-    "https://www.anyfast.ai/kling/v1/videos/omni-video",
+    "https://api.upmore.net/kling/v1/videos/omni-video",
     headers={
         "Authorization": "Bearer YOUR_API_KEY",
         "Content-Type": "application/json"
@@ -86,7 +86,7 @@ print(f"Task ID: {task['task_id']}")
 After creating a task, query its status using the task ID:
 
 ```bash cURL
-curl https://www.anyfast.ai/kling/v1/videos/text2video/{task_id} \
+curl https://api.upmore.net/kling/v1/videos/text2video/{task_id} \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 

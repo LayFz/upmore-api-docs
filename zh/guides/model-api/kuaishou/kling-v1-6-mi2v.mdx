@@ -3,7 +3,7 @@ title: "Kling 1.6 多图生视频"
 description: "快手 Kling 1.6 多图生视频模型，支持从最多 4 张参考图片生成视频。"
 ---
 
-Kling 1.6 多图生视频 是快手可灵系列的多图生视频模型，通过 AnyFast API 提供服务。上传最多 4 张参考图片，结合文本提示词，生成包含所有参考主体的连贯视频。
+Kling 1.6 多图生视频 是快手可灵系列的多图生视频模型，通过 Upmore API 提供服务。上传最多 4 张参考图片，结合文本提示词，生成包含所有参考主体的连贯视频。
 
 ## 核心能力
 
@@ -18,7 +18,7 @@ Kling 1.6 多图生视频 是快手可灵系列的多图生视频模型，通过
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/kling/v1/videos/multi-image2video \
+curl https://api.upmore.net/kling/v1/videos/multi-image2video \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -38,7 +38,7 @@ curl https://www.anyfast.ai/kling/v1/videos/multi-image2video \
 import requests
 
 response = requests.post(
-    "https://www.anyfast.ai/kling/v1/videos/multi-image2video",
+    "https://api.upmore.net/kling/v1/videos/multi-image2video",
     headers={
         "Authorization": "Bearer YOUR_API_KEY",
         "Content-Type": "application/json"

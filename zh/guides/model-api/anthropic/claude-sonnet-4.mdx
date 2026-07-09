@@ -3,7 +3,7 @@ title: "Claude Sonnet 4"
 description: "通过 OpenAI 兼容接口调用 Anthropic 的 Claude Sonnet 4，智能与速度的最佳平衡，适用于日常编程和复杂任务。"
 ---
 
-Claude Sonnet 4 是 Anthropic 最佳的编程模型，通过 AnyFast 以 OpenAI 兼容接口提供服务。在智能、速度和成本之间实现理想平衡，擅长软件工程、复杂推理和日常开发任务。
+Claude Sonnet 4 是 Anthropic 最佳的编程模型，通过 Upmore 以 OpenAI 兼容接口提供服务。在智能、速度和成本之间实现理想平衡，擅长软件工程、复杂推理和日常开发任务。
 
 ## 核心能力
 
@@ -19,7 +19,7 @@ Claude Sonnet 4 是 Anthropic 最佳的编程模型，通过 AnyFast 以 OpenAI 
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/messages \
+curl https://api.upmore.net/v1/messages \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -35,7 +35,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -53,7 +53,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 stream = client.chat.completions.create(

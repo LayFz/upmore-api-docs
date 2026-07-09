@@ -1,6 +1,6 @@
 ---
 title: "介绍"
-description: "AnyFast API 的 Base URL、认证方式、请求格式及错误处理。"
+description: "Upmore API 的 Base URL、认证方式、请求格式及错误处理。"
 icon: "book-open"
 ---
 
@@ -9,18 +9,18 @@ icon: "book-open"
 所有 API 请求发送到以下地址：
 
 ```
-https://www.anyfast.ai
+https://api.upmore.net
 ```
 
 ## 认证方式
 
-AnyFast 使用 Bearer Token 认证。在每个请求的 `Authorization` 头中包含你的 API Key：
+Upmore 使用 Bearer Token 认证。在每个请求的 `Authorization` 头中包含你的 API Key：
 
 ```
 Authorization: Bearer YOUR_API_KEY
 ```
 
-你可以在 [控制台](https://www.anyfast.ai/console/token) 中生成和管理 API Key。
+你可以在 [控制台](https://api.upmore.net/console/token) 中生成和管理 API Key。
 
 <Warning>
   请妥善保管你的 API Key，不要将其暴露在客户端代码或公开仓库中。
@@ -31,7 +31,7 @@ Authorization: Bearer YOUR_API_KEY
 所有请求必须使用 `Content-Type: application/json`，请求体为 JSON 编码。
 
 ```bash
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -114,7 +114,7 @@ curl https://www.anyfast.ai/v1/chat/completions \
 
 ## OpenAI SDK 兼容
 
-AnyFast 兼容 OpenAI SDK，只需更改 `base_url` 即可使用：
+Upmore 兼容 OpenAI SDK，只需更改 `base_url` 即可使用：
 
 <CodeGroup>
 
@@ -123,7 +123,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 ```
 
@@ -132,7 +132,7 @@ import OpenAI from "openai";
 
 const client = new OpenAI({
   apiKey: "YOUR_API_KEY",
-  baseURL: "https://www.anyfast.ai/v1",
+  baseURL: "https://api.upmore.net/v1",
 });
 ```
 

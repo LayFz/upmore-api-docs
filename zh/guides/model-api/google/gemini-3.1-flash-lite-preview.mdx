@@ -3,7 +3,7 @@ title: "Gemini 3.1 Flash Lite Preview"
 description: "通过 Gemini API 调用 Google Gemini 3.1 Flash Lite Preview。快速高效的文本生成。"
 ---
 
-Gemini 3.1 Flash Lite Preview 是 Google 轻量高效的语言模型，通过 AnyFast 以原生 Gemini API 提供服务。针对低延迟和高性价比进行优化，适合高吞吐量应用场景。
+Gemini 3.1 Flash Lite Preview 是 Google 轻量高效的语言模型，通过 Upmore 以原生 Gemini API 提供服务。针对低延迟和高性价比进行优化，适合高吞吐量应用场景。
 
 ## 核心能力
 
@@ -17,7 +17,7 @@ Gemini 3.1 Flash Lite Preview 是 Google 轻量高效的语言模型，通过 An
 <CodeGroup>
 
 ```bash cURL
-curl "https://www.anyfast.ai/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=YOUR_API_KEY" \
+curl "https://api.upmore.net/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "contents": [
@@ -36,7 +36,7 @@ curl "https://www.anyfast.ai/v1beta/models/gemini-3.1-flash-lite-preview:generat
 ```python Python
 import requests
 
-url = "https://www.anyfast.ai/v1beta/models/gemini-3.1-flash-lite-preview:generateContent"
+url = "https://api.upmore.net/v1beta/models/gemini-3.1-flash-lite-preview:generateContent"
 params = {"key": "YOUR_API_KEY"}
 data = {
     "contents": [

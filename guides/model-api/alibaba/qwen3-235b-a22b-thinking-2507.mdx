@@ -1,9 +1,9 @@
 ---
 title: "Qwen3-235B-A22B-Thinking-2507"
-description: "Qwen3-235B-A22B-Thinking-2507 chat model via Alibaba via AnyFast OpenAI-compatible API. Fast, capable, and easy to integrate."
+description: "Qwen3-235B-A22B-Thinking-2507 chat model via Alibaba via Upmore OpenAI-compatible API. Fast, capable, and easy to integrate."
 ---
 
-Qwen3-235B-A22B-Thinking-2507 is a chat model available through AnyFast via an OpenAI-compatible interface.
+Qwen3-235B-A22B-Thinking-2507 is a chat model available through Upmore via an OpenAI-compatible interface.
 
 ## Key capabilities
 
@@ -17,7 +17,7 @@ Qwen3-235B-A22B-Thinking-2507 is a chat model available through AnyFast via an O
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -33,7 +33,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -51,7 +51,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 stream = client.chat.completions.create(

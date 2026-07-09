@@ -27,7 +27,7 @@ The Kling Task Query endpoint lets you check the status and retrieve results for
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/kling/v1/videos/text2video/860260753860210752 \
+curl https://api.upmore.net/kling/v1/videos/text2video/860260753860210752 \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
@@ -40,7 +40,7 @@ action = "text2video"
 
 while True:
     response = requests.get(
-        f"https://www.anyfast.ai/kling/v1/videos/{action}/{task_id}",
+        f"https://api.upmore.net/kling/v1/videos/{action}/{task_id}",
         headers={"Authorization": "Bearer YOUR_API_KEY"}
     )
 

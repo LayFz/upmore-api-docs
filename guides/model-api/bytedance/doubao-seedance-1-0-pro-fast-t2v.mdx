@@ -3,7 +3,7 @@ title: "Seedance 1.0 Pro Fast t2v"
 description: "ByteDance's Seedance 1.0 Pro Fast text-to-video model. Generate videos from text prompts."
 ---
 
-Seedance 1.0 Pro Fast t2v is a text-to-video generation model from ByteDance's Seedance series, available through AnyFast API.
+Seedance 1.0 Pro Fast t2v is a text-to-video generation model from ByteDance's Seedance series, available through Upmore API.
 
 ## Key capabilities
 
@@ -17,7 +17,7 @@ Seedance 1.0 Pro Fast t2v is a text-to-video generation model from ByteDance's S
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/video/generations \
+curl https://api.upmore.net/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -35,7 +35,7 @@ curl https://www.anyfast.ai/v1/video/generations \
 import requests
 
 response = requests.post(
-    "https://www.anyfast.ai/v1/video/generations",
+    "https://api.upmore.net/v1/video/generations",
     headers={
         "Authorization": "Bearer YOUR_API_KEY",
         "Content-Type": "application/json"

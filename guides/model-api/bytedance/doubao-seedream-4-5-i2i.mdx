@@ -3,7 +3,7 @@ title: "Seedream 4.5 i2i"
 description: "ByteDance Seedream 4.5 image-to-image model. Generate images from reference images with text prompts."
 ---
 
-Seedream 4.5 i2i is an image-to-image generation model from ByteDance's Seedream series, available through AnyFast API.
+Seedream 4.5 i2i is an image-to-image generation model from ByteDance's Seedream series, available through Upmore API.
 
 ## Key capabilities
 
@@ -17,7 +17,7 @@ Seedream 4.5 i2i is an image-to-image generation model from ByteDance's Seedream
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/images/generations \
+curl https://api.upmore.net/v1/images/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -37,7 +37,7 @@ curl https://www.anyfast.ai/v1/images/generations \
 import requests
 
 response = requests.post(
-    "https://www.anyfast.ai/v1/images/generations",
+    "https://api.upmore.net/v1/images/generations",
     headers={
         "Authorization": "Bearer YOUR_API_KEY",
         "Content-Type": "application/json"

@@ -1,9 +1,9 @@
 ---
 title: "Grok 3 Mini"
-description: "通过 AnyFast API 调用 xAI Grok 3 Mini 模型。快速轻量。"
+description: "通过 Upmore API 调用 xAI Grok 3 Mini 模型。快速轻量。"
 ---
 
-Grok 3 Mini 是 xAI 推出的语言模型，通过 AnyFast 提供。快速轻量。
+Grok 3 Mini 是 xAI 推出的语言模型，通过 Upmore 提供。快速轻量。
 
 ## 核心能力
 
@@ -16,7 +16,7 @@ Grok 3 Mini 是 xAI 推出的语言模型，通过 AnyFast 提供。快速轻量
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -32,7 +32,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(

@@ -3,7 +3,7 @@ title: "Claude 3.7 Sonnet"
 description: "通过 OpenAI 兼容接口调用 Anthropic 的 Claude 3.7 Sonnet，支持扩展思维的高级推理模型。"
 ---
 
-Claude 3.7 Sonnet 是 Anthropic 最新的高性能对话模型，通过 AnyFast 以 OpenAI 兼容接口提供服务。具备扩展思维（Extended Thinking）能力，擅长复杂编程、分析和多步骤推理任务。
+Claude 3.7 Sonnet 是 Anthropic 最新的高性能对话模型，通过 Upmore 以 OpenAI 兼容接口提供服务。具备扩展思维（Extended Thinking）能力，擅长复杂编程、分析和多步骤推理任务。
 
 ## 核心能力
 
@@ -18,7 +18,7 @@ Claude 3.7 Sonnet 是 Anthropic 最新的高性能对话模型，通过 AnyFast 
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/messages \
+curl https://api.upmore.net/v1/messages \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -34,7 +34,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -52,7 +52,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 stream = client.chat.completions.create(

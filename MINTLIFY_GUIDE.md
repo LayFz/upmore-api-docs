@@ -89,7 +89,7 @@ docs/
   "theme": "mint",
   "name": "My Project",
   "colors": {
-    "primary": "#16A34A"
+    "primary": "#F08121"
   },
   "navigation": {
     "groups": [
@@ -116,9 +116,9 @@ docs/
 ```json
 {
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#F08121",
+    "light": "#F6953C",
+    "dark": "#D96C00"
   }
 }
 ```
@@ -1135,13 +1135,13 @@ graph TD
 
 ```mdx
 <Color variant="compact">
-  <Color.Item name="Primary" value="#16A34A" />
+  <Color.Item name="Primary" value="#F08121" />
   <Color.Item name="Dark" value={{ light: "#F5F5F5", dark: "#1A1A1A" }} />
 </Color>
 
 <Color variant="table">
   <Color.Row title="品牌色">
-    <Color.Item name="绿色" value="#16A34A" />
+    <Color.Item name="绿色" value="#F08121" />
   </Color.Row>
 </Color>
 ```

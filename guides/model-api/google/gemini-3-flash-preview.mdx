@@ -3,7 +3,7 @@ title: "Gemini 3 Flash Preview"
 description: "Google's Gemini 3 Flash Preview via Gemini API. Fast and capable text generation."
 ---
 
-Gemini 3 Flash Preview is Google's fast language model, available through AnyFast via the native Gemini API. Designed for responsive, high-throughput applications requiring strong language understanding.
+Gemini 3 Flash Preview is Google's fast language model, available through Upmore via the native Gemini API. Designed for responsive, high-throughput applications requiring strong language understanding.
 
 ## Key capabilities
 
@@ -17,7 +17,7 @@ Gemini 3 Flash Preview is Google's fast language model, available through AnyFas
 <CodeGroup>
 
 ```bash cURL
-curl "https://www.anyfast.ai/v1beta/models/gemini-3-flash-preview:generateContent?key=YOUR_API_KEY" \
+curl "https://api.upmore.net/v1beta/models/gemini-3-flash-preview:generateContent?key=YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "contents": [
@@ -36,7 +36,7 @@ curl "https://www.anyfast.ai/v1beta/models/gemini-3-flash-preview:generateConten
 ```python Python
 import requests
 
-url = "https://www.anyfast.ai/v1beta/models/gemini-3-flash-preview:generateContent"
+url = "https://api.upmore.net/v1beta/models/gemini-3-flash-preview:generateContent"
 params = {"key": "YOUR_API_KEY"}
 data = {
     "contents": [

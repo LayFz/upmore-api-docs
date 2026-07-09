@@ -3,7 +3,7 @@ title: "Kling 1.0 图生视频"
 description: "快手 Kling 1.0 图生视频 模型，支持从参考图片生成视频，可自定义运镜、运动笔刷和多镜头分镜。"
 ---
 
-Kling 1.0 图生视频 是快手可灵系列的图生视频模型，通过 AnyFast API 提供服务。将静态图片转化为动态视频，支持自定义运镜、运动笔刷和多镜头分镜。
+Kling 1.0 图生视频 是快手可灵系列的图生视频模型，通过 Upmore API 提供服务。将静态图片转化为动态视频，支持自定义运镜、运动笔刷和多镜头分镜。
 
 ## 核心能力
 
@@ -18,7 +18,7 @@ Kling 1.0 图生视频 是快手可灵系列的图生视频模型，通过 AnyFa
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/kling/v1/videos/image2video \
+curl https://api.upmore.net/kling/v1/videos/image2video \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -34,7 +34,7 @@ curl https://www.anyfast.ai/kling/v1/videos/image2video \
 import requests
 
 response = requests.post(
-    "https://www.anyfast.ai/kling/v1/videos/image2video",
+    "https://api.upmore.net/kling/v1/videos/image2video",
     headers={
         "Authorization": "Bearer YOUR_API_KEY",
         "Content-Type": "application/json"

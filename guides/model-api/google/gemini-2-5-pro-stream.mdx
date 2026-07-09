@@ -3,7 +3,7 @@ title: "Gemini 2.5 Pro (Stream)"
 description: "Google's Gemini 2.5 Pro streaming via Gemini API. Real-time token streaming with SSE."
 ---
 
-Gemini 2.5 Pro (Stream) provides streaming text generation using Google's Gemini 2.5 Pro model via AnyFast. Responses are delivered in real-time using Server-Sent Events (SSE).
+Gemini 2.5 Pro (Stream) provides streaming text generation using Google's Gemini 2.5 Pro model via Upmore. Responses are delivered in real-time using Server-Sent Events (SSE).
 
 ## Key capabilities
 
@@ -17,7 +17,7 @@ Gemini 2.5 Pro (Stream) provides streaming text generation using Google's Gemini
 <CodeGroup>
 
 ```bash cURL
-curl "https://www.anyfast.ai/v1beta/models/gemini-2.5-pro:streamGenerateContent?key=YOUR_API_KEY&alt=sse" \
+curl "https://api.upmore.net/v1beta/models/gemini-2.5-pro:streamGenerateContent?key=YOUR_API_KEY&alt=sse" \
   -H "Content-Type: application/json" \
   -d '{
     "contents": [
@@ -40,7 +40,7 @@ curl "https://www.anyfast.ai/v1beta/models/gemini-2.5-pro:streamGenerateContent?
 ```python Python
 import requests
 
-url = "https://www.anyfast.ai/v1beta/models/gemini-2.5-pro:streamGenerateContent"
+url = "https://api.upmore.net/v1beta/models/gemini-2.5-pro:streamGenerateContent"
 params = {"key": "YOUR_API_KEY", "alt": "sse"}
 data = {
     "contents": [

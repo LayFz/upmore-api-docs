@@ -3,7 +3,7 @@ title: "Claude Sonnet 4.5 Thinking"
 description: "Anthropic 的 Claude Sonnet 4.5 扩展思维版，以最佳编程模型的速度和能力实现增强推理。"
 ---
 
-Claude Sonnet 4.5 Thinking 是 Claude Sonnet 4.5 的扩展思维版本，通过 AnyFast 以 OpenAI 兼容接口提供服务。结合 Sonnet 4.5 在速度和能力之间的出色平衡，默认启用逐步内部推理，在复杂任务上显著提升准确率，同时保持快速响应。
+Claude Sonnet 4.5 Thinking 是 Claude Sonnet 4.5 的扩展思维版本，通过 Upmore 以 OpenAI 兼容接口提供服务。结合 Sonnet 4.5 在速度和能力之间的出色平衡，默认启用逐步内部推理，在复杂任务上显著提升准确率，同时保持快速响应。
 
 ## 核心能力
 
@@ -19,7 +19,7 @@ Claude Sonnet 4.5 Thinking 是 Claude Sonnet 4.5 的扩展思维版本，通过 
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/messages \
+curl https://api.upmore.net/v1/messages \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -35,7 +35,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -53,7 +53,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 stream = client.chat.completions.create(

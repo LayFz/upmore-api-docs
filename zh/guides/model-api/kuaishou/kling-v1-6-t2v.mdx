@@ -3,7 +3,7 @@ title: "Kling 1.6 文生视频"
 description: "快手 Kling 1.6 文生视频 模型，支持从文本提示词生成视频，可自定义运镜、多镜头分镜和音效生成。"
 ---
 
-Kling 1.6 文生视频 是快手可灵系列的文生视频模型，通过 AnyFast API 提供服务。从文本描述创建视频，支持自定义运镜、多镜头分镜和可选的音效生成。
+Kling 1.6 文生视频 是快手可灵系列的文生视频模型，通过 Upmore API 提供服务。从文本描述创建视频，支持自定义运镜、多镜头分镜和可选的音效生成。
 
 ## 核心能力
 
@@ -18,7 +18,7 @@ Kling 1.6 文生视频 是快手可灵系列的文生视频模型，通过 AnyFa
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/kling/v1/videos/text2video \
+curl https://api.upmore.net/kling/v1/videos/text2video \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -34,7 +34,7 @@ curl https://www.anyfast.ai/kling/v1/videos/text2video \
 import requests
 
 response = requests.post(
-    "https://www.anyfast.ai/kling/v1/videos/text2video",
+    "https://api.upmore.net/kling/v1/videos/text2video",
     headers={
         "Authorization": "Bearer YOUR_API_KEY",
         "Content-Type": "application/json"

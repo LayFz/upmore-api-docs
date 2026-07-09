@@ -3,7 +3,7 @@ title: "GPT Image 1.5"
 description: "OpenAI GPT Image 1.5 图像生成模型。以更快的速度和更高的精度生成和编辑图像。"
 ---
 
-GPT Image 1.5 是 OpenAI 基于 GPT-5 架构的最新图像生成模型，通过 AnyFast API 提供服务。相比 GPT Image 1 速度提升 4 倍、成本降低 20%，文字渲染和编辑精度显著提升。
+GPT Image 1.5 是 OpenAI 基于 GPT-5 架构的最新图像生成模型，通过 Upmore API 提供服务。相比 GPT Image 1 速度提升 4 倍、成本降低 20%，文字渲染和编辑精度显著提升。
 
 ## 核心能力
 
@@ -28,7 +28,7 @@ GPT Image 1.5 是 OpenAI 基于 GPT-5 架构的最新图像生成模型，通过
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/images/generations \
+curl https://api.upmore.net/v1/images/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -44,7 +44,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.images.generate(

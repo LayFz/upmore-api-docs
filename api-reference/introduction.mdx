@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-description: "Base URL, authentication, request format, and error handling for the AnyFast API."
+description: "Base URL, authentication, request format, and error handling for the Upmore API."
 icon: "book-open"
 ---
 
@@ -9,18 +9,18 @@ icon: "book-open"
 All API requests are made to the following base URL:
 
 ```
-https://www.anyfast.ai
+https://api.upmore.net
 ```
 
 ## Authentication
 
-AnyFast uses Bearer token authentication. Include your API key in the `Authorization` header of every request:
+Upmore uses Bearer token authentication. Include your API key in the `Authorization` header of every request:
 
 ```
 Authorization: Bearer YOUR_API_KEY
 ```
 
-You can generate and manage API keys in the [Console](https://www.anyfast.ai/console/token).
+You can generate and manage API keys in the [Console](https://api.upmore.net/console/token).
 
 <Warning>
   Keep your API key secure. Do not expose it in client-side code or public repositories.
@@ -31,7 +31,7 @@ You can generate and manage API keys in the [Console](https://www.anyfast.ai/con
 All requests must use `Content-Type: application/json`. Request bodies are JSON-encoded.
 
 ```bash
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -114,7 +114,7 @@ Rate limits vary by model and subscription tier. If you hit a rate limit, the AP
 
 ## OpenAI SDK compatibility
 
-AnyFast is compatible with the OpenAI SDK. Simply change the `base_url` to use AnyFast:
+Upmore is compatible with the OpenAI SDK. Simply change the `base_url` to use Upmore:
 
 <CodeGroup>
 
@@ -123,7 +123,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 ```
 
@@ -132,7 +132,7 @@ import OpenAI from "openai";
 
 const client = new OpenAI({
   apiKey: "YOUR_API_KEY",
-  baseURL: "https://www.anyfast.ai/v1",
+  baseURL: "https://api.upmore.net/v1",
 });
 ```
 

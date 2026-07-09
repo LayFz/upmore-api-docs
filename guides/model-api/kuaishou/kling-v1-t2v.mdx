@@ -3,7 +3,7 @@ title: "Kling 1.0 t2v"
 description: "Kuaishou's Kling 1.0 t2v model. Generate videos from text prompts with camera control, multi-shot storyboarding, and sound generation."
 ---
 
-Kling 1.0 t2v is a text-to-video generation model from Kuaishou's Kling series, available through AnyFast API. Create videos from text descriptions with customizable camera movements, multi-shot storyboarding, and optional sound generation.
+Kling 1.0 t2v is a text-to-video generation model from Kuaishou's Kling series, available through Upmore API. Create videos from text descriptions with customizable camera movements, multi-shot storyboarding, and optional sound generation.
 
 ## Key capabilities
 
@@ -18,7 +18,7 @@ Kling 1.0 t2v is a text-to-video generation model from Kuaishou's Kling series, 
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/kling/v1/videos/text2video \
+curl https://api.upmore.net/kling/v1/videos/text2video \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -34,7 +34,7 @@ curl https://www.anyfast.ai/kling/v1/videos/text2video \
 import requests
 
 response = requests.post(
-    "https://www.anyfast.ai/kling/v1/videos/text2video",
+    "https://api.upmore.net/kling/v1/videos/text2video",
     headers={
         "Authorization": "Bearer YOUR_API_KEY",
         "Content-Type": "application/json"

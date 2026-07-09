@@ -3,7 +3,7 @@ title: "GPT Image 2"
 description: "OpenAI GPT Image 2 image generation model. Next-generation autoregressive + reasoning hybrid model with flexible resolution up to 4K and near-perfect text rendering."
 ---
 
-GPT Image 2 is OpenAI's next-generation image generation model, available through AnyFast API. Built on an autoregressive + reasoning hybrid architecture, it delivers native 2K resolution, near-perfect text rendering (~99% character-level accuracy across 12+ languages), and superior multi-object scene composition.
+GPT Image 2 is OpenAI's next-generation image generation model, available through Upmore API. Built on an autoregressive + reasoning hybrid architecture, it delivers native 2K resolution, near-perfect text rendering (~99% character-level accuracy across 12+ languages), and superior multi-object scene composition.
 
 ## Key capabilities
 
@@ -28,7 +28,7 @@ GPT Image 2 is OpenAI's next-generation image generation model, available throug
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/images/generations \
+curl https://api.upmore.net/v1/images/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -44,7 +44,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.images.generate(

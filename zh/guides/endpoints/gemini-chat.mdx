@@ -1,19 +1,19 @@
 ---
 title: "Chat 兼容格式"
-description: "通过 OpenAI 兼容的 chat completions 格式在 AnyFast 上使用 Gemini 模型。"
+description: "通过 OpenAI 兼容的 chat completions 格式在 Upmore 上使用 Gemini 模型。"
 ---
 
-AnyFast 也通过 OpenAI 兼容的 `/v1/chat/completions` 端点提供 Gemini 模型。使用 OpenAI SDK 配合 Gemini 模型名称即可，无需 Google SDK。
+Upmore 也通过 OpenAI 兼容的 `/v1/chat/completions` 端点提供 Gemini 模型。使用 OpenAI SDK 配合 Gemini 模型名称即可，无需 Google SDK。
 
 ## 端点
 
 ```
-POST https://www.anyfast.ai/v1/chat/completions
+POST https://api.upmore.net/v1/chat/completions
 ```
 
 ## 认证
 
-将你的 AnyFast API 密钥作为 Bearer token 传入：
+将你的 Upmore API 密钥作为 Bearer token 传入：
 
 ```
 Authorization: Bearer YOUR_API_KEY
@@ -24,7 +24,7 @@ Authorization: Bearer YOUR_API_KEY
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -40,7 +40,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -57,7 +57,7 @@ import OpenAI from "openai";
 
 const client = new OpenAI({
   apiKey: "YOUR_API_KEY",
-  baseURL: "https://www.anyfast.ai/v1",
+  baseURL: "https://api.upmore.net/v1",
 });
 
 const response = await client.chat.completions.create({

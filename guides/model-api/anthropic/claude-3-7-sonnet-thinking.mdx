@@ -3,7 +3,7 @@ title: "Claude 3.7 Sonnet Thinking"
 description: "Anthropic's Claude 3.7 Sonnet with extended thinking enabled. Deep reasoning for math, coding, and complex analysis."
 ---
 
-Claude 3.7 Sonnet Thinking is the extended thinking variant of Claude 3.7 Sonnet, available through AnyFast via an OpenAI-compatible interface. With extended thinking enabled by default, the model performs step-by-step internal reasoning before generating a response, delivering significantly improved accuracy on complex tasks.
+Claude 3.7 Sonnet Thinking is the extended thinking variant of Claude 3.7 Sonnet, available through Upmore via an OpenAI-compatible interface. With extended thinking enabled by default, the model performs step-by-step internal reasoning before generating a response, delivering significantly improved accuracy on complex tasks.
 
 ## Key capabilities
 
@@ -18,7 +18,7 @@ Claude 3.7 Sonnet Thinking is the extended thinking variant of Claude 3.7 Sonnet
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/messages \
+curl https://api.upmore.net/v1/messages \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -34,7 +34,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -52,7 +52,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 stream = client.chat.completions.create(

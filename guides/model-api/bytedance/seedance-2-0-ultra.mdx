@@ -3,7 +3,7 @@ title: "Seedance 2.0 Ultra"
 description: "ByteDance's Seedance 2.0 Ultra video generation model with multimodal reference, video editing, extension, audio generation, and web search."
 ---
 
-Seedance 2.0 Ultra is ByteDance's latest video generation model available through AnyFast API. It supports text-to-video, image-to-video, multimodal reference input, video editing, video extension, and synchronized audio generation.
+Seedance 2.0 Ultra is ByteDance's latest video generation model available through Upmore API. It supports text-to-video, image-to-video, multimodal reference input, video editing, video extension, and synchronized audio generation.
 
 ## Key capabilities
 
@@ -43,7 +43,7 @@ Seedance 2.0 Ultra is ByteDance's latest video generation model available throug
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/video/generations \
+curl https://api.upmore.net/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -68,7 +68,7 @@ headers = {"Authorization": "Bearer YOUR_API_KEY", "Content-Type": "application/
 
 # Step 1: create task
 resp = requests.post(
-    "https://www.anyfast.ai/v1/video/generations",
+    "https://api.upmore.net/v1/video/generations",
     headers=headers,
     json={
         "model": "seedance-2.0-ultra",
@@ -85,7 +85,7 @@ task_id = resp.json()["task_id"]
 # Step 2: poll for result
 while True:
     result = requests.get(
-        f"https://www.anyfast.ai/v1/video/generations/{task_id}",
+        f"https://api.upmore.net/v1/video/generations/{task_id}",
         headers=headers
     ).json()
     status = result["data"]["status"]
@@ -103,7 +103,7 @@ while True:
 ### Multimodal reference (image + video + audio)
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/video/generations \
+curl https://api.upmore.net/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -138,7 +138,7 @@ curl https://www.anyfast.ai/v1/video/generations \
 ### Video editing
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/video/generations \
+curl https://api.upmore.net/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -168,7 +168,7 @@ curl https://www.anyfast.ai/v1/video/generations \
 ### Web search enhanced (text-to-video only)
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/video/generations \
+curl https://api.upmore.net/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

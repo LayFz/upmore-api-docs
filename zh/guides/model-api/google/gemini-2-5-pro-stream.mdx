@@ -3,7 +3,7 @@ title: "Gemini 2.5 Pro (Stream)"
 description: "通过 Gemini API 调用 Google Gemini 2.5 Pro 流式输出。支持 SSE 实时 Token 流式传输。"
 ---
 
-Gemini 2.5 Pro (Stream) 提供基于 Google Gemini 2.5 Pro 模型的流式文本生成服务，通过 AnyFast 代理访问。响应通过 Server-Sent Events (SSE) 实时传输。
+Gemini 2.5 Pro (Stream) 提供基于 Google Gemini 2.5 Pro 模型的流式文本生成服务，通过 Upmore 代理访问。响应通过 Server-Sent Events (SSE) 实时传输。
 
 ## 核心能力
 
@@ -17,7 +17,7 @@ Gemini 2.5 Pro (Stream) 提供基于 Google Gemini 2.5 Pro 模型的流式文本
 <CodeGroup>
 
 ```bash cURL
-curl "https://www.anyfast.ai/v1beta/models/gemini-2.5-pro:streamGenerateContent?key=YOUR_API_KEY&alt=sse" \
+curl "https://api.upmore.net/v1beta/models/gemini-2.5-pro:streamGenerateContent?key=YOUR_API_KEY&alt=sse" \
   -H "Content-Type: application/json" \
   -d '{
     "contents": [
@@ -40,7 +40,7 @@ curl "https://www.anyfast.ai/v1beta/models/gemini-2.5-pro:streamGenerateContent?
 ```python Python
 import requests
 
-url = "https://www.anyfast.ai/v1beta/models/gemini-2.5-pro:streamGenerateContent"
+url = "https://api.upmore.net/v1beta/models/gemini-2.5-pro:streamGenerateContent"
 params = {"key": "YOUR_API_KEY", "alt": "sse"}
 data = {
     "contents": [

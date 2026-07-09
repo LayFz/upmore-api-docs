@@ -1,9 +1,9 @@
 ---
 title: "Wan2.2 I2V A14B"
-description: "通过 AnyFast API 调用阿里巴巴 Wan2.2 I2V A14B 图生视频模型。"
+description: "通过 Upmore API 调用阿里巴巴 Wan2.2 I2V A14B 图生视频模型。"
 ---
 
-Wan2.2 I2V A14B 是通过 AnyFast 提供的图生视频模型。视频生成为**异步调用** — 提交任务后，通过 `GET /v1/video/generations/{task_id}` 轮询状态，直到 `status` 为 `succeeded`。
+Wan2.2 I2V A14B 是通过 Upmore 提供的图生视频模型。视频生成为**异步调用** — 提交任务后，通过 `GET /v1/video/generations/{task_id}` 轮询状态，直到 `status` 为 `succeeded`。
 
 ## 核心能力
 
@@ -17,7 +17,7 @@ Wan2.2 I2V A14B 是通过 AnyFast 提供的图生视频模型。视频生成为*
 
 ```bash cURL
 # 第一步 — 创建任务
-curl https://www.anyfast.ai/v1/video/generations \
+curl https://api.upmore.net/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -28,7 +28,7 @@ curl https://www.anyfast.ai/v1/video/generations \
   }'
 
 # 第二步 — 轮询直到完成
-curl https://www.anyfast.ai/v1/video/generations/{TASK_ID} \
+curl https://api.upmore.net/v1/video/generations/{TASK_ID} \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
@@ -39,7 +39,7 @@ headers = {"Authorization": "Bearer YOUR_API_KEY"}
 
 # 第一步 — 创建任务
 resp = requests.post(
-    "https://www.anyfast.ai/v1/video/generations",
+    "https://api.upmore.net/v1/video/generations",
     headers=headers,
     json={
         "model": "wan2.2-i2v-a14b",
@@ -53,7 +53,7 @@ task_id = resp.json()["task_id"]
 # 第二步 — 轮询直到完成
 while True:
     result = requests.get(
-        f"https://www.anyfast.ai/v1/video/generations/{task_id}",
+        f"https://api.upmore.net/v1/video/generations/{task_id}",
         headers=headers
     ).json()
     status = result["data"]["status"]

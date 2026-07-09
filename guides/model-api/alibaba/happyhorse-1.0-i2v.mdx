@@ -26,7 +26,7 @@ HappyHorse 1.0 I2V animates a single first-frame image into a short video. It us
 <CodeGroup>
 
 ```bash cURL
-curl -X POST https://www.anyfast.ai/v1/video/generations \
+curl -X POST https://api.upmore.net/v1/video/generations \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -47,7 +47,7 @@ import requests, time
 headers = {"Authorization": "Bearer YOUR_API_KEY"}
 
 resp = requests.post(
-    "https://www.anyfast.ai/v1/video/generations",
+    "https://api.upmore.net/v1/video/generations",
     headers=headers,
     json={
         "model": "happyhorse-1.0-i2v",
@@ -60,7 +60,7 @@ task_id = resp.json()["task_id"]
 
 while True:
     r = requests.get(
-        f"https://www.anyfast.ai/v1/video/generations/{task_id}",
+        f"https://api.upmore.net/v1/video/generations/{task_id}",
         headers=headers,
     ).json()
     if r["data"]["status"] == "SUCCESS":

@@ -3,7 +3,7 @@ title: "GLM-4.5"
 description: "通过 OpenAI 兼容接口调用智谱 GLM-4.5 对话模型，快速、强大且易于集成。"
 ---
 
-GLM-4.5 是智谱 AI 的对话模型，通过 AnyFast 以 OpenAI 兼容接口提供服务。具备强大的推理和对话能力。
+GLM-4.5 是智谱 AI 的对话模型，通过 Upmore 以 OpenAI 兼容接口提供服务。具备强大的推理和对话能力。
 
 ## 核心能力
 
@@ -17,7 +17,7 @@ GLM-4.5 是智谱 AI 的对话模型，通过 AnyFast 以 OpenAI 兼容接口提
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/chat/completions \
+curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -33,7 +33,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -51,7 +51,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 stream = client.chat.completions.create(

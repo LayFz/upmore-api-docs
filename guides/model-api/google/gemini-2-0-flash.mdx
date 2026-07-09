@@ -3,7 +3,7 @@ title: "Gemini 2.0 Flash"
 description: "Google's Gemini 2.0 Flash for AI image editing via Gemini API."
 ---
 
-Gemini 2.0 Flash is Google's multimodal model with image editing capabilities, available through AnyFast via the native Gemini API. It can edit existing images based on text instructions.
+Gemini 2.0 Flash is Google's multimodal model with image editing capabilities, available through Upmore via the native Gemini API. It can edit existing images based on text instructions.
 
 ## Key capabilities
 
@@ -17,7 +17,7 @@ Gemini 2.0 Flash is Google's multimodal model with image editing capabilities, a
 <CodeGroup>
 
 ```bash cURL
-curl "https://www.anyfast.ai/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR_API_KEY" \
+curl "https://api.upmore.net/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "contents": [
@@ -39,7 +39,7 @@ curl "https://www.anyfast.ai/v1beta/models/gemini-2.0-flash:generateContent?key=
 import requests
 import base64
 
-url = "https://www.anyfast.ai/v1beta/models/gemini-2.0-flash:generateContent"
+url = "https://api.upmore.net/v1beta/models/gemini-2.0-flash:generateContent"
 params = {"key": "YOUR_API_KEY"}
 
 with open("input.png", "rb") as f:

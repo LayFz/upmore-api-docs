@@ -3,7 +3,7 @@ title: "Claude Opus 4"
 description: "Anthropic's Claude Opus 4 via OpenAI-compatible API. The latest and most capable Claude model for complex reasoning, coding, and research."
 ---
 
-Claude Opus 4 is Anthropic's latest flagship model, available through AnyFast via an OpenAI-compatible interface. It represents a significant leap in capability, excelling at complex reasoning, advanced coding, agentic tasks, and nuanced analysis.
+Claude Opus 4 is Anthropic's latest flagship model, available through Upmore via an OpenAI-compatible interface. It represents a significant leap in capability, excelling at complex reasoning, advanced coding, agentic tasks, and nuanced analysis.
 
 ## Key capabilities
 
@@ -19,7 +19,7 @@ Claude Opus 4 is Anthropic's latest flagship model, available through AnyFast vi
 <CodeGroup>
 
 ```bash cURL
-curl https://www.anyfast.ai/v1/messages \
+curl https://api.upmore.net/v1/messages \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -35,7 +35,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 response = client.chat.completions.create(
@@ -53,7 +53,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://www.anyfast.ai/v1"
+    base_url="https://api.upmore.net/v1"
 )
 
 stream = client.chat.completions.create(
