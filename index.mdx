@@ -1,12 +1,16 @@
 ---
 title: "Introduction"
-description: "Upmore is a unified API platform for accessing AI models across multiple providers."
+description: "Internal AI API gateway for company employees — chat, image, and video behind one OpenAI-compatible endpoint."
 icon: "house"
 ---
 
-Upmore is a unified AI API platform that gives developers access to the world's best models — including chat, image generation, and video generation — through a single, consistent interface.
+<Note>
+  **Internal use only.** Upmore is an internal service for company employees. It is **not a public service** and has **no self-service registration** — access is granted only to enterprise staff through corporate single sign-on (SSO).
+</Note>
 
-Instead of managing separate API keys, SDKs, and authentication flows for each provider, Upmore abstracts everything into one endpoint. Switch between models from ByteDance and OpenAI by changing a single parameter.
+Upmore is an internal AI API gateway. It gives company employees access to the organization's approved AI models — chat, image generation, and video generation — through a single, OpenAI-compatible interface.
+
+Instead of managing separate keys, SDKs, and auth flows for each provider, Upmore exposes everything under one endpoint. Switch between models from ByteDance and OpenAI by changing a single parameter.
 
 ## Get started
 
@@ -21,20 +25,20 @@ Instead of managing separate API keys, SDKs, and authentication flows for each p
 
 ## What Upmore provides
 
-**Unified access to 100+ models**
-Chat completions, image generation, video generation — all available under one API key. No need to integrate each provider separately.
+**Access via corporate SSO**
+No public sign-up. Employees sign in with their corporate single sign-on account, then create API keys for their applications.
 
-**OpenAI-compatible interface**
-For chat models, Upmore follows the OpenAI API specification. If you're already using the OpenAI SDK, switching to Upmore requires only a base URL change.
+**One OpenAI-compatible endpoint**
+Chat, image, and video models are all reachable under one base URL and one key. If you already use the OpenAI SDK, only the base URL changes.
 
 **Multi-modal support**
-Beyond chat, Upmore supports image and video generation models with provider-specific parameters exposed in a clean, documented format.
+Beyond chat, Upmore exposes image and video generation with the provider-specific parameters documented in a clean format.
 
 **Predictable error handling**
-Every endpoint returns consistent error codes and message formats, regardless of the underlying provider — so your error handling logic stays simple.
+Every endpoint returns consistent error codes and message formats, so your error handling stays simple.
 
-**Transparent pricing**
-No platform fees or markup surprises. You pay per token for chat models and per generation for media models, billed based on actual usage.
+**Internal cost tracking**
+Usage is metered per token (chat) and per generation (media) for internal cost attribution.
 
 ## Explore the API
 
@@ -51,6 +55,6 @@ No platform fees or markup surprises. You pay per token for chat models and per 
     icon="microchip-ai"
     href="/api-reference/introduction"
   >
-    Browse all available models by provider.
+    Browse every available model.
   </Card>
 </Columns>
