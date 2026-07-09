@@ -4,25 +4,21 @@ description: "几分钟内完成第一次 Upmore API 调用。"
 icon: "rocket"
 ---
 
-Upmore 提供统一的 API，支持调用多家提供商的 AI 模型，包括对话、图片生成和视频生成。本指南帮助你快速完成第一次 API 调用。
+Upmore 是内部 AI API 网关，通过一个 OpenAI 兼容接口提供对话、图片和视频模型。本指南帮你完成第一次成功调用。
 
 ## 三步开始使用
 
-### 第一步：创建账号
+### 第一步：登录
 
-访问 [upmore.net](https://api.upmore.net) 注册你的账号。
+账号由管理员开通。前往 [api.upmore.net](https://api.upmore.net) 登录。
 
-### 第二步：获取 API Key
+### 第二步：创建 API Key
 
-前往 [控制台](https://api.upmore.net/console/token) 生成你的 API Key，妥善保管——每次请求都需要用它进行认证。
+打开 [API 密钥](https://api.upmore.net/keys) 页面创建密钥，妥善保管——每次请求都用它认证。
 
-<Tip>
-  新建令牌默认按照 **Direct（直连）→ Aggregate（优质）** 分组优先级调用。
-</Tip>
+### 第三步：发起第一次调用
 
-### 第三步：发起第一次 API 调用
-
-使用你的 API Key 调用对话模型。以下示例通过 OpenAI 兼容接口调用 GPT-5.5：
+把任意 OpenAI SDK 的 base URL 指向 `https://api.upmore.net/v1`，用你的密钥即可。下面示例调用 `gpt-5.5` 对话模型：
 
 <CodeGroup>
 
@@ -31,12 +27,9 @@ curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "claude-3-5-sonnet",
+    "model": "gpt-5.5",
     "messages": [
-      {
-        "role": "user",
-        "content": "你好！"
-      }
+      { "role": "user", "content": "你好！" }
     ]
   }'
 ```
@@ -46,14 +39,12 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://api.upmore.net/v1"
+    base_url="https://api.upmore.net/v1",
 )
 
 response = client.chat.completions.create(
-    model="claude-3-5-sonnet",
-    messages=[
-        {"role": "user", "content": "你好！"}
-    ]
+    model="gpt-5.5",
+    messages=[{"role": "user", "content": "你好！"}],
 )
 
 print(response.choices[0].message.content)
@@ -68,7 +59,7 @@ const client = new OpenAI({
 });
 
 const response = await client.chat.completions.create({
-  model: "claude-3-5-sonnet",
+  model: "gpt-5.5",
   messages: [{ role: "user", content: "你好！" }],
 });
 
@@ -77,25 +68,17 @@ console.log(response.choices[0].message.content);
 
 </CodeGroup>
 
-<Warning>
-  **请先配置渠道。** 不同模型对应不同的渠道，只有在控制台中开通了对应渠道，才能成功调用该模型。前往 [控制台](https://api.upmore.net/console) 确认渠道已启用。
-</Warning>
+<Tip>
+  只有 **模型 API** 下列出的模型可用。把 `model` 换成其中任意一个即可——例如 `doubao-seed-2-1-pro`（对话）、`gpt-image-2`（图片）、`doubao-seedance-2-0`（视频）。
+</Tip>
 
 ## 下一步
 
 <Columns cols={2}>
-  <Card
-    title="API 参考"
-    icon="code"
-    href="/zh/api-reference/introduction"
-  >
+  <Card title="API 参考" icon="code" href="/zh/api-reference/introduction">
     认证方式、Base URL 及错误码。
   </Card>
-  <Card
-    title="模型 API"
-    icon="microchip-ai"
-    href="/zh/api-reference/introduction"
-  >
-    按提供商浏览所有可用模型。
+  <Card title="模型 API" icon="microchip-ai" href="/zh/api-reference/introduction">
+    浏览所有可用模型。
   </Card>
 </Columns>

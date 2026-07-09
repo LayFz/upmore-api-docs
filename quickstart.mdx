@@ -1,28 +1,24 @@
 ---
 title: "Quickstart"
-description: "Start making API calls to Upmore in minutes."
+description: "Make your first Upmore API call in minutes."
 icon: "rocket"
 ---
 
-Upmore provides a unified API to access AI models from multiple providers — including chat, image generation, and video generation. This guide gets you up and running with your first API call.
+Upmore is an internal AI API gateway that exposes chat, image, and video models through one OpenAI-compatible endpoint. This guide gets you to your first successful call.
 
 ## Get started in three steps
 
-### Step 1: Create an account
+### Step 1: Sign in
 
-Sign up at [upmore.net](https://api.upmore.net) to create your account.
+Your account is provisioned by an administrator. Sign in at [api.upmore.net](https://api.upmore.net).
 
-### Step 2: Get your API key
+### Step 2: Create an API key
 
-Head to the [Console](https://api.upmore.net/console/token) to generate your API key. Keep it safe — you'll use it to authenticate every request.
-
-<Tip>
-  Newly created tokens default to **Direct → Aggregate** group priority.
-</Tip>
+Open [API Keys](https://api.upmore.net/keys) and create a key. Keep it safe — you'll use it to authenticate every request.
 
 ### Step 3: Make your first API call
 
-Use your API key to call a chat model. The example below uses GPT-5.5 via the OpenAI-compatible endpoint:
+Point any OpenAI SDK at `https://api.upmore.net/v1` and use your key. The example below calls the `gpt-5.5` chat model:
 
 <CodeGroup>
 
@@ -33,10 +29,7 @@ curl https://api.upmore.net/v1/chat/completions \
   -d '{
     "model": "gpt-5.5",
     "messages": [
-      {
-        "role": "user",
-        "content": "Hello!"
-      }
+      { "role": "user", "content": "Hello!" }
     ]
   }'
 ```
@@ -46,14 +39,12 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://api.upmore.net/v1"
+    base_url="https://api.upmore.net/v1",
 )
 
 response = client.chat.completions.create(
     model="gpt-5.5",
-    messages=[
-        {"role": "user", "content": "Hello!"}
-    ]
+    messages=[{"role": "user", "content": "Hello!"}],
 )
 
 print(response.choices[0].message.content)
@@ -77,25 +68,17 @@ console.log(response.choices[0].message.content);
 
 </CodeGroup>
 
-<Warning>
-  **Configure your channel first.** Each model maps to a specific channel. You must enable the corresponding channel in the console before your API calls will succeed. Go to the [Console](https://api.upmore.net/console) to check your channel settings.
-</Warning>
+<Tip>
+  Only the models listed under **Model APIs** are available. Swap `model` for any of them — for example `doubao-seed-2-1-pro` (chat), `gpt-image-2` (image), or `doubao-seedance-2-0` (video).
+</Tip>
 
 ## Next steps
 
 <Columns cols={2}>
-  <Card
-    title="API Reference"
-    icon="code"
-    href="/api-reference/introduction"
-  >
+  <Card title="API Reference" icon="code" href="/api-reference/introduction">
     Authentication, base URL, and error codes.
   </Card>
-  <Card
-    title="Model APIs"
-    icon="microchip-ai"
-    href="/api-reference/introduction"
-  >
-    Browse all available models by provider.
+  <Card title="Model APIs" icon="microchip-ai" href="/api-reference/introduction">
+    Browse every available model.
   </Card>
 </Columns>

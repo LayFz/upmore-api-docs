@@ -50,19 +50,6 @@
                     ]
                   },
                   {
-                    "group": "Anthropic Claude",
-                    "pages": [
-                      "guides/endpoints/anthropic"
-                    ]
-                  },
-                  {
-                    "group": "Google Gemini",
-                    "pages": [
-                      "guides/endpoints/gemini-native",
-                      "guides/endpoints/gemini-chat"
-                    ]
-                  },
-                  {
                     "group": "ByteDance Doubao",
                     "pages": [
                       "guides/endpoints/doubao"
@@ -119,19 +106,6 @@
                     ]
                   },
                   {
-                    "group": "Anthropic Claude",
-                    "pages": [
-                      "api-reference/endpoints/anthropic"
-                    ]
-                  },
-                  {
-                    "group": "Google Gemini",
-                    "pages": [
-                      "api-reference/endpoints/gemini-native",
-                      "api-reference/endpoints/gemini-chat"
-                    ]
-                  },
-                  {
                     "group": "ByteDance Doubao",
                     "pages": [
                       "api-reference/endpoints/doubao",
@@ -164,19 +138,6 @@
                     "group": "ChatGPT",
                     "pages": [
                       "zh/guides/endpoints/openai"
-                    ]
-                  },
-                  {
-                    "group": "Anthropic Claude",
-                    "pages": [
-                      "zh/guides/endpoints/anthropic"
-                    ]
-                  },
-                  {
-                    "group": "Google Gemini",
-                    "pages": [
-                      "zh/guides/endpoints/gemini-native",
-                      "zh/guides/endpoints/gemini-chat"
                     ]
                   },
                   {
@@ -233,19 +194,6 @@
                     "group": "ChatGPT",
                     "pages": [
                       "zh/api-reference/endpoints/openai"
-                    ]
-                  },
-                  {
-                    "group": "Anthropic Claude",
-                    "pages": [
-                      "zh/api-reference/endpoints/anthropic"
-                    ]
-                  },
-                  {
-                    "group": "Google Gemini",
-                    "pages": [
-                      "zh/api-reference/endpoints/gemini-native",
-                      "zh/api-reference/endpoints/gemini-chat"
                     ]
                   },
                   {

@@ -20,7 +20,7 @@ Upmore 使用 Bearer Token 认证。在每个请求的 `Authorization` 头中包
 Authorization: Bearer YOUR_API_KEY
 ```
 
-你可以在 [控制台](https://api.upmore.net/console/token) 中生成和管理 API Key。
+你可以在 [API 密钥](https://api.upmore.net/keys) 中生成和管理 API Key。
 
 <Warning>
   请妥善保管你的 API Key，不要将其暴露在客户端代码或公开仓库中。
@@ -48,12 +48,9 @@ curl https://api.upmore.net/v1/chat/completions \
 |---|---|
 | `POST /v1/chat/completions` | 对话补全（OpenAI 兼容） |
 | `POST /v1/images/generations` | 图片生成（字节跳动 Seedream） |
+| `POST /v1/images/edits` | Image editing (reference image) |
 | `POST /v1/video/generations` | 视频生成（字节跳动 Seedance） |
 | `GET /v1/video/generations/{id}` | 查询视频生成任务状态 |
-| `POST /kling/v1/videos/text2video` | 快手 Kling 文生视频 |
-| `POST /kling/v1/videos/image2video` | 快手 Kling 图生视频 |
-| `POST /kling/v1/videos/multi-image2video` | 快手 Kling 多图生视频 |
-| `GET /kling/v1/videos/{id}` | 查询 Kling 任务状态 |
 
 ## 响应格式
 

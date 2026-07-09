@@ -20,7 +20,7 @@ Upmore uses Bearer token authentication. Include your API key in the `Authorizat
 Authorization: Bearer YOUR_API_KEY
 ```
 
-You can generate and manage API keys in the [Console](https://api.upmore.net/console/token).
+You can generate and manage API keys in the [API Keys](https://api.upmore.net/keys).
 
 <Warning>
   Keep your API key secure. Do not expose it in client-side code or public repositories.
@@ -48,12 +48,9 @@ curl https://api.upmore.net/v1/chat/completions \
 |---|---|
 | `POST /v1/chat/completions` | Chat completion (OpenAI-compatible) |
 | `POST /v1/images/generations` | Image generation (ByteDance Seedream) |
+| `POST /v1/images/edits` | Image editing (reference image) |
 | `POST /v1/video/generations` | Video generation (ByteDance Seedance) |
 | `GET /v1/video/generations/{id}` | Query video generation task status |
-| `POST /kling/v1/videos/text2video` | Kling text-to-video |
-| `POST /kling/v1/videos/image2video` | Kling image-to-video |
-| `POST /kling/v1/videos/multi-image2video` | Kling multi-image-to-video |
-| `GET /kling/v1/videos/{id}` | Query Kling task status |
 
 ## Response format
 
