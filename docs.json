@@ -98,13 +98,6 @@
                     ]
                   }
                 ]
-              },
-              {
-                "group": "Resources",
-                "pages": [
-                  "guides/resources/payment",
-                  "guides/resources/faq"
-                ]
               }
             ]
           },
@@ -146,17 +139,6 @@
                       "api-reference/endpoints/doubao-responses"
                     ]
                   }
-                ]
-              }
-            ]
-          },
-          {
-            "tab": "Changelog",
-            "groups": [
-              {
-                "group": "2026",
-                "pages": [
-                  "changelog/invite"
                 ]
               }
             ]
@@ -234,13 +216,6 @@
                     ]
                   }
                 ]
-              },
-              {
-                "group": "资源",
-                "pages": [
-                  "zh/guides/resources/payment",
-                  "zh/guides/resources/faq"
-                ]
               }
             ]
           },
@@ -282,17 +257,6 @@
                       "zh/api-reference/endpoints/doubao-responses"
                     ]
                   }
-                ]
-              }
-            ]
-          },
-          {
-            "tab": "更新日志",
-            "groups": [
-              {
-                "group": "2026",
-                "pages": [
-                  "zh/changelog/invite"
                 ]
               }
             ]
