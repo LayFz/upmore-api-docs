@@ -22,7 +22,7 @@ Head to the [Console](https://api.upmore.net/console/token) to generate your API
 
 ### Step 3: Make your first API call
 
-Use your API key to call a chat model. The example below uses Claude 3.5 Sonnet via the OpenAI-compatible endpoint:
+Use your API key to call a chat model. The example below uses GPT-5.5 via the OpenAI-compatible endpoint:
 
 <CodeGroup>
 
@@ -31,7 +31,7 @@ curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "claude-3-5-sonnet-20241022",
+    "model": "gpt-5.5",
     "messages": [
       {
         "role": "user",
@@ -50,7 +50,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="claude-3-5-sonnet-20241022",
+    model="gpt-5.5",
     messages=[
         {"role": "user", "content": "Hello!"}
     ]
@@ -68,7 +68,7 @@ const client = new OpenAI({
 });
 
 const response = await client.chat.completions.create({
-  model: "claude-3-5-sonnet-20241022",
+  model: "gpt-5.5",
   messages: [{ role: "user", content: "Hello!" }],
 });
 

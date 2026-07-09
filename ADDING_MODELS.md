@@ -40,7 +40,7 @@ api-reference/model-api/{provider}/{model-name}/
 
 在 `api-reference/model-api/{provider}/openapi/{model-name}/` 下新建 `openapi.yaml`。
 
-**对话模型模板**（参考 `api-reference/model-api/anthropic/openapi/claude-3-5-sonnet-20241022/openapi.yaml`）：
+**对话模型模板**（参考 `api-reference/model-api/anthropic/openapi/gpt-5.5/openapi.yaml`）：
 
 ```yaml
 openapi: 3.1.0

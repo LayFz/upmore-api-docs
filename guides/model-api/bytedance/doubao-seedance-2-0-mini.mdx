@@ -1,6 +1,6 @@
 ---
-title: "Seedance 2.0 Fast"
-description: "ByteDance's Seedance 2.0 Fast video generation model with multimodal reference, video editing, extension, audio generation, and web search."
+title: "Seedance 2.0 mini"
+description: "ByteDance Seedance 2.0 mini video model — multimodal reference, editing, extension, first/last-frame, 480p/720p."
 ---
 
 Seedance 2.0 Fast is ByteDance's latest video generation model available through Upmore API. It supports text-to-video, image-to-video, multimodal reference input, video editing, video extension, and synchronized audio generation.
@@ -47,7 +47,7 @@ curl https://api.upmore.net/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "seedance-fast",
+    "model": "doubao-seedance-2-0-mini",
     "content": [
       {
         "type": "text",
@@ -71,7 +71,7 @@ resp = requests.post(
     "https://api.upmore.net/v1/video/generations",
     headers=headers,
     json={
-        "model": "seedance-fast",
+        "model": "doubao-seedance-2-0-mini",
         "content": [
             {"type": "text", "text": "A cat playing piano in a sunlit room, cinematic lighting"}
         ],
@@ -107,7 +107,7 @@ curl https://api.upmore.net/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "seedance-fast",
+    "model": "doubao-seedance-2-0-mini",
     "content": [
       {
         "type": "text",
@@ -142,7 +142,7 @@ curl https://api.upmore.net/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "seedance-fast",
+    "model": "doubao-seedance-2-0-mini",
     "content": [
       {
         "type": "text",
@@ -172,7 +172,7 @@ curl https://api.upmore.net/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "seedance-fast",
+    "model": "doubao-seedance-2-0-mini",
     "content": [
       {
         "type": "text",

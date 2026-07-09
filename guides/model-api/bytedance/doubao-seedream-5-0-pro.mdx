@@ -1,6 +1,6 @@
 ---
-title: "Seedream 5.0 t2i"
-description: "ByteDance Seedream 5.0 text-to-image model. Generate images from text prompts."
+title: "Seedream 5.0 Pro"
+description: "ByteDance Seedream 5.0 Pro image model — precise editing and layer control, pixel-tiered pricing."
 ---
 
 Seedream 5.0 t2i is a text-to-image generation model from ByteDance's Seedream series, available through Upmore API.
@@ -20,7 +20,7 @@ curl https://api.upmore.net/v1/images/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "doubao-seedream-5-0-260128",
+    "model": "doubao-seedream-5-0-pro",
     "prompt": "A serene mountain landscape at sunrise with misty valleys",
     "size": "1024x1024",
     "watermark": false
@@ -37,7 +37,7 @@ response = requests.post(
         "Content-Type": "application/json"
     },
     json={
-        "model": "doubao-seedream-5-0-260128",
+        "model": "doubao-seedream-5-0-pro",
         "prompt": "A serene mountain landscape at sunrise with misty valleys",
         "size": "1024x1024",
         "watermark": False
