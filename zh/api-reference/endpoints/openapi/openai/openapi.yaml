@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: ChatGPT 兼容端点
-  description: 通过 AnyFast 调用 OpenAI 兼容的对话补全接口，支持所有对话模型
+  description: 通过 Upmore 调用 OpenAI 兼容的对话补全接口，支持所有对话模型
   version: 1.0.0
 servers:
-  - url: https://www.anyfast.ai
+  - url: https://api.upmore.net
 security:
   - bearerAuth: []
 paths:
@@ -26,80 +26,19 @@ paths:
                 model:
                   type: string
                   enum:
-                    - claude-sonnet-4-6
-                    - claude-sonnet-4-5-20250929
-                    - claude-sonnet-4-20250514
-                    - claude-opus-4-6
-                    - claude-opus-4-5-20251101
-                    - claude-opus-4-1-20250805
-                    - claude-opus-4-20250514
-                    - claude-haiku-4-5-20251001
-                    - claude-3-7-sonnet-20250219
-                    - claude-3-5-sonnet-20241022
-                    - gpt-5-4
-                    - gpt-5-3-codex
-                    - gpt-5-2
-                    - gpt-5-2-chat
-                    - gpt-5-2-chat-latest
-                    - gpt-5-2-codex
-                    - gpt-5-1
-                    - gpt-5-1-chat
-                    - gpt-5-1-chat-latest
-                    - gpt-5-1-codex-mini
-                    - gpt-5
-                    - gpt-5-chat-latest
-                    - gpt-5-pro
-                    - gpt-5-codex
-                    - gpt-5-codex-high
-                    - gpt-5-codex-low
-                    - gpt-5-mini
-                    - gpt-5-nano
-                    - gpt-4o
-                    - gpt-4o-mini
-                    - gpt-4-1
-                    - gpt-4
-                    - deepseek-v3-2-speciale
-                    - deepseek-v3-2
-                    - deepseek-v3-2-exp
-                    - deepseek-v3-2-251201
-                    - deepseek-v3-1-terminus
-                    - deepseek-v3-1
-                    - deepseek-v3
-                    - qwen3.5-397b-a17b
-                    - qwen3-coder-next
-                    - qwen3-coder
-                    - qwen3-235b-a22b
-                    - qwen3-32b
-                    - qwen3-14b
-                    - qwen2.5-72b-instruct
-                    - doubao-seed-2.0-pro
-                    - doubao-seed-2.0-code
-                    - doubao-seed-2.0-lite
-                    - doubao-seed-2.0-mini
-                    - doubao-seed-1-8-251228
-                    - doubao-seed-1-6-flash-250828
-                    - doubao-seed-1-6-251015
-                    - doubao-seed-1-6-lite-251015
-                    - doubao-seed-1-6-vision-250815
-                    - minimax-m2.5
-                    - minimax-m2.1
-                    - kimi-k2.5
-                    - grok-3
-                    - grok-3-mini
-                    - grok-4-fast-reasoning
-                    - grok-4-fast-non-reasoning
-                    - grok-4-1-fast-reasoning
-                    - grok-4-1-fast-non-reasoning
-                    - gemini-3.1-pro-preview
-                    - gemini-3.1-flash-image-preview
-                    - gemini-3-pro-preview
-                    - gemini-3-flash-preview
-                    - gemini-2.5-pro
-                    - gemini-2.5-flash
-                    - gemini-2.0-flash
-                    - glm-4.7
+                    - MiniMax-M3
+                    - MiniMax-M2.7
+                    - MiniMax-M2.7-highspeed
+                    - MiniMax-M2.5
+                    - MiniMax-M2.5-highspeed
+                    - MiniMax-M2.1
+                    - MiniMax-M2.1-highspeed
+                    - MiniMax-M2
+                    - doubao-seed-2-1-pro
+                    - doubao-seed-2-1-turbo
+                    - gpt-5.5
                   description: 用于补全的模型 ID。
-                  example: claude-sonnet-4-6
+                  example: MiniMax-M3
                 messages:
                   type: array
                   minItems: 1
@@ -234,7 +173,7 @@ components:
           description: 补全创建时的 Unix 时间戳。
         model:
           type: string
-          example: claude-sonnet-4-6
+          example: MiniMax-M3
         choices:
           type: array
           items:

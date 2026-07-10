@@ -1,0 +1,106 @@
+openapi: 3.1.0
+info:
+  title: MiniMax 语音合成（T2A）
+  description: 通过 Upmore 的 OpenAI 兼容音频接口调用 MiniMax 语音合成模型
+  version: 1.0.0
+servers:
+  - url: https://api.upmore.net
+security:
+  - bearerAuth: []
+paths:
+  /v1/audio/speech:
+    post:
+      operationId: createSpeechMiniMax
+      summary: 合成语音
+      description: 根据输入文本合成语音，直接返回音频字节。按输入字符数计费。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - input
+                - voice
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - speech-2.8-hd
+                    - speech-2.8-turbo
+                    - speech-2.6-hd
+                    - speech-2.6-turbo
+                    - speech-02-hd
+                    - speech-02-turbo
+                    - speech-01-hd
+                    - speech-01-turbo
+                  example: speech-2.8-hd
+                  description: 使用的语音模型。`hd` 系列音质优先，`turbo` 系列时延优先。
+                input:
+                  type: string
+                  example: 你好，欢迎使用语音合成服务。
+                  description: 要合成的文本，按字符数计费。
+                voice:
+                  type: string
+                  example: male-qn-qingse
+                  description: MiniMax 音色 ID，如 `male-qn-qingse`、`female-shaonv`，会作为 `voice_id` 透传给上游。
+                response_format:
+                  type: string
+                  enum: [mp3, wav, flac, aac, pcm]
+                  default: mp3
+                  description: 返回音频的容器格式。
+                speed:
+                  type: number
+                  minimum: 0.5
+                  maximum: 2
+                  default: 1
+                  description: 语速倍率。
+                metadata:
+                  type: object
+                  additionalProperties: true
+                  description: '透传给上游 MiniMax 的厂商专属字段，例如 {"voice_setting": {"emotion": "happy"}, "audio_setting": {"sample_rate": 32000}, "language_boost": "Chinese"}。设为 {"output_format": "url"} 时改为 302 跳转到音频 URL 而不是直接返回字节。'
+      responses:
+        "200":
+          description: 合成成功，响应体即音频文件。
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: 触发限流
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

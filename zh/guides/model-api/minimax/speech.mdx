@@ -1,0 +1,108 @@
+---
+title: "MiniMax 语音合成（T2A）"
+description: "MiniMax 语音合成模型，OpenAI 兼容音频接口。"
+---
+
+MiniMax 语音合成模型通过 Upmore 以标准音频接口（`/v1/audio/speech`）提供服务。发送文本、直接返回音频字节，按输入字符数计费。
+
+## 可用模型
+
+| 模型 | 说明 |
+|---|---|
+| `speech-2.8-hd` | 最新一代，高保真 |
+| `speech-2.8-turbo` | 最新一代，低时延 |
+| `speech-2.6-hd` / `speech-2.6-turbo` | 上一代 |
+| `speech-02-hd` / `speech-02-turbo` | 历史版本 |
+| `speech-01-hd` / `speech-01-turbo` | 历史版本 |
+
+<Note>
+  `hd` 系列音质优先；`turbo` 系列时延优先、价格更低。所有模型请求格式完全一致。
+</Note>
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.upmore.net/v1/audio/speech \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "speech-2.8-hd",
+    "input": "你好，欢迎使用语音合成服务。",
+    "voice": "male-qn-qingse",
+    "response_format": "mp3"
+  }' --output speech.mp3
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+response = client.audio.speech.create(
+    model="speech-2.8-hd",
+    voice="male-qn-qingse",
+    input="你好，欢迎使用语音合成服务。",
+    response_format="mp3",
+)
+
+response.write_to_file("speech.mp3")
+```
+
+```typescript TypeScript
+import fs from 'node:fs'
+import OpenAI from 'openai'
+
+const client = new OpenAI({
+  apiKey: process.env.UPMORE_API_KEY,
+  baseURL: 'https://api.upmore.net/v1',
+})
+
+const speech = await client.audio.speech.create({
+  model: 'speech-2.8-hd',
+  voice: 'male-qn-qingse',
+  input: '你好，欢迎使用语音合成服务。',
+  response_format: 'mp3',
+})
+
+fs.writeFileSync('speech.mp3', Buffer.from(await speech.arrayBuffer()))
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | 上表中的任一模型 ID |
+| `input` | string | 是 | 要合成的文本，按字符数计费 |
+| `voice` | string | 是 | MiniMax 音色 ID（如 `male-qn-qingse`、`female-shaonv`），不是 OpenAI 的音色名 |
+| `response_format` | string | 否 | `mp3`（默认）、`wav`、`flac`、`aac`、`pcm` |
+| `speed` | number | 否 | 语速，`0.5` – `2`，默认 `1` |
+| `metadata` | object | 否 | 透传给上游的厂商专属字段 |
+
+## 进阶：厂商参数透传
+
+MiniMax 原生 T2A 接口支持的参数都可以通过 `metadata` 透传——整个对象会合并进上游请求体：
+
+```json
+"metadata": {
+  "voice_setting": { "emotion": "happy", "pitch": 0 },
+  "audio_setting": { "sample_rate": 32000, "bitrate": 128000 },
+  "language_boost": "Chinese"
+}
+```
+
+平台默认直接返回音频字节。设置 `"metadata": {"output_format": "url"}` 可改为 `302` 跳转到临时音频 URL（curl 需加 `-L`）。
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/minimax/speech"
+>
+  查看可交互的 API Playground。
+</Card>

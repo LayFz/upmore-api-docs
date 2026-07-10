@@ -1,0 +1,106 @@
+openapi: 3.1.0
+info:
+  title: MiniMax Speech (T2A)
+  description: MiniMax text-to-speech models via the Upmore OpenAI-compatible audio API
+  version: 1.0.0
+servers:
+  - url: https://api.upmore.net
+security:
+  - bearerAuth: []
+paths:
+  /v1/audio/speech:
+    post:
+      operationId: createSpeechMiniMax
+      summary: Create speech
+      description: Synthesizes audio from the input text and returns the audio bytes directly. Billing is per input character.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - input
+                - voice
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - speech-2.8-hd
+                    - speech-2.8-turbo
+                    - speech-2.6-hd
+                    - speech-2.6-turbo
+                    - speech-02-hd
+                    - speech-02-turbo
+                    - speech-01-hd
+                    - speech-01-turbo
+                  example: speech-2.8-hd
+                  description: The speech model to use. `hd` variants prioritize fidelity, `turbo` variants prioritize latency.
+                input:
+                  type: string
+                  example: 你好，欢迎使用语音合成服务。
+                  description: The text to synthesize. Billed per character.
+                voice:
+                  type: string
+                  example: male-qn-qingse
+                  description: MiniMax voice ID, e.g. `male-qn-qingse`, `female-shaonv`. Passed through to the provider as `voice_id`.
+                response_format:
+                  type: string
+                  enum: [mp3, wav, flac, aac, pcm]
+                  default: mp3
+                  description: Audio container format of the response.
+                speed:
+                  type: number
+                  minimum: 0.5
+                  maximum: 2
+                  default: 1
+                  description: Playback speed multiplier.
+                metadata:
+                  type: object
+                  additionalProperties: true
+                  description: 'Provider-specific fields merged into the upstream MiniMax request, e.g. {"voice_setting": {"emotion": "happy"}, "audio_setting": {"sample_rate": 32000}, "language_boost": "Chinese"}. Set {"output_format": "url"} to receive a 302 redirect to the audio URL instead of raw bytes.'
+      responses:
+        "200":
+          description: Audio synthesized successfully; the response body is the audio file.
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

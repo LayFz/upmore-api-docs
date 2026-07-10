@@ -1,18 +1,18 @@
 openapi: 3.1.0
 info:
-  title: Gemini Chat 兼容端点
-  description: 通过 AnyFast 使用 OpenAI 兼容格式调用 Gemini 模型
+  title: MiniMax M 系列
+  description: 通过 Upmore 的 OpenAI 兼容 API 调用 MiniMax M 系列对话模型
   version: 1.0.0
 servers:
-  - url: https://www.anyfast.ai
+  - url: https://api.upmore.net
 security:
   - bearerAuth: []
 paths:
   /v1/chat/completions:
     post:
-      operationId: createChatCompletionGemini
+      operationId: createChatCompletionMiniMaxMSeries
       summary: 对话补全
-      description: 使用 OpenAI 兼容格式调用 Gemini 模型生成回复。
+      description: 根据对话上下文生成模型回复。
       requestBody:
         required: true
         content:
@@ -26,18 +26,16 @@ paths:
                 model:
                   type: string
                   enum:
-                    - gemini-3.1-pro-preview
-                    - gemini-3.1-flash-image-preview
-                    - gemini-3.1-flash-lite-preview
-                    - gemini-3-pro-preview
-                    - gemini-3-pro-image-preview
-                    - gemini-3-flash-preview
-                    - gemini-2.5-pro
-                    - gemini-2.5-flash
-                    - gemini-2.5-flash-lite
-                    - gemini-2.0-flash
-                  description: 用于补全的 Gemini 模型 ID。
-                  example: gemini-2.5-pro
+                    - MiniMax-M3
+                    - MiniMax-M2.7
+                    - MiniMax-M2.7-highspeed
+                    - MiniMax-M2.5
+                    - MiniMax-M2.5-highspeed
+                    - MiniMax-M2.1
+                    - MiniMax-M2.1-highspeed
+                    - MiniMax-M2
+                  description: 用于补全的模型 ID。
+                  example: MiniMax-M3
                 messages:
                   type: array
                   minItems: 1
@@ -69,13 +67,13 @@ paths:
                   minimum: 0
                   maximum: 2
                   default: 1
-                  description: 采样温度，范围 0 到 2。
+                  description: 采样温度，范围 0 到 2。值越高输出越随机，值越低越确定。
                   example: 1
                 top_p:
                   type: number
                   minimum: 0
                   maximum: 1
-                  description: 核采样阈值。
+                  description: 核采样阈值，作为温度的替代方案。
                 frequency_penalty:
                   type: number
                   minimum: -2
@@ -91,14 +89,14 @@ paths:
                 stream:
                   type: boolean
                   default: false
-                  description: 如果为 true，将通过 SSE 流式发送部分消息。
+                  description: 如果为 true，将通过服务器发送事件 (SSE) 流式发送部分消息。
                 stop:
                   oneOf:
                     - type: string
                     - type: array
                       items:
                         type: string
-                  description: API 将在生成这些序列时停止继续生成。
+                  description: 最多 4 个序列，API 将在生成这些序列时停止继续生成。
                 n:
                   type: integer
                   minimum: 1
@@ -111,6 +109,19 @@ paths:
                       type: string
                       enum: [text, json_object]
                   description: '指定模型必须输出的格式。设置为 {"type": "json_object"} 可启用 JSON 模式。'
+                tools:
+                  type: array
+                  items:
+                    type: object
+                  description: 模型可调用的工具列表。目前仅支持函数作为工具。
+                tool_choice:
+                  oneOf:
+                    - type: string
+                    - type: object
+                  description: 控制模型调用哪个（如果有的话）工具。
+                user:
+                  type: string
+                  description: 代表最终用户的唯一标识符。
       responses:
         "200":
           description: 补全生成成功
@@ -159,7 +170,7 @@ components:
           description: 补全创建时的 Unix 时间戳。
         model:
           type: string
-          example: gemini-2.5-pro
+          example: MiniMax-M3
         choices:
           type: array
           items:
@@ -178,7 +189,7 @@ components:
                     example: 你好！有什么我可以帮助你的吗？
               finish_reason:
                 type: string
-                enum: [stop, length, content_filter, null]
+                enum: [stop, length, content_filter, tool_calls, null]
         usage:
           type: object
           properties:

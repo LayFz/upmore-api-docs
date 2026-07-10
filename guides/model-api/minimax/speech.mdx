@@ -1,0 +1,108 @@
+---
+title: "MiniMax Speech (T2A)"
+description: "MiniMax text-to-speech models, OpenAI-compatible audio API."
+---
+
+The MiniMax speech models are available through Upmore via the standard audio API (`/v1/audio/speech`). Send text, get audio bytes back — billing is per input character.
+
+## Available models
+
+| Model | Notes |
+|---|---|
+| `speech-2.8-hd` | Latest generation, high fidelity |
+| `speech-2.8-turbo` | Latest generation, low latency |
+| `speech-2.6-hd` / `speech-2.6-turbo` | Previous generation |
+| `speech-02-hd` / `speech-02-turbo` | Legacy |
+| `speech-01-hd` / `speech-01-turbo` | Legacy |
+
+<Note>
+  `hd` variants prioritize audio fidelity; `turbo` variants prioritize latency and cost less. All models share the same request format.
+</Note>
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.upmore.net/v1/audio/speech \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "speech-2.8-hd",
+    "input": "你好，欢迎使用语音合成服务。",
+    "voice": "male-qn-qingse",
+    "response_format": "mp3"
+  }' --output speech.mp3
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+response = client.audio.speech.create(
+    model="speech-2.8-hd",
+    voice="male-qn-qingse",
+    input="你好，欢迎使用语音合成服务。",
+    response_format="mp3",
+)
+
+response.write_to_file("speech.mp3")
+```
+
+```typescript TypeScript
+import fs from 'node:fs'
+import OpenAI from 'openai'
+
+const client = new OpenAI({
+  apiKey: process.env.UPMORE_API_KEY,
+  baseURL: 'https://api.upmore.net/v1',
+})
+
+const speech = await client.audio.speech.create({
+  model: 'speech-2.8-hd',
+  voice: 'male-qn-qingse',
+  input: '你好，欢迎使用语音合成服务。',
+  response_format: 'mp3',
+})
+
+fs.writeFileSync('speech.mp3', Buffer.from(await speech.arrayBuffer()))
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `model` | string | Yes | One of the model IDs from the table above |
+| `input` | string | Yes | Text to synthesize, billed per character |
+| `voice` | string | Yes | MiniMax voice ID (e.g. `male-qn-qingse`, `female-shaonv`) — not OpenAI voice names |
+| `response_format` | string | No | `mp3` (default), `wav`, `flac`, `aac`, or `pcm` |
+| `speed` | number | No | Playback speed, `0.5` – `2`. Default: `1` |
+| `metadata` | object | No | Provider-specific fields merged into the upstream request |
+
+## Advanced: provider passthrough
+
+Anything MiniMax's native T2A API supports can be passed through `metadata` — the object is merged into the upstream request body:
+
+```json
+"metadata": {
+  "voice_setting": { "emotion": "happy", "pitch": 0 },
+  "audio_setting": { "sample_rate": 32000, "bitrate": 128000 },
+  "language_boost": "Chinese"
+}
+```
+
+By default the platform returns the audio bytes directly. Set `"metadata": {"output_format": "url"}` to receive a `302` redirect to a temporary audio URL instead (use `curl -L`).
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/minimax/speech"
+>
+  View the interactive API playground.
+</Card>

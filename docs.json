@@ -87,7 +87,8 @@
                     "group": "MiniMax",
                     "icon": "/images/providers/minimax.svg",
                     "pages": [
-                      "guides/model-api/minimax/m-series"
+                      "guides/model-api/minimax/m-series",
+                      "guides/model-api/minimax/speech"
                     ]
                   }
                 ]
@@ -117,6 +118,19 @@
                     "pages": [
                       "api-reference/endpoints/doubao",
                       "api-reference/endpoints/doubao-responses"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Model APIs",
+                "pages": [
+                  {
+                    "group": "MiniMax",
+                    "icon": "/images/providers/minimax.svg",
+                    "pages": [
+                      "api-reference/model-api/minimax/m-series",
+                      "api-reference/model-api/minimax/speech"
                     ]
                   }
                 ]
@@ -185,7 +199,8 @@
                     "group": "MiniMax",
                     "icon": "/images/providers/minimax.svg",
                     "pages": [
-                      "zh/guides/model-api/minimax/m-series"
+                      "zh/guides/model-api/minimax/m-series",
+                      "zh/guides/model-api/minimax/speech"
                     ]
                   }
                 ]
@@ -215,6 +230,19 @@
                     "pages": [
                       "zh/api-reference/endpoints/doubao",
                       "zh/api-reference/endpoints/doubao-responses"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "模型 API",
+                "pages": [
+                  {
+                    "group": "MiniMax",
+                    "icon": "/images/providers/minimax.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/minimax/m-series",
+                      "zh/api-reference/model-api/minimax/speech"
                     ]
                   }
                 ]

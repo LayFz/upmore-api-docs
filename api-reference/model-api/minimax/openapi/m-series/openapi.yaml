@@ -1,18 +1,18 @@
 openapi: 3.1.0
 info:
-  title: Gemini Chat Compatible Endpoint
-  description: Google Gemini models via OpenAI-compatible chat completions endpoint on AnyFast
+  title: MiniMax M-series
+  description: MiniMax M-series chat models via the Upmore OpenAI-compatible API
   version: 1.0.0
 servers:
-  - url: https://www.anyfast.ai
+  - url: https://api.upmore.net
 security:
   - bearerAuth: []
 paths:
   /v1/chat/completions:
     post:
-      operationId: createChatCompletionGemini
+      operationId: createChatCompletionMiniMaxMSeries
       summary: Chat Completion
-      description: Creates a model response for Gemini models using OpenAI-compatible format.
+      description: Creates a model response for the given chat conversation.
       requestBody:
         required: true
         content:
@@ -26,18 +26,16 @@ paths:
                 model:
                   type: string
                   enum:
-                    - gemini-3.1-pro-preview
-                    - gemini-3.1-flash-image-preview
-                    - gemini-3.1-flash-lite-preview
-                    - gemini-3-pro-preview
-                    - gemini-3-pro-image-preview
-                    - gemini-3-flash-preview
-                    - gemini-2.5-pro
-                    - gemini-2.5-flash
-                    - gemini-2.5-flash-lite
-                    - gemini-2.0-flash
-                  description: Gemini model ID to use for completion.
-                  example: gemini-2.5-pro
+                    - MiniMax-M3
+                    - MiniMax-M2.7
+                    - MiniMax-M2.7-highspeed
+                    - MiniMax-M2.5
+                    - MiniMax-M2.5-highspeed
+                    - MiniMax-M2.1
+                    - MiniMax-M2.1-highspeed
+                    - MiniMax-M2
+                  description: Model ID to use for completion.
+                  example: MiniMax-M3
                 messages:
                   type: array
                   minItems: 1
@@ -69,13 +67,13 @@ paths:
                   minimum: 0
                   maximum: 2
                   default: 1
-                  description: Sampling temperature between 0 and 2.
+                  description: Sampling temperature between 0 and 2. Higher values make output more random, lower values more deterministic.
                   example: 1
                 top_p:
                   type: number
                   minimum: 0
                   maximum: 1
-                  description: Nucleus sampling threshold.
+                  description: Nucleus sampling threshold. An alternative to temperature.
                 frequency_penalty:
                   type: number
                   minimum: -2
@@ -98,7 +96,7 @@ paths:
                     - type: array
                       items:
                         type: string
-                  description: Sequences where the API will stop generating further tokens.
+                  description: Up to 4 sequences where the API will stop generating further tokens.
                 n:
                   type: integer
                   minimum: 1
@@ -111,6 +109,19 @@ paths:
                       type: string
                       enum: [text, json_object]
                   description: 'An object specifying the format that the model must output. Setting to {"type": "json_object"} enables JSON mode.'
+                tools:
+                  type: array
+                  items:
+                    type: object
+                  description: A list of tools the model may call. Currently, only functions are supported as a tool.
+                tool_choice:
+                  oneOf:
+                    - type: string
+                    - type: object
+                  description: Controls which (if any) tool is called by the model.
+                user:
+                  type: string
+                  description: A unique identifier representing your end-user.
       responses:
         "200":
           description: Completion generated successfully
@@ -159,7 +170,7 @@ components:
           description: Unix timestamp of when the completion was created.
         model:
           type: string
-          example: gemini-2.5-pro
+          example: MiniMax-M3
         choices:
           type: array
           items:
@@ -178,7 +189,7 @@ components:
                     example: Hello! How can I help you today?
               finish_reason:
                 type: string
-                enum: [stop, length, content_filter, null]
+                enum: [stop, length, content_filter, tool_calls, null]
         usage:
           type: object
           properties:

@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: Anthropic Claude Compatible Endpoint
-  description: Anthropic Messages API compatible endpoint supporting all Claude models via AnyFast
+  description: Anthropic Messages API compatible endpoint supporting all Claude models via Upmore
   version: 1.0.0
 servers:
-  - url: https://www.anyfast.ai
+  - url: https://api.upmore.net
 security:
   - bearerAuth: []
 paths:
@@ -27,18 +27,19 @@ paths:
                 model:
                   type: string
                   enum:
-                    - claude-sonnet-4-6
-                    - claude-sonnet-4-5-20250929
-                    - claude-sonnet-4-20250514
-                    - claude-opus-4-6
-                    - claude-opus-4-5-20251101
-                    - claude-opus-4-1-20250805
-                    - claude-opus-4-20250514
-                    - claude-haiku-4-5-20251001
-                    - claude-3-7-sonnet-20250219
-                    - claude-3-5-sonnet-20241022
+                    - MiniMax-M3
+                    - MiniMax-M2.7
+                    - MiniMax-M2.7-highspeed
+                    - MiniMax-M2.5
+                    - MiniMax-M2.5-highspeed
+                    - MiniMax-M2.1
+                    - MiniMax-M2.1-highspeed
+                    - MiniMax-M2
+                    - doubao-seed-2-1-pro
+                    - doubao-seed-2-1-turbo
+                    - gpt-5.5
                   description: The model that will complete your prompt.
-                  example: claude-sonnet-4-6
+                  example: MiniMax-M3
                 messages:
                   type: array
                   minItems: 1
@@ -239,7 +240,7 @@ components:
               text: Hello! How can I help you today?
         model:
           type: string
-          example: claude-sonnet-4-6
+          example: MiniMax-M3
         stop_reason:
           type: string
           enum: [end_turn, max_tokens, stop_sequence, tool_use, null]
