@@ -1,0 +1,131 @@
+openapi: 3.1.0
+info:
+  title: Doubao Embedding Vision
+  description: 通过 Upmore 的 OpenAI 兼容接口调用字节跳动多模态向量化
+  version: 1.0.0
+servers:
+  - url: https://api.upmore.net
+security:
+  - bearerAuth: []
+paths:
+  /v1/embeddings:
+    post:
+      operationId: createEmbeddingDoubaoVision
+      summary: 创建多模态向量
+      description: 将文本、图片或图文混合输入向量化为一个 2048 维向量。文本与图片 token 分开计价。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - input
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - doubao-embedding-vision
+                  example: doubao-embedding-vision
+                  description: 固定为 doubao-embedding-vision。
+                input:
+                  type: array
+                  description: 内容对象数组（方舟多模态格式）。纯文本也用数组形式。整个输入生成一个融合向量。
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum: [text, image_url]
+                      text:
+                        type: string
+                        description: 文本内容。用于 text 项。
+                      image_url:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                            description: 图片 URL 或 Base64 data URI。
+                  example:
+                    - type: text
+                      text: 一只在钢琴上打盹的橘猫
+                    - type: image_url
+                      image_url:
+                        url: https://example.com/cat.jpg
+      responses:
+        "200":
+          description: 向量化成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  object:
+                    type: string
+                    example: list
+                  model:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      object:
+                        type: string
+                        example: embedding
+                      embedding:
+                        type: array
+                        items:
+                          type: number
+                        description: 整个输入的 2048 维向量。
+                  usage:
+                    type: object
+                    properties:
+                      prompt_tokens:
+                        type: integer
+                      total_tokens:
+                        type: integer
+                      prompt_tokens_details:
+                        type: object
+                        properties:
+                          text_tokens:
+                            type: integer
+                            description: 按文本输入价计费。
+                          image_tokens:
+                            type: integer
+                            description: 按视觉输入价计费。
+        "400":
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: 触发限流
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

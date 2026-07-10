@@ -1,0 +1,103 @@
+---
+title: "Doubao Embedding Vision"
+description: "字节跳动多模态向量化模型——文本与图片统一向量空间。"
+---
+
+Doubao Embedding Vision 是字节跳动的多模态向量化模型，通过 Upmore 以标准 embeddings 接口（`/v1/embeddings`）提供服务。将文本和图片映射到同一个 2048 维向量空间，适合图文检索与语义搜索。
+
+## 核心能力
+
+- **多模态输入** — 文本、图片或图文混合输入，输出一个向量
+- **统一向量空间** — 文本向量与图片向量可直接比较
+- **2048 维** — 固定输出维度
+- **图文分价** — 文本输入与视觉输入分开计价，usage 按类型分别上报
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.upmore.net/v1/embeddings \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-embedding-vision",
+    "input": [
+      {"type": "text", "text": "一只在钢琴上打盹的橘猫"},
+      {"type": "image_url", "image_url": {"url": "https://example.com/cat.jpg"}}
+    ]
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://api.upmore.net/v1/embeddings",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "doubao-embedding-vision",
+        "input": [
+            {"type": "text", "text": "一只在钢琴上打盹的橘猫"},
+            {"type": "image_url", "image_url": {"url": "https://example.com/cat.jpg"}},
+        ],
+    },
+)
+
+result = response.json()
+embedding = result["data"]["embedding"]  # 2048 个浮点数
+print(len(embedding), result["usage"])
+```
+
+```typescript TypeScript
+const response = await fetch('https://api.upmore.net/v1/embeddings', {
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${process.env.UPMORE_API_KEY}`,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'doubao-embedding-vision',
+    input: [
+      { type: 'text', text: '一只在钢琴上打盹的橘猫' },
+      { type: 'image_url', image_url: { url: 'https://example.com/cat.jpg' } },
+    ],
+  }),
+})
+
+const result = await response.json()
+console.log(result.data.embedding.length, result.usage)
+```
+
+</CodeGroup>
+
+<Note>
+  与普通向量化模型不同，`input` 是**内容对象数组**（方舟多模态格式），不是纯字符串。纯文本也用这个格式：`[{"type": "text", "text": "..."}]`。一次请求对整个输入返回**一个融合向量**。
+</Note>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | 固定为 `doubao-embedding-vision` |
+| `input` | array | 是 | 内容对象：`{type: "text", text}` 和/或 `{type: "image_url", image_url: {url}}` |
+| `input[].image_url.url` | string | 图片项 | 图片 URL 或 Base64 data URI |
+
+## 响应说明
+
+| 字段 | 说明 |
+|---|---|
+| `data.embedding` | 整个输入的 2048 维浮点向量 |
+| `usage.prompt_tokens_details.text_tokens` | 文本 token——按文本价计费 |
+| `usage.prompt_tokens_details.image_tokens` | 图片 token——按视觉价计费（更高） |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/bytedance/embedding-vision"
+>
+  查看可交互的 API Playground。
+</Card>

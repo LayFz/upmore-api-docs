@@ -72,7 +72,8 @@
                       "guides/model-api/bytedance/seedance-2-0",
                       "guides/model-api/bytedance/seedance-2-0-fast",
                       "guides/model-api/bytedance/doubao-seedance-2-0-mini",
-                      "guides/model-api/bytedance/seedance-task-query"
+                      "guides/model-api/bytedance/seedance-task-query",
+                      "guides/model-api/bytedance/doubao-embedding-vision"
                     ]
                   },
                   {
@@ -131,7 +132,8 @@
                     "pages": [
                       "api-reference/model-api/bytedance/seedance/create",
                       "api-reference/model-api/bytedance/seedance/status",
-                      "api-reference/model-api/bytedance/seedream"
+                      "api-reference/model-api/bytedance/seedream",
+                      "api-reference/model-api/bytedance/embedding-vision"
                     ]
                   },
                   {
@@ -201,7 +203,8 @@
                       "zh/guides/model-api/bytedance/seedance-2-0",
                       "zh/guides/model-api/bytedance/seedance-2-0-fast",
                       "zh/guides/model-api/bytedance/doubao-seedance-2-0-mini",
-                      "zh/guides/model-api/bytedance/seedance-task-query"
+                      "zh/guides/model-api/bytedance/seedance-task-query",
+                      "zh/guides/model-api/bytedance/doubao-embedding-vision"
                     ]
                   },
                   {
@@ -260,7 +263,8 @@
                     "pages": [
                       "zh/api-reference/model-api/bytedance/seedance/create",
                       "zh/api-reference/model-api/bytedance/seedance/status",
-                      "zh/api-reference/model-api/bytedance/seedream"
+                      "zh/api-reference/model-api/bytedance/seedream",
+                      "zh/api-reference/model-api/bytedance/embedding-vision"
                     ]
                   },
                   {

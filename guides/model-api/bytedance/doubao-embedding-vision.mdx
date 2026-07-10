@@ -1,0 +1,103 @@
+---
+title: "Doubao Embedding Vision"
+description: "ByteDance multimodal embedding model — text and images in one vector space."
+---
+
+Doubao Embedding Vision is ByteDance's multimodal embedding model, available through Upmore via the standard embeddings API (`/v1/embeddings`). It maps text and images into a single 2048-dimension vector space — ideal for image-text retrieval and semantic search.
+
+## Key capabilities
+
+- **Multimodal input** — Embed text, an image, or a combined text+image input into one vector
+- **Unified vector space** — Text and image vectors are directly comparable
+- **2048 dimensions** — Fixed output dimension
+- **Split billing** — Text input and vision input are billed at separate rates; usage is reported per type
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.upmore.net/v1/embeddings \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "doubao-embedding-vision",
+    "input": [
+      {"type": "text", "text": "A ginger cat napping on a piano"},
+      {"type": "image_url", "image_url": {"url": "https://example.com/cat.jpg"}}
+    ]
+  }'
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    "https://api.upmore.net/v1/embeddings",
+    headers={
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "doubao-embedding-vision",
+        "input": [
+            {"type": "text", "text": "A ginger cat napping on a piano"},
+            {"type": "image_url", "image_url": {"url": "https://example.com/cat.jpg"}},
+        ],
+    },
+)
+
+result = response.json()
+embedding = result["data"]["embedding"]  # 2048 floats
+print(len(embedding), result["usage"])
+```
+
+```typescript TypeScript
+const response = await fetch('https://api.upmore.net/v1/embeddings', {
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${process.env.UPMORE_API_KEY}`,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'doubao-embedding-vision',
+    input: [
+      { type: 'text', text: 'A ginger cat napping on a piano' },
+      { type: 'image_url', image_url: { url: 'https://example.com/cat.jpg' } },
+    ],
+  }),
+})
+
+const result = await response.json()
+console.log(result.data.embedding.length, result.usage)
+```
+
+</CodeGroup>
+
+<Note>
+  Unlike standard embedding models, `input` is an **array of content objects** (Ark multimodal format), not a plain string. Text-only input also uses this format: `[{"type": "text", "text": "..."}]`. One request returns **one fused embedding** for the whole input.
+</Note>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `model` | string | Yes | Must be `doubao-embedding-vision` |
+| `input` | array | Yes | Content objects: `{type: "text", text}` and/or `{type: "image_url", image_url: {url}}` |
+| `input[].image_url.url` | string | Image items | Image URL or Base64 data URI |
+
+## Response
+
+| Field | Description |
+|---|---|
+| `data.embedding` | 2048-dimension float vector for the whole input |
+| `usage.prompt_tokens_details.text_tokens` | Text tokens — billed at the text rate |
+| `usage.prompt_tokens_details.image_tokens` | Image tokens — billed at the vision rate (higher) |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/bytedance/embedding-vision"
+>
+  View the interactive API playground.
+</Card>
