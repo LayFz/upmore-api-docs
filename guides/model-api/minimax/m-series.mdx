@@ -25,6 +25,8 @@ The MiniMax M-series text models are available through Upmore via the standard C
 ## Key capabilities
 
 - **Chat Completions API** — Standard `/v1/chat/completions` endpoint with `messages`
+- **Reasoning** — Thinks before answering; the chain-of-thought is returned in `reasoning_content` alongside the reply (budget `max_tokens` accordingly)
+- **Anthropic-compatible** — Also callable via `/v1/messages` in Claude message format
 - **Streaming** — Supports real-time token streaming via SSE
 - **Tool use** — Supports function calling and tool use
 

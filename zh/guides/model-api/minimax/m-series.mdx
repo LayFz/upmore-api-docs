@@ -25,6 +25,8 @@ MiniMax M 系列文本模型通过 Upmore 以标准 Chat Completions API（`/v1/
 ## 核心能力
 
 - **Chat Completions API** — 标准 `/v1/chat/completions` 端点，使用 `messages` 格式
+- **推理** — 回答前先思考，思维链通过 `reasoning_content` 字段随回复返回（`max_tokens` 需留足思考预算）
+- **Anthropic 兼容** — 也可通过 `/v1/messages` 以 Claude 消息格式调用
 - **流式输出** — 通过 SSE 实现实时 Token 流式传输
 - **工具调用** — 支持函数调用和工具使用
 
