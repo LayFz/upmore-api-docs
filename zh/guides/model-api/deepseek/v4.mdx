@@ -1,0 +1,106 @@
+---
+title: "DeepSeek V4"
+description: "DeepSeek V4 推理对话模型（flash / pro），OpenAI 兼容。"
+---
+
+DeepSeek V4 模型通过 Upmore 以标准 Chat Completions API（`/v1/chat/completions`）提供服务。两个型号都是推理模型——回答前先思考，思维链通过 `reasoning_content` 字段随回复一起流式返回。
+
+## 可用模型
+
+| 模型 | 说明 |
+|---|---|
+| `deepseek-v4-pro` | 旗舰——推理与代码能力最强 |
+| `deepseek-v4-flash` | 轻量——低延迟低价格，适合日常对话与高并发场景 |
+
+<Note>
+  推理 token 按**输出 token** 计费。`max_tokens` 要留足——思考阶段会先消耗一部分预算，然后才输出正式回答。
+</Note>
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.upmore.net/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "deepseek-v4-pro",
+    "messages": [
+      { "role": "user", "content": "用简单的语言解释量子纠缠。" }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+response = client.chat.completions.create(
+    model="deepseek-v4-pro",
+    messages=[
+        {"role": "user", "content": "用简单的语言解释量子纠缠。"}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+```python Streaming
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+stream = client.chat.completions.create(
+    model="deepseek-v4-flash",
+    messages=[
+        {"role": "user", "content": "写一首关于大海的短诗。"}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    delta = chunk.choices[0].delta if chunk.choices else None
+    if delta and getattr(delta, "reasoning_content", None):
+        print(delta.reasoning_content, end="")   # 思考阶段
+    elif delta and delta.content:
+        print(delta.content, end="")             # 正式回答
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | `deepseek-v4-pro` 或 `deepseek-v4-flash` |
+| `messages` | array | 是 | `{ role, content }` 对象列表 |
+| `stream` | boolean | 否 | 开启 SSE 流式输出。默认：`false` |
+| `temperature` | float | 否 | 控制随机性。默认：`1` |
+| `top_p` | float | 否 | 核采样阈值。默认：`1` |
+| `max_tokens` | integer | 否 | 最大输出 token 数（**含推理 token**） |
+| `stop` | string / array | 否 | 终止生成的序列 |
+| `tools` | array | 否 | 模型可调用的工具列表 |
+
+## 响应说明
+
+| 字段 | 说明 |
+|---|---|
+| `choices[].message.reasoning_content` | 模型的思维链（流式时为 `delta.reasoning_content`） |
+| `usage.completion_tokens_details.reasoning_tokens` | 消耗的推理 token——计入 `completion_tokens` |
+| `usage.prompt_tokens_details.cached_tokens` | 命中提示词缓存的 token |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/deepseek/v4"
+>
+  查看可交互的 API Playground。
+</Card>

@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: ChatGPT Compatible Endpoint
-  description: OpenAI-compatible chat completions endpoint supporting all chat models via Upmore
+  title: DeepSeek V4
+  description: DeepSeek V4 reasoning chat models via the Upmore OpenAI-compatible API
   version: 1.0.0
 servers:
   - url: https://api.upmore.net
@@ -10,7 +10,7 @@ security:
 paths:
   /v1/chat/completions:
     post:
-      operationId: createChatCompletionCompatible
+      operationId: createChatCompletionDeepSeekV4
       summary: Chat Completion
       description: Creates a model response for the given chat conversation.
       requestBody:
@@ -26,21 +26,10 @@ paths:
                 model:
                   type: string
                   enum:
-                    - MiniMax-M3
-                    - MiniMax-M2.7
-                    - MiniMax-M2.7-highspeed
-                    - MiniMax-M2.5
-                    - MiniMax-M2.5-highspeed
-                    - MiniMax-M2.1
-                    - MiniMax-M2.1-highspeed
-                    - MiniMax-M2
-                    - doubao-seed-2-1-pro
-                    - doubao-seed-2-1-turbo
-                    - gpt-5.5
                     - deepseek-v4-pro
                     - deepseek-v4-flash
                   description: Model ID to use for completion.
-                  example: MiniMax-M3
+                  example: deepseek-v4-pro
                 messages:
                   type: array
                   minItems: 1
@@ -175,7 +164,7 @@ components:
           description: Unix timestamp of when the completion was created.
         model:
           type: string
-          example: MiniMax-M3
+          example: deepseek-v4-pro
         choices:
           type: array
           items:

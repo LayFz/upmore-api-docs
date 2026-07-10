@@ -37,6 +37,8 @@ paths:
                     - doubao-seed-2-1-pro
                     - doubao-seed-2-1-turbo
                     - gpt-5.5
+                    - deepseek-v4-pro
+                    - deepseek-v4-flash
                   description: 用于补全的模型 ID。
                   example: MiniMax-M3
                 messages:

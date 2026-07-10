@@ -1,0 +1,106 @@
+---
+title: "DeepSeek V4"
+description: "DeepSeek V4 reasoning chat models (flash / pro), OpenAI-compatible."
+---
+
+The DeepSeek V4 models are available through Upmore via the standard Chat Completions API (`/v1/chat/completions`). Both are reasoning models — they think before answering and stream a `reasoning_content` field alongside the reply.
+
+## Available models
+
+| Model | Notes |
+|---|---|
+| `deepseek-v4-pro` | Flagship — strongest reasoning and coding |
+| `deepseek-v4-flash` | Light — low latency and cost, good for everyday chat and high-concurrency use |
+
+<Note>
+  Reasoning tokens are billed as **completion tokens**. Set `max_tokens` generously — the thinking phase consumes part of the budget before the visible answer starts.
+</Note>
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.upmore.net/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "deepseek-v4-pro",
+    "messages": [
+      { "role": "user", "content": "Explain quantum entanglement in one paragraph." }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+response = client.chat.completions.create(
+    model="deepseek-v4-pro",
+    messages=[
+        {"role": "user", "content": "Explain quantum entanglement in one paragraph."}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+```python Streaming
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+stream = client.chat.completions.create(
+    model="deepseek-v4-flash",
+    messages=[
+        {"role": "user", "content": "Write a short poem about the sea."}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    delta = chunk.choices[0].delta if chunk.choices else None
+    if delta and getattr(delta, "reasoning_content", None):
+        print(delta.reasoning_content, end="")   # thinking phase
+    elif delta and delta.content:
+        print(delta.content, end="")             # final answer
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `model` | string | Yes | `deepseek-v4-pro` or `deepseek-v4-flash` |
+| `messages` | array | Yes | List of `{ role, content }` objects |
+| `stream` | boolean | No | Enable SSE streaming. Default: `false` |
+| `temperature` | float | No | Controls randomness. Default: `1` |
+| `top_p` | float | No | Nucleus sampling threshold. Default: `1` |
+| `max_tokens` | integer | No | Max output tokens **including reasoning tokens** |
+| `stop` | string / array | No | Sequences that stop generation |
+| `tools` | array | No | List of tools the model may call |
+
+## Response notes
+
+| Field | Description |
+|---|---|
+| `choices[].message.reasoning_content` | The model's chain-of-thought (streamed as `delta.reasoning_content`) |
+| `usage.completion_tokens_details.reasoning_tokens` | Reasoning tokens spent — part of `completion_tokens` |
+| `usage.prompt_tokens_details.cached_tokens` | Prompt cache hits |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/deepseek/v4"
+>
+  View the interactive API playground.
+</Card>
