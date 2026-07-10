@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Upmore",
-  "description": "Upmore API documentation — unified access to AI models from ByteDance and OpenAI.",
+  "description": "Upmore API documentation — unified access to AI models from ByteDance, OpenAI, and MiniMax.",
   "seo": {
     "indexHiddenPages": false,
     "metatags": {
@@ -81,6 +81,13 @@
                     "pages": [
                       "guides/model-api/openai/gpt-5-5",
                       "guides/model-api/openai/gpt-image-2"
+                    ]
+                  },
+                  {
+                    "group": "MiniMax",
+                    "icon": "/images/providers/minimax.svg",
+                    "pages": [
+                      "guides/model-api/minimax/m-series"
                     ]
                   }
                 ]
@@ -172,6 +179,13 @@
                     "pages": [
                       "zh/guides/model-api/openai/gpt-5-5",
                       "zh/guides/model-api/openai/gpt-image-2"
+                    ]
+                  },
+                  {
+                    "group": "MiniMax",
+                    "icon": "/images/providers/minimax.svg",
+                    "pages": [
+                      "zh/guides/model-api/minimax/m-series"
                     ]
                   }
                 ]

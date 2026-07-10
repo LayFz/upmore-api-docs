@@ -1,0 +1,99 @@
+---
+title: "MiniMax M-series"
+description: "MiniMax M-series chat models (M2 – M3), OpenAI-compatible."
+---
+
+The MiniMax M-series text models are available through Upmore via the standard Chat Completions API (`/v1/chat/completions`). All models in the series share the same request and response format — switch between them by changing the `model` parameter.
+
+## Available models
+
+| Model | Notes |
+|---|---|
+| `MiniMax-M3` | Latest generation |
+| `MiniMax-M2.7` | |
+| `MiniMax-M2.7-highspeed` | High-speed variant of M2.7 |
+| `MiniMax-M2.5` | |
+| `MiniMax-M2.5-highspeed` | High-speed variant of M2.5 |
+| `MiniMax-M2.1` | |
+| `MiniMax-M2.1-highspeed` | High-speed variant of M2.1 |
+| `MiniMax-M2` | |
+
+<Note>
+  The `-highspeed` variants accept the same parameters and return the same response format as their standard counterparts. They run on faster inference infrastructure and are billed at a higher rate — pick them when latency matters more than cost.
+</Note>
+
+## Key capabilities
+
+- **Chat Completions API** — Standard `/v1/chat/completions` endpoint with `messages`
+- **Streaming** — Supports real-time token streaming via SSE
+- **Tool use** — Supports function calling and tool use
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.upmore.net/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "MiniMax-M3",
+    "messages": [
+      { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+response = client.chat.completions.create(
+    model="MiniMax-M3",
+    messages=[
+        {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+```python Streaming
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+stream = client.chat.completions.create(
+    model="MiniMax-M2.7-highspeed",
+    messages=[
+        {"role": "user", "content": "Write a short poem about the sea."}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    if chunk.choices and chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="")
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `model` | string | Yes | One of the model IDs from the table above |
+| `messages` | array | Yes | List of `{ role, content }` objects |
+| `stream` | boolean | No | Enable SSE streaming. Default: `false` |
+| `temperature` | float | No | Controls randomness. Default: `1` |
+| `top_p` | float | No | Nucleus sampling threshold. Default: `1` |
+| `max_tokens` | integer | No | Maximum output tokens to generate |
+| `stop` | string / array | No | Sequences that stop generation |
+| `tools` | array | No | List of tools the model may call |

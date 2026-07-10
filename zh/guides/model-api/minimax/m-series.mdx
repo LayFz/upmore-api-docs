@@ -1,0 +1,99 @@
+---
+title: "MiniMax M 系列"
+description: "MiniMax M 系列对话模型（M2 – M3），OpenAI 兼容。"
+---
+
+MiniMax M 系列文本模型通过 Upmore 以标准 Chat Completions API（`/v1/chat/completions`）提供服务。系列内所有模型的请求和响应格式完全一致——只需修改 `model` 参数即可切换。
+
+## 可用模型
+
+| 模型 | 说明 |
+|---|---|
+| `MiniMax-M3` | 最新一代 |
+| `MiniMax-M2.7` | |
+| `MiniMax-M2.7-highspeed` | M2.7 高速版 |
+| `MiniMax-M2.5` | |
+| `MiniMax-M2.5-highspeed` | M2.5 高速版 |
+| `MiniMax-M2.1` | |
+| `MiniMax-M2.1-highspeed` | M2.1 高速版 |
+| `MiniMax-M2` | |
+
+<Note>
+  `-highspeed` 高速版与对应标准版的参数和响应格式完全相同，区别在于运行在更快的推理基础设施上、计费更高——对延迟敏感、对成本不敏感的场景选高速版。
+</Note>
+
+## 核心能力
+
+- **Chat Completions API** — 标准 `/v1/chat/completions` 端点，使用 `messages` 格式
+- **流式输出** — 通过 SSE 实现实时 Token 流式传输
+- **工具调用** — 支持函数调用和工具使用
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.upmore.net/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "MiniMax-M3",
+    "messages": [
+      { "role": "user", "content": "用简单的语言解释量子纠缠。" }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+response = client.chat.completions.create(
+    model="MiniMax-M3",
+    messages=[
+        {"role": "user", "content": "用简单的语言解释量子纠缠。"}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+```python Streaming
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+stream = client.chat.completions.create(
+    model="MiniMax-M2.7-highspeed",
+    messages=[
+        {"role": "user", "content": "写一首关于大海的短诗。"}
+    ],
+    stream=True
+)
+
+for chunk in stream:
+    if chunk.choices and chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="")
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | 上表中的任一模型 ID |
+| `messages` | array | 是 | `{ role, content }` 对象列表 |
+| `stream` | boolean | 否 | 开启 SSE 流式输出。默认：`false` |
+| `temperature` | float | 否 | 控制随机性。默认：`1` |
+| `top_p` | float | 否 | 核采样阈值。默认：`1` |
+| `max_tokens` | integer | 否 | 生成的最大输出 Token 数 |
+| `stop` | string / array | 否 | 终止生成的序列 |
+| `tools` | array | 否 | 模型可调用的工具列表 |
