@@ -1,0 +1,129 @@
+openapi: 3.1.0
+info:
+  title: GPT Image 2
+  description: 通过 Upmore 的 OpenAI 兼容接口调用 OpenAI GPT Image 2 图片生成
+  version: 1.0.0
+servers:
+  - url: https://api.upmore.net
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/generations:
+    post:
+      operationId: createImageGPTImage2
+      summary: 生成图片
+      description: 根据文本提示词生成图片，返回 base64 编码的图片数据。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - gpt-image-2
+                  example: gpt-image-2
+                  description: 固定为 gpt-image-2。
+                prompt:
+                  type: string
+                  example: A serene koi pond at sunset, ukiyo-e style
+                  description: 目标图片的文本描述。
+                n:
+                  type: integer
+                  minimum: 1
+                  maximum: 4
+                  default: 1
+                  description: 生成图片数量。
+                size:
+                  type: string
+                  default: 1024x1024
+                  description: "{width}x{height} 格式。边长须为 16 的倍数，宽高比 ≤ 3:1，总像素 655,360–8,294,400，最长边 3,840px。"
+                quality:
+                  type: string
+                  enum: [low, medium, high]
+                  default: medium
+                  description: 渲染质量。
+                output_format:
+                  type: string
+                  enum: [png, webp, jpeg]
+                  default: png
+                  description: 输出图片格式。
+                moderation:
+                  type: string
+                  enum: [auto, low]
+                  default: auto
+                  description: 内容审核严格程度。
+                output_compression:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: jpeg/webp 输出的压缩等级。
+      responses:
+        "200":
+          description: 生成成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: integer
+                    description: 生成时间戳（Unix 秒）。
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        b64_json:
+                          type: string
+                          description: base64 编码的图片数据。
+                  usage:
+                    type: object
+                    properties:
+                      input_tokens:
+                        type: integer
+                      output_tokens:
+                        type: integer
+                      total_tokens:
+                        type: integer
+        "400":
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: 触发限流
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

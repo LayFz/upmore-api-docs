@@ -1,0 +1,129 @@
+openapi: 3.1.0
+info:
+  title: GPT Image 2
+  description: OpenAI GPT Image 2 image generation via the Upmore OpenAI-compatible API
+  version: 1.0.0
+servers:
+  - url: https://api.upmore.net
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/generations:
+    post:
+      operationId: createImageGPTImage2
+      summary: Generate image
+      description: Generates images from a text prompt. Returns base64-encoded image data.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - gpt-image-2
+                  example: gpt-image-2
+                  description: Must be gpt-image-2.
+                prompt:
+                  type: string
+                  example: A serene koi pond at sunset, ukiyo-e style
+                  description: Text description of the desired image.
+                n:
+                  type: integer
+                  minimum: 1
+                  maximum: 4
+                  default: 1
+                  description: Number of images to generate.
+                size:
+                  type: string
+                  default: 1024x1024
+                  description: "{width}x{height}. Edges must be multiples of 16, aspect ratio <= 3:1, total pixels 655,360-8,294,400, max edge 3,840px."
+                quality:
+                  type: string
+                  enum: [low, medium, high]
+                  default: medium
+                  description: Rendering quality.
+                output_format:
+                  type: string
+                  enum: [png, webp, jpeg]
+                  default: png
+                  description: Output image format.
+                moderation:
+                  type: string
+                  enum: [auto, low]
+                  default: auto
+                  description: Content moderation strictness.
+                output_compression:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: Compression level for jpeg/webp output.
+      responses:
+        "200":
+          description: Images generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: integer
+                    description: Unix timestamp of the generation.
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        b64_json:
+                          type: string
+                          description: Base64-encoded image data.
+                  usage:
+                    type: object
+                    properties:
+                      input_tokens:
+                        type: integer
+                      output_tokens:
+                        type: integer
+                      total_tokens:
+                        type: integer
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

@@ -1,0 +1,133 @@
+openapi: 3.1.0
+info:
+  title: Seedream 5.0 Image Generation
+  description: ByteDance Seedream image generation via the Upmore OpenAI-compatible API
+  version: 1.0.0
+servers:
+  - url: https://api.upmore.net
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/generations:
+    post:
+      operationId: createSeedreamImage
+      summary: Generate image
+      description: Generates images from a text prompt, optionally guided by reference images (image-to-image).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - doubao-seedream-5-0
+                    - doubao-seedream-5-0-pro
+                  example: doubao-seedream-5-0
+                  description: The image generation model to use.
+                prompt:
+                  type: string
+                  example: A serene mountain landscape at sunrise with misty valleys
+                  description: Text prompt for image generation.
+                image:
+                  type: array
+                  items:
+                    type: string
+                  description: Reference image URLs for image-to-image generation.
+                sequential_image_generation:
+                  type: string
+                  enum: [auto, disabled]
+                  description: Set to auto to enable batch generation.
+                sequential_image_generation_options:
+                  type: object
+                  properties:
+                    max_images:
+                      type: integer
+                  description: Batch generation options.
+                size:
+                  type: string
+                  default: 1024x1024
+                  example: 1024x1024
+                  description: Output image size, e.g. 1024x1024 or 2K.
+                watermark:
+                  type: boolean
+                  default: false
+                  description: Add a watermark to the output image.
+                seed:
+                  type: integer
+                  description: Random seed for reproducibility.
+                logo_info:
+                  type: object
+                  properties:
+                    add_logo:
+                      type: boolean
+                    position:
+                      type: integer
+                    language:
+                      type: integer
+                    opacity:
+                      type: number
+                  description: Logo overlay configuration.
+      responses:
+        "200":
+          description: Images generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: integer
+                    description: Unix timestamp of the generation.
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: Generated image URL.
+                        b64_json:
+                          type: string
+                          description: Base64-encoded image when requested.
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

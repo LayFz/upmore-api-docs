@@ -1,0 +1,227 @@
+openapi: 3.1.0
+info:
+  title: Seedance 2.0 视频生成
+  description: 通过 Upmore 异步任务接口调用字节跳动 Seedance 视频生成
+  version: 1.0.0
+servers:
+  - url: https://api.upmore.net
+security:
+  - bearerAuth: []
+paths:
+  /v1/video/generations:
+    post:
+      operationId: createSeedanceVideoTask
+      summary: 创建视频任务
+      description: 创建异步视频生成任务。用任务查询接口轮询结果，生成通常需要 1–5 分钟。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - content
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - doubao-seedance-2-0
+                    - doubao-seedance-2-0-fast
+                    - doubao-seedance-2-0-mini
+                  example: doubao-seedance-2-0
+                  description: 使用的视频生成模型。
+                content:
+                  type: array
+                  description: 输入内容数组。文生视频只需一个 text 项；图生视频、多模态参考、视频编辑/延展需追加 image_url / video_url / audio_url 项。首帧、首尾帧、多模态参考三种模式互斥。
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum: [text, image_url, video_url, audio_url]
+                      text:
+                        type: string
+                        description: 文本提示词（中文最长 500 字 / 英文 1000 词）。用于 text 项。
+                      image_url:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                            description: 图片 URL、Base64 data URI 或 asset://<ID>。
+                      video_url:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                            description: 视频 URL 或 asset://<ID>（mp4/mov，最大 50 MB，2–15 秒）。
+                      audio_url:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                            description: 音频 URL、Base64 data URI 或 asset://<ID>（wav/mp3，最大 15 MB）。
+                      role:
+                        type: string
+                        enum: [first_frame, last_frame, reference_image, reference_video, reference_audio]
+                        description: 该项的用途。纯文本或单张首帧图可省略。
+                  example:
+                    - type: text
+                      text: A cat playing piano in a sunlit room, cinematic lighting
+                generate_audio:
+                  type: boolean
+                  default: true
+                  description: 生成同步的人声、音效和背景音乐。
+                resolution:
+                  type: string
+                  enum: [480p, 720p, 1080p]
+                  default: 720p
+                  description: 输出分辨率。
+                ratio:
+                  type: string
+                  enum: ["16:9", "4:3", "1:1", "3:4", "9:16", "21:9", adaptive]
+                  default: adaptive
+                  description: 输出画面比例。
+                duration:
+                  type: integer
+                  minimum: 4
+                  maximum: 15
+                  default: 5
+                  description: 视频时长（秒）。
+                tools:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum: [web_search]
+                  description: 开启联网搜索增强生成（仅文生视频）。
+                watermark:
+                  type: boolean
+                  default: false
+                  description: 输出视频添加水印。
+      responses:
+        "200":
+          description: 任务创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task_id:
+                    type: string
+                    example: asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E
+                    description: 平台任务 ID，传给任务查询接口。
+        "400":
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: 触发限流
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/video/generations/{task_id}:
+    get:
+      operationId: getSeedanceVideoTask
+      summary: 查询视频任务
+      description: 轮询视频生成任务。建议约 15 秒轮询一次，直到 status 为 SUCCESS 或 FAILURE。结果 URL 有效期 24 小时，请及时下载；失败会自动退回额度。
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E
+          description: 创建接口返回的任务 ID。
+      responses:
+        "200":
+          description: 任务状态
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      task_id:
+                        type: string
+                        example: asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E
+                      action:
+                        type: string
+                        enum: [generate, referenceGenerate, firstTailGenerate, omniGenerate]
+                        description: 任务子类型。
+                      status:
+                        type: string
+                        enum: [NOT_START, QUEUED, IN_PROGRESS, SUCCESS, FAILURE]
+                        description: 持续轮询直到 SUCCESS 或 FAILURE。
+                      result_url:
+                        type: string
+                        description: 预签名视频下载 URL，有效期 24 小时。失败时无此字段。
+                      fail_reason:
+                        type: string
+                        description: 失败时的错误信息。
+                      submit_time:
+                        type: integer
+                        description: 提交时间戳（Unix 秒）。
+                      start_time:
+                        type: integer
+                        description: 上游开始时间戳；未开始为 0。
+                      finish_time:
+                        type: integer
+                        description: 完成时间戳。
+                      progress:
+                        type: string
+                        example: "100%"
+                      request_id:
+                        type: string
+                      data:
+                        type: object
+                        description: 上游原始输出（video_url、duration、ratio、resolution、fps、seed、usage 等）。
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: 任务不存在
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

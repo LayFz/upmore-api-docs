@@ -126,6 +126,23 @@
                 "group": "Model APIs",
                 "pages": [
                   {
+                    "group": "ByteDance",
+                    "icon": "/images/providers/bytedance.svg",
+                    "pages": [
+                      "api-reference/model-api/bytedance/seedance/create",
+                      "api-reference/model-api/bytedance/seedance/status",
+                      "api-reference/model-api/bytedance/seedream"
+                    ]
+                  },
+                  {
+                    "group": "OpenAI",
+                    "icon": "/images/providers/openai.svg",
+                    "pages": [
+                      "api-reference/model-api/openai/gpt-5-5",
+                      "api-reference/model-api/openai/gpt-image-2"
+                    ]
+                  },
+                  {
                     "group": "MiniMax",
                     "icon": "/images/providers/minimax.svg",
                     "pages": [
@@ -237,6 +254,23 @@
               {
                 "group": "模型 API",
                 "pages": [
+                  {
+                    "group": "ByteDance",
+                    "icon": "/images/providers/bytedance.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/bytedance/seedance/create",
+                      "zh/api-reference/model-api/bytedance/seedance/status",
+                      "zh/api-reference/model-api/bytedance/seedream"
+                    ]
+                  },
+                  {
+                    "group": "OpenAI",
+                    "icon": "/images/providers/openai.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/openai/gpt-5-5",
+                      "zh/api-reference/model-api/openai/gpt-image-2"
+                    ]
+                  },
                   {
                     "group": "MiniMax",
                     "icon": "/images/providers/minimax.svg",

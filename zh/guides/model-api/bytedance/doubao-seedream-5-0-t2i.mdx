@@ -20,7 +20,7 @@ curl https://api.upmore.net/v1/images/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "doubao-seedream-5-0-260128",
+    "model": "doubao-seedream-5-0",
     "prompt": "日出时分宁静的山景，山谷间弥漫着薄雾",
     "size": "1024x1024",
     "watermark": false
@@ -37,7 +37,7 @@ response = requests.post(
         "Content-Type": "application/json"
     },
     json={
-        "model": "doubao-seedream-5-0-260128",
+        "model": "doubao-seedream-5-0",
         "prompt": "日出时分宁静的山景，山谷间弥漫着薄雾",
         "size": "1024x1024",
         "watermark": False
@@ -54,10 +54,18 @@ print(f"任务 ID: {task['id']}")
 
 | 参数 | 类型 | 必填 | 说明 |
 |---|---|---|---|
-| `model` | string | 是 | 固定为 `doubao-seedream-5-0-260128` |
+| `model` | string | 是 | 固定为 `doubao-seedream-5-0` |
 | `prompt` | string | 是 | 图片生成提示词 |
 | `size` | string | 否 | 输出图片尺寸，如 `1024x1024`、`2K` |
 | `watermark` | boolean | 否 | 默认 `false` |
 | `seed` | integer | 否 | 随机种子 |
 | `logo_info` | object | 否 | Logo 配置：`add_logo`、`position`、`language`、`opacity` |
 
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/bytedance/seedream"
+>
+  查看可交互的 API Playground。
+</Card>

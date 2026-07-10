@@ -20,7 +20,7 @@ curl https://api.upmore.net/v1/images/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "doubao-seedream-5-0-260128",
+    "model": "doubao-seedream-5-0",
     "prompt": "A serene mountain landscape at sunrise with misty valleys",
     "size": "1024x1024",
     "watermark": false
@@ -37,7 +37,7 @@ response = requests.post(
         "Content-Type": "application/json"
     },
     json={
-        "model": "doubao-seedream-5-0-260128",
+        "model": "doubao-seedream-5-0",
         "prompt": "A serene mountain landscape at sunrise with misty valleys",
         "size": "1024x1024",
         "watermark": False
@@ -54,10 +54,18 @@ print(f"Task ID: {task['id']}")
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `model` | string | Yes | Must be `doubao-seedream-5-0-260128` |
+| `model` | string | Yes | Must be `doubao-seedream-5-0` |
 | `prompt` | string | Yes | Text prompt for image generation |
 | `size` | string | No | Output image size, e.g. `1024x1024`, `2K` |
 | `watermark` | boolean | No | Default: `false` |
 | `seed` | integer | No | Random seed for reproducibility |
 | `logo_info` | object | No | Logo config: `add_logo`, `position`, `language`, `opacity` |
 
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/bytedance/seedream"
+>
+  View the interactive API playground.
+</Card>

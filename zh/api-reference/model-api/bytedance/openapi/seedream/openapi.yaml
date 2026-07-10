@@ -1,0 +1,133 @@
+openapi: 3.1.0
+info:
+  title: Seedream 5.0 图片生成
+  description: 通过 Upmore 的 OpenAI 兼容接口调用字节跳动 Seedream 图片生成
+  version: 1.0.0
+servers:
+  - url: https://api.upmore.net
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/generations:
+    post:
+      operationId: createSeedreamImage
+      summary: 生成图片
+      description: 根据文本提示词生成图片，可选传入参考图（图生图）。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - doubao-seedream-5-0
+                    - doubao-seedream-5-0-pro
+                  example: doubao-seedream-5-0
+                  description: 使用的图片生成模型。
+                prompt:
+                  type: string
+                  example: A serene mountain landscape at sunrise with misty valleys
+                  description: 图片生成的文本提示词。
+                image:
+                  type: array
+                  items:
+                    type: string
+                  description: 图生图的参考图 URL 数组。
+                sequential_image_generation:
+                  type: string
+                  enum: [auto, disabled]
+                  description: 设为 auto 开启组图生成。
+                sequential_image_generation_options:
+                  type: object
+                  properties:
+                    max_images:
+                      type: integer
+                  description: 组图生成选项。
+                size:
+                  type: string
+                  default: 1024x1024
+                  example: 1024x1024
+                  description: 输出图片尺寸，如 1024x1024、2K。
+                watermark:
+                  type: boolean
+                  default: false
+                  description: 输出图片添加水印。
+                seed:
+                  type: integer
+                  description: 随机种子，用于复现结果。
+                logo_info:
+                  type: object
+                  properties:
+                    add_logo:
+                      type: boolean
+                    position:
+                      type: integer
+                    language:
+                      type: integer
+                    opacity:
+                      type: number
+                  description: Logo 叠加配置。
+      responses:
+        "200":
+          description: 生成成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: integer
+                    description: 生成时间戳（Unix 秒）。
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: 生成的图片 URL。
+                        b64_json:
+                          type: string
+                          description: 请求 base64 输出时的图片数据。
+        "400":
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: 触发限流
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
