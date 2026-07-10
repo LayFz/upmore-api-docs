@@ -1,0 +1,104 @@
+---
+title: "Kimi K2 系列"
+description: "月之暗面 Kimi K2 推理模型——编程、Agent 与视觉理解，256k 上下文。"
+---
+
+Kimi K2 系列模型通过 Upmore 以标准 Chat Completions API（`/v1/chat/completions`）提供服务。全系列都是推理模型——回答前先思考，思维链通过 `reasoning_content` 返回。上下文窗口 256k。
+
+## 可用模型
+
+| 模型 | 说明 |
+|---|---|
+| `kimi-k2.7-code` | 最强编程模型——长上下文中更可靠地遵循指令，编程任务成功率更高 |
+| `kimi-k2.7-code-highspeed` | 同款高速版，输出约 180 Tokens/s（短上下文可达 260），价格更高 |
+| `kimi-k2.6` | 最强通用模型——智能体编程、长上下文推理、前端设计，支持视觉输入 |
+| `kimi-k2.5` | Agent/代码/视觉全能型，支持思考与非思考模式 |
+
+<Note>
+  推理 token 按**输出 token** 计费——`max_tokens` 要留足预算。提示词缓存命中会自动按缓存折扣价计费。
+</Note>
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.upmore.net/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kimi-k2.6",
+    "messages": [
+      { "role": "user", "content": "用简单的语言解释量子纠缠。" }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+response = client.chat.completions.create(
+    model="kimi-k2.7-code",
+    messages=[
+        {"role": "user", "content": "写一个合并两个有序列表的 Python 函数。"}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+```python Vision
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+response = client.chat.completions.create(
+    model="kimi-k2.5",
+    messages=[
+        {"role": "user", "content": [
+            {"type": "image_url", "image_url": {"url": "https://example.com/chart.png"}},
+            {"type": "text", "text": "总结这张图表。"}
+        ]}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | 上表中的任一模型 ID |
+| `messages` | array | 是 | `{ role, content }` 对象列表；`kimi-k2.5` / `kimi-k2.6` 的 content 支持 `image_url` 项 |
+| `stream` | boolean | 否 | 开启 SSE 流式输出。默认：`false` |
+| `temperature` | float | 否 | 控制随机性。默认：`1` |
+| `max_tokens` | integer | 否 | 最大输出 token 数（**含推理 token**） |
+| `stop` | string / array | 否 | 终止生成的序列 |
+| `tools` | array | 否 | 模型可调用的工具列表 |
+
+## 响应说明
+
+| 字段 | 说明 |
+|---|---|
+| `choices[].message.reasoning_content` | 模型的思维链（流式时为 `delta.reasoning_content`） |
+| `usage.completion_tokens_details.reasoning_tokens` | 消耗的推理 token——计入 `completion_tokens` |
+| `usage.prompt_tokens_details.cached_tokens` | 命中提示词缓存的 token——按缓存折扣价计费 |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/moonshot/kimi-k2"
+>
+  查看可交互的 API Playground。
+</Card>

@@ -1,0 +1,104 @@
+---
+title: "Kimi K2 series"
+description: "Moonshot AI Kimi K2 reasoning models — coding, agentic tasks, and vision, 256k context."
+---
+
+The Kimi K2 series models are available through Upmore via the standard Chat Completions API (`/v1/chat/completions`). All of them are reasoning models — they think before answering and return the chain-of-thought in `reasoning_content`. Context window: 256k tokens.
+
+## Available models
+
+| Model | Notes |
+|---|---|
+| `kimi-k2.7-code` | Strongest coding model — reliable instruction-following in long contexts |
+| `kimi-k2.7-code-highspeed` | Same model, ~180 tokens/s output (up to 260 on short contexts), higher price |
+| `kimi-k2.6` | Strongest general model — agentic coding, long-context reasoning, front-end design; vision input |
+| `kimi-k2.5` | Agent / coding / vision all-rounder, thinking and non-thinking modes |
+
+<Note>
+  Reasoning tokens are billed as **completion tokens** — budget `max_tokens` generously. Prompt-cache hits are billed at a reduced input rate automatically.
+</Note>
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.upmore.net/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kimi-k2.6",
+    "messages": [
+      { "role": "user", "content": "Explain quantum entanglement in one paragraph." }
+    ]
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+response = client.chat.completions.create(
+    model="kimi-k2.7-code",
+    messages=[
+        {"role": "user", "content": "Write a Python function that merges two sorted lists."}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+```python Vision
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+response = client.chat.completions.create(
+    model="kimi-k2.5",
+    messages=[
+        {"role": "user", "content": [
+            {"type": "image_url", "image_url": {"url": "https://example.com/chart.png"}},
+            {"type": "text", "text": "Summarize this chart."}
+        ]}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `model` | string | Yes | One of the model IDs from the table above |
+| `messages` | array | Yes | List of `{ role, content }` objects; `kimi-k2.5` / `kimi-k2.6` accept `image_url` content items |
+| `stream` | boolean | No | Enable SSE streaming. Default: `false` |
+| `temperature` | float | No | Controls randomness. Default: `1` |
+| `max_tokens` | integer | No | Max output tokens **including reasoning tokens** |
+| `stop` | string / array | No | Sequences that stop generation |
+| `tools` | array | No | List of tools the model may call |
+
+## Response notes
+
+| Field | Description |
+|---|---|
+| `choices[].message.reasoning_content` | The model's chain-of-thought (streamed as `delta.reasoning_content`) |
+| `usage.completion_tokens_details.reasoning_tokens` | Reasoning tokens spent — part of `completion_tokens` |
+| `usage.prompt_tokens_details.cached_tokens` | Prompt cache hits — billed at the discounted cache rate |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/moonshot/kimi-k2"
+>
+  View the interactive API playground.
+</Card>

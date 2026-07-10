@@ -1,0 +1,75 @@
+---
+title: "Moonshot V1"
+description: "Moonshot V1 generation models — text and vision, 8k / 32k / 128k context tiers."
+---
+
+The Moonshot V1 models are available through Upmore via the standard Chat Completions API (`/v1/chat/completions`). Pick the context tier that fits your input length — pricing scales with the tier.
+
+## Available models
+
+| Model | Notes |
+|---|---|
+| `moonshot-v1-8k` | Short-form generation, 8k context |
+| `moonshot-v1-32k` | Long-form generation, 32k context |
+| `moonshot-v1-128k` | Very long documents, 128k context |
+| `moonshot-v1-8k-vision-preview` | Vision — understands images, 8k context |
+| `moonshot-v1-32k-vision-preview` | Vision — understands images, 32k context |
+| `moonshot-v1-128k-vision-preview` | Vision — understands images, 128k context |
+
+## Quick example
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.upmore.net/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "moonshot-v1-8k",
+    "messages": [
+      { "role": "user", "content": "Write a product description for a mechanical keyboard." }
+    ]
+  }'
+```
+
+```python Vision
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+response = client.chat.completions.create(
+    model="moonshot-v1-8k-vision-preview",
+    messages=[
+        {"role": "user", "content": [
+            {"type": "image_url", "image_url": {"url": "https://example.com/photo.jpg"}},
+            {"type": "text", "text": "Describe this image."}
+        ]}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `model` | string | Yes | One of the model IDs from the table above |
+| `messages` | array | Yes | List of `{ role, content }` objects; vision models accept `image_url` content items |
+| `stream` | boolean | No | Enable SSE streaming. Default: `false` |
+| `temperature` | float | No | Controls randomness. Default: `1` |
+| `max_tokens` | integer | No | Maximum output tokens to generate |
+| `stop` | string / array | No | Sequences that stop generation |
+
+<Card
+  title="API Reference"
+  icon="code"
+  href="/api-reference/model-api/moonshot/moonshot-v1"
+>
+  View the interactive API playground.
+</Card>

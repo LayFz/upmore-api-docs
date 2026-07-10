@@ -1,0 +1,75 @@
+---
+title: "Moonshot V1"
+description: "Moonshot V1 生成模型——文本与视觉，8k / 32k / 128k 三档上下文。"
+---
+
+Moonshot V1 模型通过 Upmore 以标准 Chat Completions API（`/v1/chat/completions`）提供服务。按输入长度选择上下文档位——价格随档位递增。
+
+## 可用模型
+
+| 模型 | 说明 |
+|---|---|
+| `moonshot-v1-8k` | 短文本生成，8k 上下文 |
+| `moonshot-v1-32k` | 长文本生成，32k 上下文 |
+| `moonshot-v1-128k` | 超长文本，128k 上下文 |
+| `moonshot-v1-8k-vision-preview` | 视觉——理解图片内容，8k 上下文 |
+| `moonshot-v1-32k-vision-preview` | 视觉——理解图片内容，32k 上下文 |
+| `moonshot-v1-128k-vision-preview` | 视觉——理解图片内容，128k 上下文 |
+
+## 快速示例
+
+<CodeGroup>
+
+```bash cURL
+curl https://api.upmore.net/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "moonshot-v1-8k",
+    "messages": [
+      { "role": "user", "content": "为一款机械键盘写一段产品介绍。" }
+    ]
+  }'
+```
+
+```python Vision
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.upmore.net/v1"
+)
+
+response = client.chat.completions.create(
+    model="moonshot-v1-8k-vision-preview",
+    messages=[
+        {"role": "user", "content": [
+            {"type": "image_url", "image_url": {"url": "https://example.com/photo.jpg"}},
+            {"type": "text", "text": "描述这张图片。"}
+        ]}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+</CodeGroup>
+
+## 参数说明
+
+| 参数 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `model` | string | 是 | 上表中的任一模型 ID |
+| `messages` | array | 是 | `{ role, content }` 对象列表；视觉模型的 content 支持 `image_url` 项 |
+| `stream` | boolean | 否 | 开启 SSE 流式输出。默认：`false` |
+| `temperature` | float | 否 | 控制随机性。默认：`1` |
+| `max_tokens` | integer | 否 | 生成的最大输出 token 数 |
+| `stop` | string / array | 否 | 终止生成的序列 |
+
+<Card
+  title="API 参考"
+  icon="code"
+  href="/zh/api-reference/model-api/moonshot/moonshot-v1"
+>
+  查看可交互的 API Playground。
+</Card>
