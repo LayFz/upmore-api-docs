@@ -38,6 +38,43 @@ Seedance 2.0 is ByteDance's latest video generation model available through Upmo
 
 ## Examples
 
+> [!WARNING]
+> **Read this before using the examples below.** Through the Upmore gateway (`/v1/video/generations`), the example bodies on this page do **not** work as-is: top-level `content`, `duration`, `generate_audio`, `ratio`, … are envelope fields, and only `model`, `prompt`, `images`, `seconds` and `metadata` are honored. See [Passthrough via `metadata`](#passthrough-via-metadata) — that is the format that actually reaches the model.
+
+### Passthrough via `metadata`
+
+The gateway forwards everything inside `metadata` to the model **verbatim** — this is how you use the full native Seedance API (roles, duration, all options) through Upmore. Send a JSON body like this:
+
+```json
+{
+  "model": "doubao-seedance-2-0",
+  "prompt": "A cat playing piano in a sunlit room, cinematic lighting",
+  "metadata": {
+    "content": [
+      { "type": "image_url", "image_url": { "url": "https://example.com/first.png" }, "role": "first_frame" },
+      { "type": "image_url", "image_url": { "url": "https://example.com/character.png" }, "role": "reference_image" },
+      { "type": "image_url", "image_url": { "url": "https://example.com/last.png" }, "role": "last_frame" }
+    ],
+    "duration": 8,
+    "resolution": "1080p",
+    "ratio": "16:9",
+    "generate_audio": true,
+    "watermark": false,
+    "seed": 42,
+    "camera_fixed": false
+  }
+}
+```
+
+Rules and pitfalls:
+
+1. **Images go in `metadata.content` with a `role`, not in top-level `images`.** Top-level `images` are forwarded as plain reference images **without** `role`, so first-frame/last-frame locking and character references do not work through that path. If `metadata.content` is present, it replaces any top-level `images` entirely — do not mix the two.
+2. **Duration goes in `metadata.duration`.** A top-level `duration` field is dropped by the gateway envelope; only `metadata.duration` (or top-level `seconds` as a string) controls the video length. Sending `"duration": 45` at the top level silently falls back to the model default.
+3. **The prompt goes in the top-level `prompt` field.** It is injected into the content array as the single text item; text items inside `metadata.content` are dropped. `metadata.model` is ignored (removed before passthrough).
+4. **Use a JSON body, not multipart form-data** — the `content` array only round-trips correctly as JSON.
+5. **`return_last_frame` is currently not usable** through this endpoint: the model generates the last frame, but task polling only returns `video_url`.
+6. Billing is unaffected: resolution tiers and video-input surcharges are read from `metadata`, and settlement recalculates from the actual token usage reported by the model.
+
 ### Text-to-video
 
 <CodeGroup>
@@ -204,6 +241,9 @@ curl https://api.upmore.net/v1/video/generations \
 | `duration` | integer | No | 4–15 seconds. Default: `5` |
 | `tools` | array | No | `[{"type": "web_search"}]` for web search (text-to-video only) |
 | `watermark` | boolean | No | Add watermark. Default: `false` |
+
+> [!NOTE]
+> The table above documents the **native Seedance parameters** (as carried inside `metadata`). Through the gateway envelope, pass each of them as `metadata.<name>` — e.g. `metadata.duration`, `metadata.content[].role` — as described in [Passthrough via `metadata`](#passthrough-via-metadata).
 
 ### Input modes
 

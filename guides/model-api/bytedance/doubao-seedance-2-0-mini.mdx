@@ -38,6 +38,9 @@ Seedance 2.0 Fast is ByteDance's latest video generation model available through
 
 ## Examples
 
+> [!WARNING]
+> Through the Upmore gateway (`/v1/video/generations`), the example bodies below do not work as-is — top-level `content`/`duration`/etc. are envelope fields. Put images with `role`, `duration`, and all options inside `metadata` instead of top-level `images`. See the full format and pitfalls in [Seedance 2.0 — Passthrough via `metadata`](/guides/model-api/bytedance/seedance-2-0#passthrough-via-metadata).
+
 ### Text-to-video
 
 <CodeGroup>

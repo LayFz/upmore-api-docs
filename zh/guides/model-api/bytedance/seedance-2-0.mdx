@@ -38,6 +38,43 @@ Seedance 2.0 是字节跳动最新的视频生成模型，通过 Upmore API 提�
 
 ## 示例
 
+> [!WARNING]
+> **使用下方示例前必读。** 通过 Upmore 网关（`/v1/video/generations`）调用时，本页示例的请求体**不能直接使用**：顶层的 `content`、`duration`、`generate_audio`、`ratio` 等属于网关封装字段，仅 `model`、`prompt`、`images`、`seconds`、`metadata` 会被处理。请参见 [通过 `metadata` 透传](#通过-metadata-透传)——那才是真正能到达模型的格式。
+
+### 通过 `metadata` 透传
+
+网关会把 `metadata` 内的所有字段**原样透传**给模型——这就是通过 Upmore 使用完整原生 Seedance 能力（首尾帧 role、时长、全部生成参数）的方式。发送 JSON 请求体：
+
+```json
+{
+  "model": "doubao-seedance-2-0",
+  "prompt": "一只猫在阳光明媚的房间里弹钢琴，电影级光影",
+  "metadata": {
+    "content": [
+      { "type": "image_url", "image_url": { "url": "https://example.com/first.png" }, "role": "first_frame" },
+      { "type": "image_url", "image_url": { "url": "https://example.com/character.png" }, "role": "reference_image" },
+      { "type": "image_url", "image_url": { "url": "https://example.com/last.png" }, "role": "last_frame" }
+    ],
+    "duration": 8,
+    "resolution": "1080p",
+    "ratio": "16:9",
+    "generate_audio": true,
+    "watermark": false,
+    "seed": 42,
+    "camera_fixed": false
+  }
+}
+```
+
+规则与避坑：
+
+1. **图片写在 `metadata.content` 并带 `role`，不要用顶层 `images`。** 顶层 `images` 会以**不带 role** 的普通参考图转发，首尾帧锁定、角色参考在这条路径下不生效。传入 `metadata.content` 后会整体替换顶层 `images`——两者不要混用。
+2. **时长写在 `metadata.duration`。** 顶层 `duration` 会被网关封装层丢弃，只有 `metadata.duration`（或顶层字符串形式的 `seconds`）能控制视频时长。只在顶层传 `"duration": 45` 会静默回退到模型默认时长。
+3. **提示词写在顶层 `prompt` 字段。** 它会被注入为 content 数组中唯一的 text 项；`metadata.content` 里写的 text 项会被丢弃。`metadata.model` 会被忽略（透传前强制删除）。
+4. **必须用 JSON 请求体，不要用 multipart 表单**——`content` 数组只有 JSON 形态才能正确往返。
+5. **`return_last_frame` 暂不可用**：模型会生成尾帧，但网关轮询任务时只返回 `video_url`。
+6. 计费不受影响：分辨率档位、是否含视频输入的加价均从 `metadata` 读取，结算按模型回报的实际 token 用量重新计算。
+
 ### 文生视频
 
 <CodeGroup>
@@ -204,6 +241,9 @@ curl https://api.upmore.net/v1/video/generations \
 | `duration` | integer | 否 | 4–15 秒，默认 `5` |
 | `tools` | array | 否 | `[{"type": "web_search"}]` 启用联网搜索（仅文生视频） |
 | `watermark` | boolean | 否 | 是否添加水印，默认 `false` |
+
+> [!NOTE]
+> 上表是**原生 Seedance 参数**（放在 `metadata` 内携带）。通过网关封装调用时，每个参数都要以 `metadata.<参数名>` 的形式传入——例如 `metadata.duration`、`metadata.content[].role`，参见[通过 `metadata` 透传](#通过-metadata-透传)。
 
 ### 输入模式
 

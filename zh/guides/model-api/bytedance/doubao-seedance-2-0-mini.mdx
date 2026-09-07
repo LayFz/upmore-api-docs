@@ -38,6 +38,9 @@ Seedance 2.0 Fast 是字节跳动最新的视频生成模型，通过 Upmore API
 
 ## 示例
 
+> [!WARNING]
+> 通过 Upmore 网关（`/v1/video/generations`）调用时，下方示例的请求体不能直接使用——顶层 `content`/`duration` 等属于网关封装字段。请把带 `role` 的图片、`duration` 及全部生成参数放进 `metadata`，而不是使用顶层 `images`。完整格式与避坑参见 [Seedance 2.0 — 通过 `metadata` 透传](/zh/guides/model-api/bytedance/seedance-2-0#通过-metadata-透传)。
+
 ### 文生视频
 
 <CodeGroup>
