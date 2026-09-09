@@ -18,6 +18,21 @@
     "twitter:card": "summary_large_image",
     "twitter:site": "@upmore"
   },
+  "search": {
+    "prompt": "Search the docs..."
+  },
+  "errors": {
+    "404": {
+      "redirect": false,
+      "title": "Page not found",
+      "description": "The page you're looking for doesn't exist or has moved. Try the [Quickstart](/quickstart), the [API Reference](/api-reference/introduction), or use the search bar above.\n\n页面不存在或已移动。可以试试[快速开始](/zh/quickstart)或[API 参考](/zh/api-reference/introduction)，也可以用上方搜索。"
+    }
+  },
+  "banner": {
+    "content": "New: **Qwen ASR** with word-level timestamps is available — [read the guide](/guides/model-api/ali/qwen-asr).",
+    "dismissible": true,
+    "type": "info"
+  },
   "colors": {
     "primary": "#F08121",
     "light": "#F6953C",
@@ -414,7 +429,32 @@
     ]
   },
   "footer": {
-    "socials": {}
+    "socials": {},
+    "links": [
+      {
+        "header": "Documentation",
+        "items": [
+          { "label": "Quickstart", "href": "/quickstart" },
+          { "label": "API Reference", "href": "/api-reference/introduction" },
+          { "label": "OpenAI-compatible endpoint", "href": "/guides/endpoints/openai" }
+        ]
+      },
+      {
+        "header": "Model APIs",
+        "items": [
+          { "label": "Seedance 2.0", "href": "/guides/model-api/bytedance/seedance-2-0" },
+          { "label": "Qwen ASR", "href": "/guides/model-api/ali/qwen-asr" },
+          { "label": "Kimi K2", "href": "/guides/model-api/moonshot/kimi-k2" }
+        ]
+      },
+      {
+        "header": "Platform",
+        "items": [
+          { "label": "Dashboard", "href": "https://api.upmore.net/keys" },
+          { "label": "Pricing", "href": "https://api.upmore.net/pricing" }
+        ]
+      }
+    ]
   },
   "integrations": {
     "ga4": {
