@@ -1,0 +1,152 @@
+openapi: 3.1.0
+info:
+  title: Ali Bailian Qwen ASR
+  description: Speech-to-text through the Upmore OpenAI-compatible transcription API. qwen-audio-3.0-asr-flash returns sentence and word-level timestamps; qwen3-asr-flash returns text only.
+  version: 1.0.0
+servers:
+  - url: https://api.upmore.net
+security:
+  - bearerAuth: []
+paths:
+  /v1/audio/transcriptions:
+    post:
+      operationId: createTranscriptionAliQwenASR
+      summary: Create transcription
+      description: |
+        Transcribes an audio or video file. `qwen-audio-3.0-asr-flash` returns sentence and word-level timestamps in `verbose_json`; `qwen3-asr-flash` returns text only.
+
+        Limits: 5 minutes per request, and inline Base64 input capped at 10 MiB (~7.5 MB of raw file). Extract the audio track first to stay well under the limit and to cut gateway egress:
+
+        ```
+        ffmpeg -i input.mp4 -vn -c:a libmp3lame -b:a 64k -ac 1 audio.mp3
+        ```
+
+        Billing uses the audio duration reported by the model (list price ¥0.00022 per second); video input is billed by its audio duration only.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+                - model
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: "Audio or video file. Audio: `wav`, `mp3`, `m4a`, `aac`, `flac`, `ogg`, `opus`, `amr`, `wma`. Video: `mp4`, `mov`, `mkv`, `avi`, `webm`, `flv`, `wmv` — the audio track is transcribed automatically."
+                model:
+                  type: string
+                  enum:
+                    - qwen-audio-3.0-asr-flash
+                    - qwen3-asr-flash
+                  example: qwen-audio-3.0-asr-flash
+                  description: ASR model. Use `qwen-audio-3.0-asr-flash` for word-level timestamps.
+                response_format:
+                  type: string
+                  enum: [json, text, verbose_json]
+                  default: json
+                  description: Only `verbose_json` carries timestamps.
+                language:
+                  type: string
+                  example: zh
+                  description: Optional language hint forwarded to the provider.
+                prompt:
+                  type: string
+                  example: 智能早餐机产品介绍
+                  description: Optional context prompt (max 400 runes) sent as a text message alongside the audio.
+      responses:
+        "200":
+          description: Transcription result. The shape depends on `response_format`.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TranscriptionVerboseJson"
+            text/plain:
+              schema:
+                type: string
+            text/event-stream:
+              schema:
+                type: string
+        "400":
+          description: Invalid request, unsupported file format, or audio longer than the 5-minute limit
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    TranscriptionVerboseJson:
+      type: object
+      properties:
+        task:
+          type: string
+          example: transcribe
+        duration:
+          type: number
+          example: 46
+          description: Audio duration in seconds.
+        text:
+          type: string
+          example: 大家好，今天给大家介绍一款全新的智能早餐机。
+        segments:
+          type: array
+          description: Currently a single segment covering the whole file.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              start:
+                type: number
+                example: 0.12
+              end:
+                type: number
+                example: 46.142
+              text:
+                type: string
+              words:
+                type: array
+                description: Word-level timestamps (Chinese is segmented into words, not characters).
+                items:
+                  type: object
+                  properties:
+                    word:
+                      type: string
+                      example: 大家好，
+                    start:
+                      type: number
+                      example: 0.12
+                    end:
+                      type: number
+                      example: 0.8
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

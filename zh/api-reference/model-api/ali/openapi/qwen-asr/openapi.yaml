@@ -1,0 +1,152 @@
+openapi: 3.1.0
+info:
+  title: 阿里百炼 Qwen ASR
+  description: 通过 Upmore 的 OpenAI 兼容转写接口做语音转文字。qwen-audio-3.0-asr-flash 返回句级与词级时间戳；qwen3-asr-flash 只返回文本。
+  version: 1.0.0
+servers:
+  - url: https://api.upmore.net
+security:
+  - bearerAuth: []
+paths:
+  /v1/audio/transcriptions:
+    post:
+      operationId: createTranscriptionAliQwenASR
+      summary: 创建转写任务
+      description: |
+        转写音频或视频文件。`qwen-audio-3.0-asr-flash` 在 `verbose_json` 下返回句级与词级时间戳；`qwen3-asr-flash` 只返回文本。
+
+        限制：单次 5 分钟；内联 Base64 输入上限 10 MiB（约合原始文件 7.5 MB）。建议先抽出音轨，既能稳在限制内，也能降低网关出流量：
+
+        ```
+        ffmpeg -i input.mp4 -vn -c:a libmp3lame -b:a 64k -ac 1 audio.mp3
+        ```
+
+        计费按模型返回的音频时长（标价 0.00022 元/秒）；传入视频时只按音频时长计费。
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+                - model
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: "音频或视频文件。音频：`wav`、`mp3`、`m4a`、`aac`、`flac`、`ogg`、`opus`、`amr`、`wma`。视频：`mp4`、`mov`、`mkv`、`avi`、`webm`、`flv`、`wmv`——会自动转写其中的音轨。"
+                model:
+                  type: string
+                  enum:
+                    - qwen-audio-3.0-asr-flash
+                    - qwen3-asr-flash
+                  example: qwen-audio-3.0-asr-flash
+                  description: ASR 模型。需要词级时间戳请用 `qwen-audio-3.0-asr-flash`。
+                response_format:
+                  type: string
+                  enum: [json, text, verbose_json]
+                  default: json
+                  description: 只有 `verbose_json` 会返回时间戳。
+                language:
+                  type: string
+                  example: zh
+                  description: 可选的语言提示，透传给上游。
+                prompt:
+                  type: string
+                  example: 智能早餐机产品介绍
+                  description: 可选的上下文提示（最多 400 字符），会作为文本消息与音频一起发送。
+      responses:
+        "200":
+          description: 转写结果。具体结构取决于 `response_format`。
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TranscriptionVerboseJson"
+            text/plain:
+              schema:
+                type: string
+            text/event-stream:
+              schema:
+                type: string
+        "400":
+          description: 请求非法、文件格式不支持，或音频超过 5 分钟上限
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: 超出速率限制
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    TranscriptionVerboseJson:
+      type: object
+      properties:
+        task:
+          type: string
+          example: transcribe
+        duration:
+          type: number
+          example: 46
+          description: 音频时长（秒）。
+        text:
+          type: string
+          example: 大家好，今天给大家介绍一款全新的智能早餐机。
+        segments:
+          type: array
+          description: 目前只返回一条覆盖整个文件的 segment。
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              start:
+                type: number
+                example: 0.12
+              end:
+                type: number
+                example: 46.142
+              text:
+                type: string
+              words:
+                type: array
+                description: 词级时间戳（中文按词切分，不是每个汉字）。
+                items:
+                  type: object
+                  properties:
+                    word:
+                      type: string
+                      example: 大家好，
+                    start:
+                      type: number
+                      example: 0.12
+                    end:
+                      type: number
+                      example: 0.8
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
