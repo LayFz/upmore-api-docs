@@ -106,6 +106,13 @@
                       "guides/model-api/minimax/m-series",
                       "guides/model-api/minimax/speech"
                     ]
+                  },
+                  {
+                    "group": "Ali Bailian",
+                    "icon": "/images/providers/alibaba.svg",
+                    "pages": [
+                      "guides/model-api/ali/qwen-asr"
+                    ]
                   }
                 ]
               }
@@ -266,6 +273,13 @@
                     "pages": [
                       "zh/guides/model-api/minimax/m-series",
                       "zh/guides/model-api/minimax/speech"
+                    ]
+                  },
+                  {
+                    "group": "阿里百炼",
+                    "icon": "/images/providers/alibaba.svg",
+                    "pages": [
+                      "zh/guides/model-api/ali/qwen-asr"
                     ]
                   }
                 ]

@@ -1,0 +1,87 @@
+---
+title: "Qwen ASR (Ali Bailian)"
+description: "Speech-to-text with word-level timestamps through Upmore API — supported models, limits, and why you should extract the audio track before uploading."
+---
+
+Ali Bailian's Qwen ASR models are available through the OpenAI-compatible transcription endpoint. They accept audio **and** video files, and `qwen-audio-3.0-asr-flash` returns word-level timestamps.
+
+## Models
+
+| Model | Output | Input limit | Price |
+|---|---|---|---|
+| `qwen-audio-3.0-asr-flash` | Text + sentence/word timestamps | 5 minutes / 2 GB | ¥0.00022 per second |
+| `qwen3-asr-flash` | Text only (no timestamps) | 5 minutes / 10 MB | ¥0.00022 per second |
+
+Both models accept audio (`wav`, `mp3`, `m4a`, `aac`, `flac`, `ogg`, `opus`, `amr`, `wma`, …) and video (`mp4`, `mov`, `mkv`, `avi`, `webm`, `flv`, `wmv`). For video input the audio track is transcribed automatically — the model does **not** analyze the picture.
+
+> Timestamps are **word-level, not character-level**: Chinese is segmented into words (`今天`, `给大家介绍`), and each word carries `start`/`end`. The response returns a single `segment` covering the whole file, so split subtitle lines yourself using punctuation and pauses.
+
+## Quick start
+
+```bash cURL
+curl https://api.upmore.net/v1/audio/transcriptions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F model=qwen-audio-3.0-asr-flash \
+  -F response_format=verbose_json \
+  -F language=zh \
+  -F file=@audio.mp3
+```
+
+`response_format` accepts `json`, `text`, and `verbose_json`. Only `verbose_json` carries timestamps.
+
+### Response with word timestamps (`verbose_json`)
+
+```json
+{
+  "task": "transcribe",
+  "duration": 46,
+  "text": "大家好，今天给大家介绍一款全新的智能早餐机。…",
+  "segments": [
+    {
+      "id": 1,
+      "start": 0.12,
+      "end": 46.142,
+      "text": "大家好，…",
+      "words": [
+        { "word": "大家好，", "start": 0.12, "end": 0.8 },
+        { "word": "今天", "start": 1.16, "end": 1.64 },
+        { "word": "给大家介绍", "start": 1.64, "end": 2.8 }
+      ]
+    }
+  ]
+}
+```
+
+## Extract the audio track before uploading (recommended)
+
+Upmore relays the request to Ali Bailian over the public internet, and the upstream model takes the file as an inline Base64 data URI. Three consequences follow:
+
+1. **Size limit.** Inline Base64 input is capped at 10 MiB — about **7.5 MB of raw file**. A 1080p video is usually far larger.
+2. **Bandwidth and cost.** The file travels from your client to Upmore, then from Upmore to Ali as Base64 (~33% larger than the original). Public egress from the gateway is billed, so a near-limit upload can cost as much in bandwidth as the transcription itself.
+3. **Memory.** The gateway buffers the whole file plus its Base64 copy (~1.33× the file size) per in-flight request.
+
+Passing a public URL would keep the bytes off the gateway, but the upstream then downloads the file itself. Measured on a 538 KB clip: URL input took **21–45 seconds**, versus **3.7 seconds** for an inline upload — slower and unpredictable.
+
+**So strip the audio track first.** A 46-second clip shrinks from 1.4 MB (WAV) to **361 KB** (64 kbps mono MP3):
+
+```bash
+ffmpeg -i input.mp4 -vn -c:a libmp3lame -b:a 64k -ac 1 audio.mp3
+```
+
+| Approach | Payload | Gateway egress* | Latency (46 s clip) |
+|---|---|---|---|
+| WAV upload | 1.4 MB → 1.9 MB Base64 | ≈ ¥0.0015 | ~5 s |
+| **Extracted MP3 upload** | **361 KB → 481 KB Base64** | **≈ ¥0.0004** | **~5 s** |
+| URL input | ~0 (upstream downloads) | ≈ 0 (object-storage egress instead) | 21–45 s, unstable |
+
+\* At a list price of about ¥0.8/GB. The ASR fee for 46 seconds is ¥0.0101, so an extracted-MP3 upload spends roughly 4% of the ASR fee on bandwidth, while a near-limit WAV or MP4 upload can approach the ASR fee itself.
+
+## Billing
+
+Billing uses the **audio duration** reported by the model: `ceil(seconds) / 60 × 1000` tokens, multiplied by the model ratio. At the list price of ¥0.00022 per second, a 46-second clip costs about ¥0.0101. Video input is billed by its audio duration only.
+
+## Limits and notes
+
+- **5 minutes per request.** Longer files must be split into ≤5-minute chunks; concatenate the results and offset each chunk's timestamps by its start time. (The asynchronous `filetrans` API that accepts 12-hour files is not exposed yet.)
+- **File upload only.** Passing a URL as the `file` value is not supported today.
+- **Speech only.** Video frames are not analyzed. For a visual timeline, use a video-understanding model such as `doubao-seed-2-1-pro` and merge its timestamps with the transcript.
