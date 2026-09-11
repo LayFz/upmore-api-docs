@@ -1,10 +1,10 @@
 ---
-title: "GPT Image 2"
-sidebarTitle: "GPT Image 2"
-description: "OpenAI GPT Image 2 image model on Upmore — text-to-image generation and image-to-image editing with masked edits, transparent backgrounds, up to 16 input images, flexible resolution up to 4K, and near-perfect text rendering."
+title: "GPT Image 2.5"
+sidebarTitle: "GPT Image 2.5"
+description: "OpenAI GPT Image 2.5 on Upmore — text-to-image generation and image-to-image editing with masked edits, transparent backgrounds, up to 16 input images, and flexible resolution up to 4K. Available as gpt-image-2.5-flare and gpt-image-2.5-sunburst."
 ---
 
-GPT Image 2 is OpenAI's image generation and editing model, available through Upmore API as `gpt-image-2`. Built on an autoregressive + reasoning hybrid architecture, it delivers near-perfect text rendering (~99% character-level accuracy across 12+ languages) and strong multi-object scene composition. Its newer sibling is [GPT Image 2.5](/guides/model-api/openai/gpt-image-2-5) (`gpt-image-2.5-flare` / `gpt-image-2.5-sunburst`), which exposes the same API surface.
+GPT Image 2.5 is OpenAI's image generation and editing model, available through Upmore API under two interchangeable model IDs: `gpt-image-2.5-flare` and `gpt-image-2.5-sunburst`. Both accept the same parameters, enforce the same limits, and return the same response shape. Use whichever you prefer.
 
 Two endpoints cover it:
 
@@ -32,12 +32,10 @@ The image-to-image endpoint has two interchangeable request shapes. Pick whichev
 
 ## Key capabilities
 
-- **Text-to-Image** — Generate images from natural language descriptions
+- **Text-to-Image** — Generate images from a natural language prompt
 - **Image-to-Image** — Edit an existing image with a prompt, by file upload or by URL
 - **Multiple input images** — Up to 16 reference images per edit
 - **Masked editing** — Restrict the edit to a region by supplying a mask
-- **Near-perfect text rendering** — ~99% character-level accuracy across 12+ languages
-- **Multi-object composition** — Complex scenes without occlusion or misplacement issues
 - **Flexible resolution** — Any size up to 4K, with the model choosing a resolution when you omit `size`
 - **Transparent background** — `background: "transparent"` for cut-out assets
 - **Batch generation** — Up to 10 images per request via `n`
@@ -47,7 +45,7 @@ The image-to-image endpoint has two interchangeable request shapes. Pick whichev
 
 | Property | Value |
 |----------|-------|
-| Sizes | Flexible resolution (e.g. `1024x1024`, `2048x2048`, `3840x2160`) |
+| Sizes | Flexible, e.g. `1024x1024`, `1536x1024`, `2048x2048`, `3840x2160` |
 | Size constraints | Edges must be multiples of 16, aspect ratio ≤ 3:1, total pixels 655,360–8,294,400, max edge 3,840px |
 | Default size | Model-chosen (~1.3M pixels) when `size` is omitted |
 | Quality | `low` (default), `medium`, `high`, `auto` |
@@ -65,9 +63,9 @@ curl https://api.upmore.net/v1/images/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-image-2",
-    "prompt": "A futuristic city skyline at sunset with flying cars",
-    "size": "2048x2048",
+    "model": "gpt-image-2.5-flare",
+    "prompt": "A red fox sitting in a snowy forest at dusk, photorealistic",
+    "size": "1536x1024",
     "quality": "high"
   }'
 ```
@@ -82,14 +80,14 @@ client = OpenAI(
 )
 
 response = client.images.generate(
-    model="gpt-image-2",
-    prompt="A futuristic city skyline at sunset with flying cars",
-    size="2048x2048",
+    model="gpt-image-2.5-flare",
+    prompt="A red fox sitting in a snowy forest at dusk, photorealistic",
+    size="1536x1024",
     quality="high"
 )
 
 # The API always returns base64 data — decode it to a file.
-with open("city.png", "wb") as f:
+with open("fox.png", "wb") as f:
     f.write(base64.b64decode(response.data[0].b64_json))
 ```
 
@@ -103,13 +101,13 @@ const client = new OpenAI({
 });
 
 const response = await client.images.generate({
-  model: "gpt-image-2",
-  prompt: "A futuristic city skyline at sunset with flying cars",
-  size: "2048x2048",
+  model: "gpt-image-2.5-flare",
+  prompt: "A red fox sitting in a snowy forest at dusk, photorealistic",
+  size: "1536x1024",
   quality: "high",
 });
 
-await writeFile("city.png", Buffer.from(response.data[0].b64_json, "base64"));
+await writeFile("fox.png", Buffer.from(response.data[0].b64_json, "base64"));
 ```
 
 </CodeGroup>
@@ -125,8 +123,8 @@ POST to `/v1/images/edits` as `multipart/form-data`: the source image goes in th
 ```bash cURL
 curl https://api.upmore.net/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -F "model=gpt-image-2" \
-  -F "prompt=Make the fox wear a red scarf" \
+  -F "model=gpt-image-2.5-flare" \
+  -F "prompt=Turn the fox's fur bright blue and add falling snowflakes" \
   -F "image=@fox.png;type=image/png" \
   -F "size=1024x1024" \
   -F "quality=high"
@@ -143,14 +141,14 @@ client = OpenAI(
 
 with open("fox.png", "rb") as source:
     response = client.images.edit(
-        model="gpt-image-2",
+        model="gpt-image-2.5-flare",
         image=source,
-        prompt="Make the fox wear a red scarf",
+        prompt="Turn the fox's fur bright blue and add falling snowflakes",
         size="1024x1024",
         quality="high",
     )
 
-with open("fox-scarf.png", "wb") as f:
+with open("fox-blue.png", "wb") as f:
     f.write(base64.b64decode(response.data[0].b64_json))
 ```
 
@@ -171,8 +169,8 @@ curl https://api.upmore.net/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-image-2",
-    "prompt": "Make the fox wear a red scarf",
+    "model": "gpt-image-2.5-flare",
+    "prompt": "Turn the fox'"'"'s fur bright blue and add falling snowflakes",
     "images": [
       { "image_url": "https://your-bucket.tos-cn-beijing.volces.com/fox.png" }
     ],
@@ -194,8 +192,8 @@ response = requests.post(
         "Content-Type": "application/json",
     },
     json={
-        "model": "gpt-image-2",
-        "prompt": "Make the fox wear a red scarf",
+        "model": "gpt-image-2.5-flare",
+        "prompt": "Turn the fox's fur bright blue and add falling snowflakes",
         "images": [{"image_url": data_url}],
         "size": "1024x1024",
         "quality": "high",
@@ -230,7 +228,7 @@ Up to **16** input images per request. Repeat the file field as `image[]` in mul
 ```bash cURL — multipart, two files
 curl https://api.upmore.net/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -F "model=gpt-image-2" \
+  -F "model=gpt-image-2.5-sunburst" \
   -F "prompt=Put the yellow circle from the second image into the first image" \
   -F "image[]=@fox.png;type=image/png" \
   -F "image[]=@logo.png;type=image/png"
@@ -241,7 +239,7 @@ curl https://api.upmore.net/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-image-2",
+    "model": "gpt-image-2.5-sunburst",
     "prompt": "Put the yellow circle from the second image into the first image",
     "images": [
       { "image_url": "https://example.com/fox.png" },
@@ -263,7 +261,7 @@ Supply a mask to confine the edit to one region. The mask must be a **PNG with a
 ```bash cURL — multipart
 curl https://api.upmore.net/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -F "model=gpt-image-2" \
+  -F "model=gpt-image-2.5-flare" \
   -F "prompt=a glowing golden orb" \
   -F "image=@fox.png;type=image/png" \
   -F "mask=@mask.png;type=image/png"
@@ -274,7 +272,7 @@ curl https://api.upmore.net/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-image-2",
+    "model": "gpt-image-2.5-flare",
     "prompt": "a glowing golden orb",
     "images": [{ "image_url": "https://example.com/fox.png" }],
     "mask": { "image_url": "https://example.com/mask.png" }
@@ -301,7 +299,7 @@ curl -N https://api.upmore.net/v1/images/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-image-2",
+    "model": "gpt-image-2.5-flare",
     "prompt": "A blue ceramic teapot on a wooden table",
     "size": "1024x1024",
     "stream": true,
@@ -325,7 +323,7 @@ data: {"type":"image_generation.completed","b64_json":"iVBORw0KGgo...","size":"1
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `model` | string | Yes | Must be `gpt-image-2` |
+| `model` | string | Yes | `gpt-image-2.5-flare` or `gpt-image-2.5-sunburst` |
 | `prompt` | string | Yes | Text description of the desired image |
 | `n` | integer | No | Images to generate, 1–10. Default: `1` |
 | `size` | string | No | `{width}x{height}`. Edges must be multiples of 16, aspect ratio ≤ 3:1, total pixels 655,360–8,294,400, max edge 3,840px. Omit to let the model choose (~1.3M pixels) |
@@ -404,7 +402,7 @@ The upstream also runs a safety system over the prompt/image combination. A reje
 <Card
   title="API Reference"
   icon="code"
-  href="/api-reference/model-api/openai/gpt-image-2/generate"
+  href="/api-reference/model-api/openai/gpt-image-2-5/generate"
 >
   View the interactive API playground.
 </Card>

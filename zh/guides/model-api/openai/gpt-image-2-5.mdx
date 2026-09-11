@@ -1,10 +1,10 @@
 ---
-title: "GPT Image 2"
-sidebarTitle: "GPT Image 2"
-description: "OpenAI GPT Image 2 图像模型，通过 Upmore 提供文生图与图生图（支持蒙版局部编辑、透明背景、最多 16 张输入图），灵活分辨率最高 4K，文字渲染准确率接近完美。"
+title: "GPT Image 2.5"
+sidebarTitle: "GPT Image 2.5"
+description: "OpenAI GPT Image 2.5 图像模型，通过 Upmore 提供文生图与图生图（支持蒙版局部编辑、透明背景、最多 16 张输入图），灵活分辨率最高 4K。模型名：gpt-image-2.5-flare、gpt-image-2.5-sunburst。"
 ---
 
-GPT Image 2 是 OpenAI 的图像生成与编辑模型，通过 Upmore API 以 `gpt-image-2` 提供服务。基于自回归 + 推理混合架构，具备接近完美的文字渲染能力（12+ 种语言约 99% 字符级准确率）和出色的多物体场景构图。它的新一代同门是 [GPT Image 2.5](/zh/guides/model-api/openai/gpt-image-2-5)（`gpt-image-2.5-flare` / `gpt-image-2.5-sunburst`），API 表面一致。
+GPT Image 2.5 是 OpenAI 的图像生成与编辑模型，通过 Upmore API 以两个等价模型名提供：`gpt-image-2.5-flare` 与 `gpt-image-2.5-sunburst`。两者参数、限制、返回结构完全一致，任选其一即可。
 
 它由两个端点覆盖：
 
@@ -32,12 +32,10 @@ GPT Image 2 是 OpenAI 的图像生成与编辑模型，通过 Upmore API 以 `g
 
 ## 核心能力
 
-- **文生图** — 根据自然语言描述生成图像
+- **文生图** — 根据自然语言提示词生成图像
 - **图生图** — 用提示词编辑已有图片，可上传文件、也可传 URL
 - **多张输入图** — 单次编辑最多 16 张参考图
 - **蒙版编辑** — 通过蒙版把修改限制在指定区域
-- **精准文字渲染** — 12+ 种语言约 99% 字符级准确率
-- **多物体构图** — 复杂场景无遮挡或错位问题
 - **灵活分辨率** — 任意尺寸，最高 4K；不传 `size` 时由模型自行选择分辨率
 - **透明背景** — `background: "transparent"`，适合产出抠图素材
 - **批量生成** — 通过 `n` 单次最多生成 10 张
@@ -47,7 +45,7 @@ GPT Image 2 是 OpenAI 的图像生成与编辑模型，通过 Upmore API 以 `g
 
 | 属性 | 值 |
 |------|---|
-| 尺寸 | 灵活分辨率（如 `1024x1024`、`2048x2048`、`3840x2160`） |
+| 尺寸 | 灵活分辨率，如 `1024x1024`、`1536x1024`、`2048x2048`、`3840x2160` |
 | 尺寸约束 | 边长须为 16 的倍数，宽高比 ≤ 3:1，总像素 655,360–8,294,400，最长边 3,840px |
 | 默认尺寸 | 不传 `size` 时由模型选择（约 130 万像素） |
 | 质量 | `low`（默认）、`medium`、`high`、`auto` |
@@ -65,9 +63,9 @@ curl https://api.upmore.net/v1/images/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-image-2",
-    "prompt": "一座未来城市的日落天际线，天空中有飞行汽车",
-    "size": "2048x2048",
+    "model": "gpt-image-2.5-flare",
+    "prompt": "一只坐在黄昏雪林里的红狐，写实风格",
+    "size": "1536x1024",
     "quality": "high"
   }'
 ```
@@ -82,14 +80,14 @@ client = OpenAI(
 )
 
 response = client.images.generate(
-    model="gpt-image-2",
-    prompt="一座未来城市的日落天际线，天空中有飞行汽车",
-    size="2048x2048",
+    model="gpt-image-2.5-flare",
+    prompt="一只坐在黄昏雪林里的红狐，写实风格",
+    size="1536x1024",
     quality="high"
 )
 
 # 接口始终返回 base64 数据，需要自行解码落盘。
-with open("city.png", "wb") as f:
+with open("fox.png", "wb") as f:
     f.write(base64.b64decode(response.data[0].b64_json))
 ```
 
@@ -103,13 +101,13 @@ const client = new OpenAI({
 });
 
 const response = await client.images.generate({
-  model: "gpt-image-2",
-  prompt: "一座未来城市的日落天际线，天空中有飞行汽车",
-  size: "2048x2048",
+  model: "gpt-image-2.5-flare",
+  prompt: "一只坐在黄昏雪林里的红狐，写实风格",
+  size: "1536x1024",
   quality: "high",
 });
 
-await writeFile("city.png", Buffer.from(response.data[0].b64_json, "base64"));
+await writeFile("fox.png", Buffer.from(response.data[0].b64_json, "base64"));
 ```
 
 </CodeGroup>
@@ -125,8 +123,8 @@ await writeFile("city.png", Buffer.from(response.data[0].b64_json, "base64"));
 ```bash cURL
 curl https://api.upmore.net/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -F "model=gpt-image-2" \
-  -F "prompt=给狐狸戴上一条红围巾" \
+  -F "model=gpt-image-2.5-flare" \
+  -F "prompt=把狐狸的毛变成亮蓝色，并加上飘落的雪花" \
   -F "image=@fox.png;type=image/png" \
   -F "size=1024x1024" \
   -F "quality=high"
@@ -143,14 +141,14 @@ client = OpenAI(
 
 with open("fox.png", "rb") as source:
     response = client.images.edit(
-        model="gpt-image-2",
+        model="gpt-image-2.5-flare",
         image=source,
-        prompt="给狐狸戴上一条红围巾",
+        prompt="把狐狸的毛变成亮蓝色，并加上飘落的雪花",
         size="1024x1024",
         quality="high",
     )
 
-with open("fox-scarf.png", "wb") as f:
+with open("fox-blue.png", "wb") as f:
     f.write(base64.b64decode(response.data[0].b64_json))
 ```
 
@@ -171,8 +169,8 @@ curl https://api.upmore.net/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-image-2",
-    "prompt": "给狐狸戴上一条红围巾",
+    "model": "gpt-image-2.5-flare",
+    "prompt": "把狐狸的毛变成亮蓝色，并加上飘落的雪花",
     "images": [
       { "image_url": "https://your-bucket.tos-cn-beijing.volces.com/fox.png" }
     ],
@@ -194,8 +192,8 @@ response = requests.post(
         "Content-Type": "application/json",
     },
     json={
-        "model": "gpt-image-2",
-        "prompt": "给狐狸戴上一条红围巾",
+        "model": "gpt-image-2.5-flare",
+        "prompt": "把狐狸的毛变成亮蓝色，并加上飘落的雪花",
         "images": [{"image_url": data_url}],
         "size": "1024x1024",
         "quality": "high",
@@ -230,7 +228,7 @@ print(response.json()["data"][0]["b64_json"][:100])
 ```bash cURL — multipart，两个文件
 curl https://api.upmore.net/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -F "model=gpt-image-2" \
+  -F "model=gpt-image-2.5-sunburst" \
   -F "prompt=把第二张图里的黄色圆形放进第一张图" \
   -F "image[]=@fox.png;type=image/png" \
   -F "image[]=@logo.png;type=image/png"
@@ -241,7 +239,7 @@ curl https://api.upmore.net/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-image-2",
+    "model": "gpt-image-2.5-sunburst",
     "prompt": "把第二张图里的黄色圆形放进第一张图",
     "images": [
       { "image_url": "https://example.com/fox.png" },
@@ -263,7 +261,7 @@ curl https://api.upmore.net/v1/images/edits \
 ```bash cURL — multipart
 curl https://api.upmore.net/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -F "model=gpt-image-2" \
+  -F "model=gpt-image-2.5-flare" \
   -F "prompt=一个发光的金色球体" \
   -F "image=@fox.png;type=image/png" \
   -F "mask=@mask.png;type=image/png"
@@ -274,7 +272,7 @@ curl https://api.upmore.net/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-image-2",
+    "model": "gpt-image-2.5-flare",
     "prompt": "一个发光的金色球体",
     "images": [{ "image_url": "https://example.com/fox.png" }],
     "mask": { "image_url": "https://example.com/mask.png" }
@@ -301,7 +299,7 @@ curl -N https://api.upmore.net/v1/images/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-image-2",
+    "model": "gpt-image-2.5-flare",
     "prompt": "木桌上的一把蓝色陶瓷茶壶",
     "size": "1024x1024",
     "stream": true,
@@ -325,7 +323,7 @@ data: {"type":"image_generation.completed","b64_json":"iVBORw0KGgo...","size":"1
 
 | 参数 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | 必须为 `gpt-image-2` |
+| `model` | string | 是 | `gpt-image-2.5-flare` 或 `gpt-image-2.5-sunburst` |
 | `prompt` | string | 是 | 图像描述文本 |
 | `n` | integer | 否 | 生成张数，1–10，默认 `1` |
 | `size` | string | 否 | `{宽}x{高}`。边长须为 16 的倍数，宽高比 ≤ 3:1，总像素 655,360–8,294,400，最长边 3,840px。不传则由模型自行选择（约 130 万像素） |
@@ -404,7 +402,7 @@ data: {"type":"image_generation.completed","b64_json":"iVBORw0KGgo...","size":"1
 <Card
   title="API 参考"
   icon="code"
-  href="/zh/api-reference/model-api/openai/gpt-image-2/generate"
+  href="/zh/api-reference/model-api/openai/gpt-image-2-5/generate"
 >
   查看可交互的 API Playground。
 </Card>

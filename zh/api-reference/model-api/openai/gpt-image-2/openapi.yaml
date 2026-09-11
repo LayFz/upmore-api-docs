@@ -1,0 +1,352 @@
+openapi: 3.1.0
+info:
+  title: GPT Image 2
+  description: 通过 Upmore 的 OpenAI 兼容接口调用 OpenAI GPT Image 2 文生图与图生图
+  version: 1.0.0
+servers:
+  - url: https://api.upmore.net
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/generations:
+    post:
+      operationId: createImageGPTImage2
+      summary: 生成图片
+      description: 根据文本提示词生成图片，返回 base64 编码的图片数据。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - gpt-image-2
+                  example: gpt-image-2
+                  description: 必须为 gpt-image-2。
+                prompt:
+                  type: string
+                  example: 一只坐在黄昏雪林里的红狐，写实风格
+                  description: 目标图片的文本描述。
+                n:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  default: 1
+                  description: 生成图片数量。
+                size:
+                  type: string
+                  example: 1536x1024
+                  description: "{width}x{height} 格式。边长须为 16 的倍数，宽高比 ≤ 3:1，总像素 655,360–8,294,400，最长边 3,840px。不传则由模型自行选择（约 130 万像素）。"
+                quality:
+                  type: string
+                  enum: [low, medium, high, auto]
+                  default: low
+                  description: 渲染质量。
+                background:
+                  type: string
+                  enum: [opaque, transparent, auto]
+                  default: opaque
+                  description: 背景处理方式。使用 transparent 时建议输出 png。
+                output_format:
+                  type: string
+                  enum: [png, jpeg]
+                  default: png
+                  description: 输出图片格式，不支持 webp。
+                output_compression:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: jpeg 输出的压缩级别。
+                moderation:
+                  type: string
+                  enum: [auto, low]
+                  default: auto
+                  description: 内容审核严格程度。
+                stream:
+                  type: boolean
+                  default: false
+                  description: 是否以 SSE 推送中间帧。
+                partial_images:
+                  type: integer
+                  description: stream 为 true 时请求的预览帧数量。
+      responses:
+        "200":
+          description: 图片生成成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageResponse"
+        "400":
+          description: 请求参数非法
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: 触发限流
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v1/images/edits:
+    post:
+      operationId: editImageGPTImage2
+      summary: 编辑图片
+      description: 用文本提示词编辑已有图片，可选传入额外参考图与蒙版。请求体为 multipart/form-data。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+                - images
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - gpt-image-2
+                  example: gpt-image-2
+                  description: 必须为 gpt-image-2。
+                prompt:
+                  type: string
+                  example: 把狐狸的毛变成亮蓝色，并加上飘落的雪花
+                  description: 期望的修改描述。
+                images:
+                  type: array
+                  minItems: 1
+                  maxItems: 16
+                  description: 要编辑的源图。用这个 JSON 形式可以传 URL，而不必上传文件。
+                  items:
+                    type: object
+                    description: image_url 与 file_id 必须且只能提供一个。
+                    properties:
+                      image_url:
+                        type: string
+                        example: https://your-bucket.tos-cn-beijing.volces.com/fox.png
+                        description: 公开 HTTPS 地址（TOS、R2、CDN），或内联的 data:image/png;base64,... 数据。URL 由上游主动抓取，必须公网可达；不接受 tos:// scheme。
+                      file_id:
+                        type: string
+                        description: Upmore 未开放文件上传接口，该字段不可用。
+                mask:
+                  type: object
+                  description: 可编辑区域。须为带 alpha 通道、且与源图同尺寸的 PNG。
+                  properties:
+                    image_url:
+                      type: string
+                      description: "蒙版的公开 HTTPS 地址或内联 data URL。"
+                n:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  default: 1
+                  description: 生成图片数量。
+                size:
+                  type: string
+                  example: 1024x1024
+                  description: "{width}x{height} 格式。边长须为 16 的倍数，宽高比 ≤ 3:1，总像素 655,360–8,294,400，最长边 3,840px。不传则由模型自行选择（约 130 万像素）。"
+                quality:
+                  type: string
+                  enum: [low, medium, high, auto]
+                  default: low
+                  description: 渲染质量。
+                background:
+                  type: string
+                  enum: [opaque, transparent, auto]
+                  default: opaque
+                  description: 背景处理方式。
+                output_format:
+                  type: string
+                  enum: [png, jpeg]
+                  default: png
+                  description: 输出图片格式。
+                output_compression:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: jpeg 输出的压缩级别。
+                moderation:
+                  type: string
+                  enum: [auto, low]
+                  default: auto
+                  description: 内容审核严格程度。
+                stream:
+                  type: boolean
+                  default: false
+                  description: 是否以 SSE 推送中间帧。
+                partial_images:
+                  type: integer
+                  description: stream 为 true 时请求的预览帧数量。
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+                - image
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - gpt-image-2
+                  example: gpt-image-2
+                  description: 必须为 gpt-image-2。
+                prompt:
+                  type: string
+                  example: 把狐狸的毛变成亮蓝色，并加上飘落的雪花
+                  description: 期望的修改描述。
+                image:
+                  type: string
+                  format: binary
+                  description: 要编辑的原图。
+                image[]:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: 额外参考图。重复该字段传入多张图，替代 image。
+                mask:
+                  type: string
+                  format: binary
+                  description: 与原图同尺寸的 PNG 蒙版。透明像素标出允许模型重绘的区域。
+                n:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  default: 1
+                  description: 生成图片数量。
+                size:
+                  type: string
+                  example: 1024x1024
+                  description: "{width}x{height} 格式。边长须为 16 的倍数，宽高比 ≤ 3:1，总像素 655,360–8,294,400，最长边 3,840px。不传则由模型自行选择（约 130 万像素）。"
+                quality:
+                  type: string
+                  enum: [low, medium, high, auto]
+                  default: low
+                  description: 渲染质量。
+                background:
+                  type: string
+                  enum: [opaque, transparent, auto]
+                  default: opaque
+                  description: 背景处理方式。
+                output_format:
+                  type: string
+                  enum: [png, jpeg]
+                  default: png
+                  description: 输出图片格式。
+                output_compression:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: jpeg 输出的压缩级别。
+                moderation:
+                  type: string
+                  enum: [auto, low]
+                  default: auto
+                  description: 内容审核严格程度。
+                stream:
+                  type: boolean
+                  default: false
+                  description: 是否以 SSE 推送中间帧。
+                partial_images:
+                  type: integer
+                  description: stream 为 true 时请求的预览帧数量。
+      responses:
+        "200":
+          description: 图片编辑成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageResponse"
+        "400":
+          description: 请求参数非法
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: 触发限流
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    ImageResponse:
+      type: object
+      properties:
+        created:
+          type: integer
+          description: 生成时间的 Unix 时间戳。
+        background:
+          type: string
+          description: 实际使用的背景处理方式。
+        output_format:
+          type: string
+          description: 返回图片的格式。
+        quality:
+          type: string
+          description: 实际使用的质量档位。
+        size:
+          type: string
+          description: 实际使用的分辨率。
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              b64_json:
+                type: string
+                description: base64 编码的图片数据。
+        usage:
+          type: object
+          properties:
+            input_tokens:
+              type: integer
+            input_tokens_details:
+              type: object
+              properties:
+                image_tokens:
+                  type: integer
+                text_tokens:
+                  type: integer
+            output_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

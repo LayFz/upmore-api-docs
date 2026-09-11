@@ -18,7 +18,7 @@ Upmore 仅限内部使用，**不提供自助注册**。仅企业内部员工可
 
 ### 第三步：发起第一次调用
 
-把任意 OpenAI SDK 的 base URL 指向 `https://api.upmore.net/v1`，用你的密钥即可。下面示例调用 `gpt-5.5` 对话模型：
+把任意 OpenAI SDK 的 base URL 指向 `https://api.upmore.net/v1`，用你的密钥即可。下面示例调用 `deepseek-v4-flash` 对话模型：
 
 <CodeGroup>
 
@@ -27,7 +27,7 @@ curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-5.5",
+    "model": "deepseek-v4-flash",
     "messages": [
       { "role": "user", "content": "你好！" }
     ]
@@ -43,7 +43,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="gpt-5.5",
+    model="deepseek-v4-flash",
     messages=[{"role": "user", "content": "你好！"}],
 )
 
@@ -59,7 +59,7 @@ const client = new OpenAI({
 });
 
 const response = await client.chat.completions.create({
-  model: "gpt-5.5",
+  model: "deepseek-v4-flash",
   messages: [{ role: "user", content: "你好！" }],
 });
 

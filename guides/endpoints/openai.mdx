@@ -28,7 +28,7 @@ curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-5.5",
+    "model": "deepseek-v4-flash",
     "messages": [
       { "role": "user", "content": "Hello!" }
     ]
@@ -44,7 +44,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="gpt-5.5",
+    model="deepseek-v4-flash",
     messages=[
         {"role": "user", "content": "Hello!"}
     ]
@@ -61,7 +61,7 @@ const client = new OpenAI({
 });
 
 const response = await client.chat.completions.create({
-  model: "gpt-5.5",
+  model: "deepseek-v4-flash",
   messages: [{ role: "user", content: "Hello!" }],
 });
 console.log(response.choices[0].message.content);
@@ -71,17 +71,14 @@ console.log(response.choices[0].message.content);
 
 ## Supported models
 
-| Provider | Models |
-|----------|--------|
-| Anthropic | gpt-5.5, gpt-5.5, gpt-5.5, gpt-5.5, gpt-5.5, gpt-5.5, gpt-5.5, gpt-5.5, gpt-5.5, gpt-5.5 |
-| OpenAI | gpt-5-4, gpt-5-3-codex, gpt-5-2, gpt-5-1, gpt-5, gpt-5-pro, gpt-5-mini, gpt-5-nano, gpt-4o, gpt-4o-mini, gpt-4-1, gpt-4 |
-| DeepSeek | deepseek-v3-2-speciale, deepseek-v3-2, deepseek-v3-1-terminus, deepseek-v3-1, deepseek-v3 |
-| Alibaba | qwen3.5-397b-a17b, qwen3-coder-next, qwen3-coder, qwen3-235b-a22b, qwen3-32b, qwen3-14b, qwen2.5-72b-instruct |
-| ByteDance | doubao-seed-2.0-pro, doubao-seed-2.0-code, doubao-seed-2.0-lite, doubao-seed-2.0-mini, doubao-seed-1-8-251228, doubao-seed-1-6-flash-250828, doubao-seed-1-6-251015, doubao-seed-1-6-lite-251015, doubao-seed-1-6-vision-250815, glm-4.7 |
-| MiniMax | minimax-m2.5, minimax-m2.1 |
-| MoonShot | kimi-k2.5 |
-| xAI | grok-3, grok-3-mini, grok-4-fast-reasoning, grok-4-fast-non-reasoning, grok-4-1-fast-reasoning, grok-4-1-fast-non-reasoning |
-| Google | gemini-3.1-pro-preview, gemini-3-pro-preview, gemini-3-flash-preview, gemini-2.5-pro, gemini-2.5-flash, gemini-2.0-flash |
+Upmore aggregates models from many providers, and the set changes as they update their lineups. Query it at runtime instead of relying on a hard-coded list:
+
+```bash
+curl https://api.upmore.net/v1/models \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+The same list backs the model picker in the console. Models with a dedicated page are documented under **Model APIs** in the sidebar.
 
 ## Features
 

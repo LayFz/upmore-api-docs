@@ -18,7 +18,7 @@ Open [API Keys](https://api.upmore.net/keys) and create a key. Keep it safe — 
 
 ### Step 3: Make your first API call
 
-Point any OpenAI SDK at `https://api.upmore.net/v1` and use your key. The example below calls the `gpt-5.5` chat model:
+Point any OpenAI SDK at `https://api.upmore.net/v1` and use your key. The example below calls the `deepseek-v4-flash` chat model:
 
 <CodeGroup>
 
@@ -27,7 +27,7 @@ curl https://api.upmore.net/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-5.5",
+    "model": "deepseek-v4-flash",
     "messages": [
       { "role": "user", "content": "Hello!" }
     ]
@@ -43,7 +43,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="gpt-5.5",
+    model="deepseek-v4-flash",
     messages=[{"role": "user", "content": "Hello!"}],
 )
 
@@ -59,7 +59,7 @@ const client = new OpenAI({
 });
 
 const response = await client.chat.completions.create({
-  model: "gpt-5.5",
+  model: "deepseek-v4-flash",
   messages: [{ role: "user", content: "Hello!" }],
 });
 

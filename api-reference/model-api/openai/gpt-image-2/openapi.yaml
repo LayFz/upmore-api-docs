@@ -1,0 +1,352 @@
+openapi: 3.1.0
+info:
+  title: GPT Image 2
+  description: OpenAI GPT Image 2 image generation and editing via the Upmore OpenAI-compatible API
+  version: 1.0.0
+servers:
+  - url: https://api.upmore.net
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/generations:
+    post:
+      operationId: createImageGPTImage2
+      summary: Generate image
+      description: Generates images from a text prompt. Returns base64-encoded image data.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - gpt-image-2
+                  example: gpt-image-2
+                  description: Must be gpt-image-2.
+                prompt:
+                  type: string
+                  example: A red fox sitting in a snowy forest at dusk, photorealistic
+                  description: Text description of the desired image.
+                n:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  default: 1
+                  description: Number of images to generate.
+                size:
+                  type: string
+                  example: 1536x1024
+                  description: "{width}x{height}. Edges must be multiples of 16, aspect ratio <= 3:1, total pixels 655,360-8,294,400, max edge 3,840px. Omit to let the model choose (~1.3M pixels)."
+                quality:
+                  type: string
+                  enum: [low, medium, high, auto]
+                  default: low
+                  description: Rendering quality.
+                background:
+                  type: string
+                  enum: [opaque, transparent, auto]
+                  default: opaque
+                  description: Background treatment. Use png output with transparent.
+                output_format:
+                  type: string
+                  enum: [png, jpeg]
+                  default: png
+                  description: Output image format. webp is not supported.
+                output_compression:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: Compression level for jpeg output.
+                moderation:
+                  type: string
+                  enum: [auto, low]
+                  default: auto
+                  description: Content moderation strictness.
+                stream:
+                  type: boolean
+                  default: false
+                  description: Stream partial images as server-sent events.
+                partial_images:
+                  type: integer
+                  description: Number of preview frames to request when stream is true.
+      responses:
+        "200":
+          description: Images generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v1/images/edits:
+    post:
+      operationId: editImageGPTImage2
+      summary: Edit image
+      description: Edits an existing image with a text prompt, optionally guided by additional reference images and a mask. Send as multipart/form-data.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+                - images
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - gpt-image-2
+                  example: gpt-image-2
+                  description: Must be gpt-image-2.
+                prompt:
+                  type: string
+                  example: Turn the fox's fur bright blue and add falling snowflakes
+                  description: Text description of the desired edit.
+                images:
+                  type: array
+                  minItems: 1
+                  maxItems: 16
+                  description: Source images to edit. Use this JSON form to pass images by URL instead of uploading files.
+                  items:
+                    type: object
+                    description: Exactly one of image_url or file_id must be provided.
+                    properties:
+                      image_url:
+                        type: string
+                        example: https://your-bucket.tos-cn-beijing.volces.com/fox.png
+                        description: Public HTTPS URL (TOS, R2, CDN) or an inline data:image/png;base64,... payload. The upstream fetches it, so it must be publicly reachable. The tos:// scheme is not accepted.
+                      file_id:
+                        type: string
+                        description: Not usable on Upmore — the Files upload API is not exposed.
+                mask:
+                  type: object
+                  description: Editable region. Must be a PNG with an alpha channel the same size as the source image.
+                  properties:
+                    image_url:
+                      type: string
+                      description: "Public HTTPS URL or inline data URL of the mask."
+                n:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  default: 1
+                  description: Number of images to generate.
+                size:
+                  type: string
+                  example: 1024x1024
+                  description: "{width}x{height}. Edges must be multiples of 16, aspect ratio <= 3:1, total pixels 655,360-8,294,400, max edge 3,840px. Omit to let the model choose (~1.3M pixels)."
+                quality:
+                  type: string
+                  enum: [low, medium, high, auto]
+                  default: low
+                  description: Rendering quality.
+                background:
+                  type: string
+                  enum: [opaque, transparent, auto]
+                  default: opaque
+                  description: Background treatment.
+                output_format:
+                  type: string
+                  enum: [png, jpeg]
+                  default: png
+                  description: Output image format.
+                output_compression:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: Compression level for jpeg output.
+                moderation:
+                  type: string
+                  enum: [auto, low]
+                  default: auto
+                  description: Content moderation strictness.
+                stream:
+                  type: boolean
+                  default: false
+                  description: Stream partial images as server-sent events.
+                partial_images:
+                  type: integer
+                  description: Number of preview frames to request when stream is true.
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+                - image
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - gpt-image-2
+                  example: gpt-image-2
+                  description: Must be gpt-image-2.
+                prompt:
+                  type: string
+                  example: Turn the fox's fur bright blue and add falling snowflakes
+                  description: Text description of the desired edit.
+                image:
+                  type: string
+                  format: binary
+                  description: Source image to edit.
+                image[]:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Additional source images. Repeat this field to pass multiple reference images instead of image.
+                mask:
+                  type: string
+                  format: binary
+                  description: PNG mask the same size as the source image. Transparent pixels mark the region the model may repaint.
+                n:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  default: 1
+                  description: Number of images to generate.
+                size:
+                  type: string
+                  example: 1024x1024
+                  description: "{width}x{height}. Edges must be multiples of 16, aspect ratio <= 3:1, total pixels 655,360-8,294,400, max edge 3,840px. Omit to let the model choose (~1.3M pixels)."
+                quality:
+                  type: string
+                  enum: [low, medium, high, auto]
+                  default: low
+                  description: Rendering quality.
+                background:
+                  type: string
+                  enum: [opaque, transparent, auto]
+                  default: opaque
+                  description: Background treatment.
+                output_format:
+                  type: string
+                  enum: [png, jpeg]
+                  default: png
+                  description: Output image format.
+                output_compression:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: Compression level for jpeg output.
+                moderation:
+                  type: string
+                  enum: [auto, low]
+                  default: auto
+                  description: Content moderation strictness.
+                stream:
+                  type: boolean
+                  default: false
+                  description: Stream partial images as server-sent events.
+                partial_images:
+                  type: integer
+                  description: Number of preview frames to request when stream is true.
+      responses:
+        "200":
+          description: Image edited successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    ImageResponse:
+      type: object
+      properties:
+        created:
+          type: integer
+          description: Unix timestamp of the generation.
+        background:
+          type: string
+          description: Background treatment used.
+        output_format:
+          type: string
+          description: Format of the returned images.
+        quality:
+          type: string
+          description: Quality actually used.
+        size:
+          type: string
+          description: Resolution actually used.
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              b64_json:
+                type: string
+                description: Base64-encoded image data.
+        usage:
+          type: object
+          properties:
+            input_tokens:
+              type: integer
+            input_tokens_details:
+              type: object
+              properties:
+                image_tokens:
+                  type: integer
+                text_tokens:
+                  type: integer
+            output_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
